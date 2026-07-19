@@ -34,5 +34,6 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public string Status { get; set; } = string.Empty;
+        public ICollection<OrderItem> OrderItems { get; set; }
     }
 }
