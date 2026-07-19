@@ -25,8 +25,5 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public DateTime JoinedAt { get; set; }
-        
-
-       
     }
 }
