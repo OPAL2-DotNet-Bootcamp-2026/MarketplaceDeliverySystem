@@ -28,5 +28,8 @@ namespace MarketplaceDeliverySystem.Models
         public string VerificationStatus { get; set; }
 
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
     }
 }
