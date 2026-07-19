@@ -18,5 +18,6 @@ namespace MarketplaceDeliverySystem.Models
 
         [MaxLength(300)]
         public string? ImageUrl { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

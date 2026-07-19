@@ -15,7 +15,7 @@ namespace MarketplaceDeliverySystem.Models
         [Required]
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-
+        public User User { get; set; }
         [Required]
         [MaxLength(20)]
         public string NationalId { get; set; }
@@ -25,5 +25,8 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public DateTime JoinedAt { get; set; }
+        
+
+       
     }
 }

@@ -25,6 +25,7 @@ namespace MarketplaceDeliverySystem.Models
         public string Role { get; set; } = "Customer";
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
+        public BusinessOwner BusinessOwner { get; set; }
         
     }
 }

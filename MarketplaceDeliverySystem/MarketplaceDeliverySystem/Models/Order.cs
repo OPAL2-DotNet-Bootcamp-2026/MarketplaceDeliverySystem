@@ -34,5 +34,7 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public string Status { get; set; } = string.Empty;
+
+        public Payment payment { get; set; }
     }
 }
