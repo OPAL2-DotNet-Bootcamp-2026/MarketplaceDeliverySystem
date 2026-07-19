@@ -43,5 +43,6 @@ namespace MarketplaceDeliverySystem.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsAvailable { get; set; } = true;
+        public ICollection<OrderItem> OrderItems { get; set; }
     }
 }
