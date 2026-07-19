@@ -25,5 +25,7 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public DateTime JoinedAt { get; set; }
+
+        public ICollection<Business> Businesses { get; set; } = new List<Business>();
     }
 }

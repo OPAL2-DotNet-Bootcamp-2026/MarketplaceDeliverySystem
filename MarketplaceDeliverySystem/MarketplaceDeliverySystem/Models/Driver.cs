@@ -37,5 +37,7 @@ namespace MarketplaceDeliverySystem.Models
         [Required]
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
+        public ICollection<Delivery> Deliveries { get; set; } = new List<Delivery>();
+
     }
 }

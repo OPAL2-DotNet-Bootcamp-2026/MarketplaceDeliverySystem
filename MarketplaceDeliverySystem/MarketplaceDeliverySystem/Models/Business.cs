@@ -44,5 +44,6 @@ namespace MarketplaceDeliverySystem.Models
 
         [Range(1,5)]
         public int? Rating { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
