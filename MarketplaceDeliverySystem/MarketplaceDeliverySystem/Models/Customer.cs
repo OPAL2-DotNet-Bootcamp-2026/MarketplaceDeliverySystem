@@ -24,7 +24,7 @@ namespace MarketplaceDeliverySystem.Models
         public DateTime CreatedAt { get; set; }
         //System Generated (DateTime.Now)
 
-        [Required]
+        [Required(ErrorMessage = "Customer address is required.")]
         public string Address { get; set; }
         // User Input
 
