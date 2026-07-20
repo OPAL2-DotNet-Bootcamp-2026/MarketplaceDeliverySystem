@@ -10,7 +10,8 @@ namespace MarketplaceDeliverySystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }//System Generated 
-        [Required, MaxLength(100)] 
+        [Required(ErrorMessage = "Full name is required."), MaxLength(100, ErrorMessage =
+        "Full name cannot exceed 100 characters.")] 
         public string FullName { get; set; } = string.Empty;//User Input 
         [Required,MaxLength(150)]
         [EmailAddress]
