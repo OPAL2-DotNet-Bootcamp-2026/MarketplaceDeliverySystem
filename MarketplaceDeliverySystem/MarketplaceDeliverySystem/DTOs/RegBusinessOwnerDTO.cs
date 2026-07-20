@@ -1,13 +1,20 @@
-﻿namespace MarketplaceDeliverySystem.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MarketplaceDeliverySystem.DTOs
 {
     public class RegBusinessOwnerDTO
     {
-        
-            public int OwnerId { get; set; }
 
-            public string Token { get; set; }
+        [Required]
+        public int OwnerId { get; set; }
 
-            public string Message { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(6, ErrorMessage =
+        "Password must contain at least 6 characters.")]
+        public string PasswordHash { get; set; } = string.Empty;//User Input 
+      
+
+         public string Message { get; set; }
         }
     }
 
