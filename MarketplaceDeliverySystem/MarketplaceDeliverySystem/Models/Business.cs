@@ -41,8 +41,5 @@ namespace MarketplaceDeliverySystem.Models
         public TimeSpan ClosingTime { get; set; }
 
         public bool IsOpen { get; set; } = true;
-
-        [Range(1,5)]
-        public int? Rating { get; set; }
     }
 }
