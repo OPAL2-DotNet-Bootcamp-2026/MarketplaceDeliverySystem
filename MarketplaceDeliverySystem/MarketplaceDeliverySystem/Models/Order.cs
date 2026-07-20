@@ -33,7 +33,7 @@ namespace MarketplaceDeliverySystem.Models
         public decimal TotalAmount { get; set; }//Calculated (Subtotal + DeliveryFee)
 
 
-        [Required]
+        [Required(ErrorMessage = "Order status is required.")]
         public string Status { get; set; } = string.Empty; //System Generated (Default)
     }
 }
