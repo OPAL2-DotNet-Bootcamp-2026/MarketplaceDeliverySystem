@@ -40,7 +40,6 @@ namespace MarketplaceDeliverySystem.Models
         [Required]
         public TimeSpan ClosingTime { get; set; }//user input
 
-        public bool IsOpen { get; set; } = true;
         public bool IsOpen { get; set; } = true;//Default = true
 
         [Range(1,5)]
