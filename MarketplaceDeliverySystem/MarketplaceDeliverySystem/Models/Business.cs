@@ -25,8 +25,9 @@ namespace MarketplaceDeliverySystem.Models
         [MaxLength(300)]
         public string? LogoUrl { get; set; }//User Input
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Business email is required.")]
+        [EmailAddress(ErrorMessage =
+    "Please enter a valid business email address.")]
         [MaxLength(100)]
         public string Email { get; set; }//user input
 
