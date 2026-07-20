@@ -15,7 +15,7 @@ namespace MarketplaceDeliverySystem.Models
 
         public BusinessOwner BusinessOwner { get; set; }//Navigation Property
 
-        [Required]
+        [Required(ErrorMessage = "Business name is required.")]
         [MaxLength(100)]
         public string BusinessName { get; set; }//User Input
 
