@@ -12,7 +12,7 @@ namespace MarketplaceDeliverySystem.Models
         public int CustomerId { get; set; }
         //System Generated 
 
-        [Required]
+        [Required(ErrorMessage = "User ID is required.")]
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
         //From List (Created/Selected User)
