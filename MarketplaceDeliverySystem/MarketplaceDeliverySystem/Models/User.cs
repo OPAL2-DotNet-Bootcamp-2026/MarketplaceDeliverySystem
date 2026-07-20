@@ -19,7 +19,8 @@ namespace MarketplaceDeliverySystem.Models
         public string Email { get; set; } = string.Empty;//User Input 
         [Required(ErrorMessage = "Password is required."), MaxLength(256, ErrorMessage ="Password cannot exceed 255 characters.")]
         public string PasswordHash { get; set; } = string.Empty;//User Input 
-        [Required, MaxLength(20)] 
+        [Required(ErrorMessage = "Phone number is required."), MaxLength(15, ErrorMessage =
+        "Phone number cannot exceed 15 characters.")] 
         public string PhoneNumber { get; set; } = string.Empty;//User Input 
         [MaxLength(300)] 
         public string? ProfileImage { get; set; }//User Input 
