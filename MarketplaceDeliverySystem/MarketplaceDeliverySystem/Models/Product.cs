@@ -54,6 +54,7 @@ namespace MarketplaceDeliverySystem.Models
         //System Generated (DateTime.Now)
 
         public bool IsAvailable { get; set; } = true;
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
         // (Default = true)
         //product.IsAvailable = product.StockQuantity > 0; other way??
     }
