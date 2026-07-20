@@ -14,7 +14,7 @@ namespace MarketplaceDeliverySystem.Models
         public int UserId { get; set; }//From List (Created/Selected User)
         public User User { get; set; }//Navigation Property
 
-        [Required]
+        [Required(ErrorMessage = "Licence number is required.")]
         [MaxLength(30)]
         public string LicenseNumber { get; set; }//User Input
 
