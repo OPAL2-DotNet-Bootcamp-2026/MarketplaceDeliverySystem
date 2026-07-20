@@ -13,8 +13,9 @@ namespace MarketplaceDeliverySystem.Models
         [Required(ErrorMessage = "Full name is required."), MaxLength(100, ErrorMessage =
         "Full name cannot exceed 100 characters.")] 
         public string FullName { get; set; } = string.Empty;//User Input 
-        [Required,MaxLength(150)]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required."), MaxLength(150, ErrorMessage =
+        "Email cannot exceed 150 characters.")]
+        [EmailAddress(ErrorMessage= "Please enter a valid email address.")]
         public string Email { get; set; } = string.Empty;//User Input 
         [Required, MaxLength(256)] 
         public string PasswordHash { get; set; } = string.Empty;//User Input 
