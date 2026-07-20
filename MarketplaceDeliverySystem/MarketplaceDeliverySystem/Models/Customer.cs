@@ -10,26 +10,28 @@ namespace MarketplaceDeliverySystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerId { get; set; }
+        //System Generated 
 
-        [ForeignKey(nameof(User)),Required]
+        [Required]
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
+        //From List (Created/Selected User)
+
         public User User { get; set; }
-
-
-        [Required]
-        [MaxLength(20)]
-        public string NationalId { get; set; }
-
-        [MaxLength(50)]
-        public string? BusinessLicense { get; set; }
+        //Navigation Property
 
         [Required]
-        [MaxLength(20)]
-        public string VerificationStatus { get; set; }
+        public DateTime CreatedAt { get; set; }
+        //System Generated (DateTime.Now)
 
-        public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public string Address { get; set; }
+        // User Input
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        //Navigation Property
 
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        //Navigation Property
     }
 }

@@ -10,20 +10,21 @@ namespace MarketplaceDeliverySystem.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int OwnerId { get; set; }
+        public int OwnerId { get; set; } // System Generated
 
         [Required]
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public int UserId { get; set; } //From List (Created/Selected User)
 
+        public User User { get; set; } //Navigation Property
         [Required]
         [MaxLength(20)]
-        public string NationalId { get; set; }
+        public string NationalId { get; set; } //User Input
 
         [MaxLength(50)]
-        public string? BusinessLicense { get; set; }
+        public string? BusinessLicense { get; set; } // User Input
 
         [Required]
-        public DateTime JoinedAt { get; set; }
+        public DateTime JoinedAt { get; set; } //System Generated
     }
 }

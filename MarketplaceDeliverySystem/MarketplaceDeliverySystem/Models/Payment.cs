@@ -7,24 +7,24 @@ namespace MarketplaceDeliverySystem.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PaymentId { get; set; }
+        public int PaymentId { get; set; }//System Generated 
 
         [ForeignKey(nameof(Order))]
         [Required]
-        public int OrderId { get; set; }
+        public int OrderId { get; set; }// From List (User selects an Order)
 
-        public Order Order { get; set; } = null!;
-
-        [Required]
-        public string PaymentMethod { get; set; } = string.Empty;
+        public Order Order { get; set; } = null!; // Navigation Property
 
         [Required]
-        public string PaymentStatus { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;//User Input
 
         [Required]
-        public decimal Amount { get; set; }
+        public string PaymentStatus { get; set; } = string.Empty;//System Generated 
 
         [Required]
-        public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+        public decimal Amount { get; set; } //Calculated
+
+        [Required]
+        public DateTime PaymentDate { get; set; } = DateTime.UtcNow; //System Generated 
     }
 }
