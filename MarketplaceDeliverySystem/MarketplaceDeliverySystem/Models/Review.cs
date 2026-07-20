@@ -7,28 +7,29 @@ namespace MarketplaceDeliverySystem.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ReviewId { get; set; }
+        public int ReviewId { get; set; }      // System Generated (Identity Primary Key)
 
         [ForeignKey(nameof(Customer))]
         [Required]
-        public int CustomerId { get; set; }
+        public int CustomerId { get; set; }    // From List (User selects a Customer)
 
-        public Customer Customer { get; set; } = null!;
+        public Customer Customer { get; set; } = null!;   // Navigation Property
 
         [ForeignKey(nameof(Product))]
         [Required]
-        public int ProductId { get; set; }
+        public int ProductId { get; set; }     // From List (User selects a Product)
 
-        public Product Product { get; set; } = null!;
+        public Product Product { get; set; } = null!;     // Navigation Property
 
         [Required]
         [Range(1, 5)]
-        public int Rating { get; set; }
+        public int Rating { get; set; }        // User Input
 
         [MaxLength(1000)]
-        public string? Comment { get; set; }
+        public string? Comment { get; set; }   // User Input (Optional)
 
         [Required]
         public DateTime ReviewDate { get; set; } = DateTime.UtcNow;
+        // System Generated (Set to DateTime.Now / UtcNow when review is created)
     }
 }

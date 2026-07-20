@@ -9,22 +9,22 @@ namespace MarketplaceDeliverySystem.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
+        public int UserId { get; set; }//System Generated 
         [Required, MaxLength(100)] 
-        public string FullName { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;//User Input 
         [Required,MaxLength(150)]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;//User Input 
         [Required, MaxLength(256)] 
-        public string PasswordHash { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;//User Input 
         [Required, MaxLength(20)] 
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;//User Input 
         [MaxLength(300)] 
-        public string? ProfileImage { get; set; }
+        public string? ProfileImage { get; set; }//User Input 
         [Required, MaxLength(30)] 
-        public string Role { get; set; } = "Customer";
-        public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
-        public bool IsActive { get; set; } = true;
-        
+        public string Role { get; set; } = "Customer";//user input:From Listsystem allows choosing Customer, BusinessOwner, or Driver
+        public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;// System Generated
+        public bool IsActive { get; set; } = true;//(Default = true)
+
     }
 }
