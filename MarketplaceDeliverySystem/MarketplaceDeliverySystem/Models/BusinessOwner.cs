@@ -17,7 +17,7 @@ namespace MarketplaceDeliverySystem.Models
         public int UserId { get; set; } //From List (Created/Selected User)
 
         public User User { get; set; } //Navigation Property
-        [Required]
+        [Required(ErrorMessage = "National ID is required.")]
         [MaxLength(20)]
         public string NationalId { get; set; } //User Input
 
