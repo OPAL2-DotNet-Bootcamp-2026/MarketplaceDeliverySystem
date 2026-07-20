@@ -18,7 +18,7 @@ namespace MarketplaceDeliverySystem.Models
         [Required(ErrorMessage = "Payment method is required.")]
         public string PaymentMethod { get; set; } = string.Empty;//User Input
 
-        [Required]
+        [Required(ErrorMessage = "Payment status is required.")]
         public string PaymentStatus { get; set; } = string.Empty;//System Generated 
 
         [Required]
