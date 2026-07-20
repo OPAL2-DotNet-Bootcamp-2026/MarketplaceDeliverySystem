@@ -18,15 +18,15 @@ namespace MarketplaceDeliverySystem.Models
         [MaxLength(30)]
         public string LicenseNumber { get; set; }//User Input
 
-        [Required]
+        [Required(ErrorMessage = "Vehicle type is required.")]
         [MaxLength(30)]
         public string VehicleType { get; set; }//User Input
 
-        [Required]
+        [Required(ErrorMessage = "Vehicle plate number is required.")]
         [MaxLength(20)]
         public string VehiclePlateNumber { get; set; }//User Input
 
-        [Required]
+        [Required(ErrorMessage = "Availability status is required.")]
         [MaxLength(20)]
         public string AvailabilityStatus { get; set; }//(Default = "Available")
 
