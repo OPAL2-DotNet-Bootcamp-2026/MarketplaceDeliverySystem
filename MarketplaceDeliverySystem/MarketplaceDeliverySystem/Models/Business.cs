@@ -31,7 +31,7 @@ namespace MarketplaceDeliverySystem.Models
         [MaxLength(100)]
         public string Email { get; set; }//user input
 
-        [Required]
+        [Required(ErrorMessage = "Business address is required.")]
         [MaxLength(200)]
         public string Address { get; set; }//user input
 
