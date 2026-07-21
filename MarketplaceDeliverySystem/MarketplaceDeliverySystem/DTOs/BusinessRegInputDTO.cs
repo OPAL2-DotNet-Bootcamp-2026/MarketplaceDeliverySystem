@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MarketplaceDeliverySystem.DTOs
 {
     public class BusinessRegInputDTO
-    { 
+    {
+        [Required] 
+        public int OwnerId { get; set; }
 
         [Required(ErrorMessage = "Business name is required.")]
         [MaxLength(100)]
