@@ -1,21 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MarketplaceDeliverySystem.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MarketplaceDeliverySystem.Models
+namespace MarketplaceDeliverySystem.DTOs
 {
-    [Index(nameof(Email), IsUnique = true)]
-    public class Business
+    public class BusinessRegInputDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BusinessId { get; set; }//System Generated 
-
-        [Required]
-        [ForeignKey(nameof(BusinessOwner))]
-        public int OwnerId { get; set; }// From List (Selected BusinessOwner)
-
-        public BusinessOwner BusinessOwner { get; set; }//Navigation Property
+        [Required] 
+        public int OwnerId { get; set; }
 
         [Required(ErrorMessage = "Business name is required.")]
         [MaxLength(100)]
@@ -28,7 +20,7 @@ namespace MarketplaceDeliverySystem.Models
         public string? LogoUrl { get; set; }//User Input
 
         [Required(ErrorMessage = "Business email is required.")]
-        [EmailAddress(ErrorMessage ="Please enter a valid business email address.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid business email address.")]
         [MaxLength(100)]
         public string Email { get; set; }//user input
 
@@ -42,8 +34,5 @@ namespace MarketplaceDeliverySystem.Models
         [Required]
         public TimeOnly ClosingTime { get; set; }//user input
 
-        public bool IsOpen { get; set; } = true;//Default = true
-
-       
     }
 }
