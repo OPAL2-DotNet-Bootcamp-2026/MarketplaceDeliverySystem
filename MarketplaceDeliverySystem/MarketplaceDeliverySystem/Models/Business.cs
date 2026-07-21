@@ -26,8 +26,7 @@ namespace MarketplaceDeliverySystem.Models
         public string? LogoUrl { get; set; }//User Input
 
         [Required(ErrorMessage = "Business email is required.")]
-        [EmailAddress(ErrorMessage =
-    "Please enter a valid business email address.")]
+        [EmailAddress(ErrorMessage ="Please enter a valid business email address.")]
         [MaxLength(100)]
         public string Email { get; set; }//user input
 
@@ -36,14 +35,13 @@ namespace MarketplaceDeliverySystem.Models
         public string Address { get; set; }//user input
 
         [Required]
-        public TimeSpan OpeningTime { get; set; }//user input
+        public TimeOnly OpeningTime { get; set; }//user input
 
         [Required]
-        public TimeSpan ClosingTime { get; set; }//user input
+        public TimeOnly ClosingTime { get; set; }//user input
 
         public bool IsOpen { get; set; } = true;//Default = true
 
-        [Range(1,5)]
-        public int? Rating { get; set; }//user input 
+       
     }
 }
