@@ -34,7 +34,10 @@ namespace MarketplaceDeliverySystem.Services
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = "Driver"
+                Role = "Driver",
+                ProfileImage = dto.ProfileImage,
+                RegistrationDate = DateTime.UtcNow,
+                IsActive = true
             };
             _userRepo.Add(user);
 
@@ -44,6 +47,9 @@ namespace MarketplaceDeliverySystem.Services
             driver.VehicleType = dto.VehicleType;
             driver.VehiclePlateNumber = dto.VehiclePlateNumber;
             driver.AvailabilityStatus = "Available";
+            driver.CurrentLatitude = null;
+            driver.CurrentLongitude = null;
+            driver.JoinedAt = DateTime.UtcNow;
 
             _driverRepo.AddDriver(driver);
 
