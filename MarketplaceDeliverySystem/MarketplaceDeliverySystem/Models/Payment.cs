@@ -15,10 +15,10 @@ namespace MarketplaceDeliverySystem.Models
 
         public Order Order { get; set; } = null!; // Navigation Property
 
-        [Required]
+        [Required(ErrorMessage = "Payment method is required.")]
         public string PaymentMethod { get; set; } = string.Empty;//User Input
 
-        [Required]
+        [Required(ErrorMessage = "Payment status is required.")]
         public string PaymentStatus { get; set; } = string.Empty;//System Generated 
 
         [Required]

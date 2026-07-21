@@ -12,7 +12,7 @@ namespace MarketplaceDeliverySystem.Models
         public int CustomerId { get; set; }
         //System Generated 
 
-        [Required]
+        [Required(ErrorMessage = "User ID is required.")]
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
         //From List (Created/Selected User)
@@ -24,7 +24,7 @@ namespace MarketplaceDeliverySystem.Models
         public DateTime CreatedAt { get; set; }
         //System Generated (DateTime.Now)
 
-        [Required]
+        [Required(ErrorMessage = "Customer address is required.")]
         public string Address { get; set; }
         // User Input
 

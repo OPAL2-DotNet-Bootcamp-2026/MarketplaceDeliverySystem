@@ -26,7 +26,7 @@ namespace MarketplaceDeliverySystem.Models
         public Category Category { get; set; } = null!;
         //Navigation Property
 
-        [Required]
+        [Required(ErrorMessage = "Product name is required.")]
         [MaxLength(150)]
         public string ProductName { get; set; } = string.Empty;
         //User Input
@@ -41,7 +41,7 @@ namespace MarketplaceDeliverySystem.Models
         //User Input
 
         [Required]
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
         public int StockQuantity { get; set; }
         //User Input
 
