@@ -1,9 +1,11 @@
-﻿namespace MarketplaceDeliverySystem.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MarketplaceDeliverySystem.DTOs
 {
     public class DeleteOrderOutputDTO
     {
-        public bool Success { get; set; }
 
+        [Required]
         public string Message { get; set; }
     }
 }
