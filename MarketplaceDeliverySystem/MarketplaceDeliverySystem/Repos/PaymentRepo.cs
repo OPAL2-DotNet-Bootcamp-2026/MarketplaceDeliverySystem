@@ -16,5 +16,16 @@ namespace MarketplaceDeliverySystem.Repos
             _context.Payments.Add(payment);
             _context.SaveChanges();
         }
+
+        public Payment? GetByOrderId(int orderId)
+        {
+            return _context.Payments
+                .FirstOrDefault(p => p.OrderId == orderId);
+        }
+
+        public void Update()
+        {
+            _context.SaveChanges();
+        }
     }
 }

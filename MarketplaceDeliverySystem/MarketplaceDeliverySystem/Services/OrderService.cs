@@ -14,6 +14,7 @@ namespace MarketplaceDeliverySystem.Services
         private readonly ProductRepo _productRepo;
         private readonly PaymentRepo _paymentRepo;
         private readonly DeliveryRepo _deliveryRepo;
+        private readonly DriverRepo _driverRepo;
 
         public OrderService(
             OrderRepo orderRepo,
@@ -22,7 +23,8 @@ namespace MarketplaceDeliverySystem.Services
             BusinessRepo businessRepo,
             ProductRepo productRepo,
             PaymentRepo paymentRepo,
-            DeliveryRepo deliveryRepo)
+            DeliveryRepo deliveryRepo,
+            DriverRepo driverRepo)
         {
             _orderRepo = orderRepo;
             _orderItemRepo = orderItemRepo;
@@ -31,6 +33,7 @@ namespace MarketplaceDeliverySystem.Services
             _productRepo = productRepo;
             _paymentRepo = paymentRepo;
             _deliveryRepo = deliveryRepo;
+            _driverRepo = driverRepo;
         }
 
         public Order? CreateOrder(OrderCreateDTO dto)
@@ -78,7 +81,7 @@ namespace MarketplaceDeliverySystem.Services
                     return null;
                 }
 
-                // Product must belong to the selected business
+                // Product must belong to selected business
                 if (product.BusinessId != dto.BusinessId)
                 {
                     return null;
@@ -105,7 +108,7 @@ namespace MarketplaceDeliverySystem.Services
                 subtotal += product.Price * itemDto.Quantity;
             }
 
-            // Create the order
+            // Create order
             Order order = new Order
             {
                 CustomerId = dto.CustomerId,
@@ -117,7 +120,7 @@ namespace MarketplaceDeliverySystem.Services
                 Status = "Pending"
             };
 
-            // Use Add if this is the method name in your OrderRepo
+            // Save order first to generate OrderId
             _orderRepo.AddOrder(order);
 
             // Create order items and reduce product stock
@@ -139,17 +142,17 @@ namespace MarketplaceDeliverySystem.Services
                     UnitPrice = product.Price
                 };
 
-                // Use Add if this is the method name in OrderItemRepo
                 _orderItemRepo.AddOrderItem(orderItem);
 
+                // Reduce stock
                 product.StockQuantity -= itemDto.Quantity;
 
+                // Make product unavailable if stock reaches zero
                 if (product.StockQuantity == 0)
                 {
                     product.IsAvailable = false;
                 }
 
-                // ProductRepo saves tracked product changes
                 _productRepo.Update();
             }
 
@@ -173,7 +176,95 @@ namespace MarketplaceDeliverySystem.Services
             };
 
             _deliveryRepo.AddDelivery(delivery);
+
             return order;
         }
+
+        public MessageOutputDTO CancelOrder(OrderCancelDTO dto)
+        {
+            Order? order =
+       _orderRepo.GetOrderWithDetails(dto.OrderId);
+
+            if (order == null)
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Order not found."
+                };
+            }
+
+            if (order.Status == "Cancelled")
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Order is already cancelled."
+                };
+            }
+
+            if (order.Status == "Delivered")
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Delivered order cannot be cancelled."
+                };
+            }
+
+            foreach (OrderItem orderItem in order.OrderItems)
+            {
+                Product? product =
+                    _productRepo.GetById(orderItem.ProductId);
+
+                if (product != null)
+                {
+                    product.StockQuantity += orderItem.Quantity;
+                    product.IsAvailable = true;
+                }
+            }
+
+            order.Status = "Cancelled";
+
+            Delivery? delivery =
+                _deliveryRepo.GetByOrderId(order.OrderId);
+
+            if (delivery != null)
+            {
+                delivery.DeliveryStatus = "Cancelled";
+
+                if (delivery.DriverId > 0)
+                {
+                    Driver? driver =
+                        _driverRepo.GetDriverById(delivery.DriverId);
+
+                    if (driver != null)
+                    {
+                        driver.AvailabilityStatus = "Available";
+                    }
+                }
+            }
+
+            Payment? payment =
+                _paymentRepo.GetByOrderId(order.OrderId);
+
+            if (payment != null &&
+                payment.PaymentStatus == "Paid")
+            {
+                payment.PaymentStatus = "Refunded";
+            }
+
+            _orderRepo.Update();
+
+            return new MessageOutputDTO
+            {
+                Success = true,
+                Message = "Order cancelled successfully."
+            };
+        }
     }
-}
+    }
+
+
+ 
+

@@ -29,8 +29,12 @@ namespace MarketplaceDeliverySystem.Repos
                 return context.Drivers
                     .FirstOrDefault(d => d.VehiclePlateNumber == plateNumber);
             }
-
-            public void Save()
+        public Driver? GetDriverById(int driverId)
+        {
+            return context.Drivers
+                .FirstOrDefault(d => d.DriverId == driverId);
+        }
+        public void Save()
             {
                 context.SaveChanges();
             }

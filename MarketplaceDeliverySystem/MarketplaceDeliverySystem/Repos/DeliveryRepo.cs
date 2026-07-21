@@ -16,8 +16,13 @@ namespace MarketplaceDeliverySystem.Repos
                 return _context.Deliveries
                     .FirstOrDefault(d => d.DeliveryId == deliveryId);
             }
+        public Delivery? GetByOrderId(int orderId)
+        {
+            return _context.Deliveries
+                .FirstOrDefault(d => d.OrderId == orderId);
+        }
 
-            public void Update()
+        public void Update()
             {
                 _context.SaveChanges();
             }
