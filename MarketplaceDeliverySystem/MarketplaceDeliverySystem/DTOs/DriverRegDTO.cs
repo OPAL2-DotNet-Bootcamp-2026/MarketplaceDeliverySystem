@@ -5,7 +5,7 @@ namespace MarketplaceDeliverySystem.DTOs
     public class DriverRegDTO
     {
      
-        [Required, MaxLength(100)]
+        [Required, MinLength(3)]
         public string FullName { get; set; } = string.Empty;//User Input
         [Required, MinLength(8)]
         public string PhoneNumber { get; set; } = string.Empty;//User Input 
@@ -16,15 +16,15 @@ namespace MarketplaceDeliverySystem.DTOs
         public string Password { get; set; } = string.Empty;//User Input 
 
         [Required]
-        [MaxLength(30)]
+        [MinLength(4)]
         public string LicenseNumber { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(30)]
+        [MinLength(3)]
         public string VehicleType { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(20)]
+        [MinLength(1)]
         public string VehiclePlateNumber { get; set; } = string.Empty;
     }
 }
