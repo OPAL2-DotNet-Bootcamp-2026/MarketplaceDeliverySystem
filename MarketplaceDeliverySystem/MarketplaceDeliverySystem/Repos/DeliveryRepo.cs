@@ -21,5 +21,10 @@ namespace MarketplaceDeliverySystem.Repos
             {
                 _context.SaveChanges();
             }
+        public void AddDelivery(Delivery delivery)
+        {
+            _context.Deliveries.Add(delivery);
+            _context.SaveChanges();
         }
+    }
     }
