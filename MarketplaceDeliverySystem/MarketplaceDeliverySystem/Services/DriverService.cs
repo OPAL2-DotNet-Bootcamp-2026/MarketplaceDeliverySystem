@@ -8,7 +8,7 @@ namespace MarketplaceDeliverySystem.Services
     {
         private DriverRepo _driverRepo;
         private UserRepo _userRepo;
-
+        //private AuthService authService;
         public DriverService(DriverRepo driverRepo, UserRepo userRepo)
         {
             _driverRepo = driverRepo;
