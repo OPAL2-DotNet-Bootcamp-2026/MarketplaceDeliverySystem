@@ -2,7 +2,7 @@
 
 namespace MarketplaceDeliverySystem.DTOs
 {
-    public class CancelOrderDTO
+    public class OrderCancelDTO
     {
         [Required]
         public int OrderId { get; set; }

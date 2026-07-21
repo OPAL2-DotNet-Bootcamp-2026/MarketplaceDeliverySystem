@@ -2,10 +2,13 @@
 
 namespace MarketplaceDeliverySystem.DTOs
 {
-    public class RegDriverDTO
+    public class DriverRegDTO
     {
-        [Required]
-        public int UserId { get; set; }
+     
+        [Required, MaxLength(100)]
+        public string FullName { get; set; } = string.Empty;//User Input
+        [Required, MinLength(8)]
+        public string PhoneNumber { get; set; } = string.Empty;//User Input 
 
         [Required(ErrorMessage = "Password is required.")]
         [MinLength(6, ErrorMessage =
