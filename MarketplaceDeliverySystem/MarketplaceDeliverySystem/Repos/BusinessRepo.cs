@@ -1,4 +1,5 @@
 ﻿using MarketplaceDeliverySystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos
 {
@@ -19,7 +20,14 @@ namespace MarketplaceDeliverySystem.Repos
 
         public bool EmailExists(string email)
         {
-            return _context.Businesses.Any(b => b.Email == email);
+            return _context.Businesses
+                .Any(b => b.Email == email);
+        }
+
+        public Business? GetBusinessById(int businessId)
+        {
+            return _context.Businesses
+                .FirstOrDefault(b => b.BusinessId == businessId);
         }
     }
 }
