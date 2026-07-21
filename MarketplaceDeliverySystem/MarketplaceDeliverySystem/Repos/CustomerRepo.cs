@@ -11,6 +11,12 @@ namespace MarketplaceDeliverySystem.Repos
             _context = context;
         }
 
+        public Customer? GetCustomerById(int customerId)
+        {
+            return _context.Customers
+                .FirstOrDefault(customer =>
+                    customer.CustomerId == customerId);
+        }
         public void Add(Customer customer)
         {
             _context.Customers.Add(customer);
