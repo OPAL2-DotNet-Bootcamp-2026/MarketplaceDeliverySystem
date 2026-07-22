@@ -30,7 +30,7 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<OrderRepo>();
             builder.Services.AddScoped<PaymentRepo>();
             builder.Services.AddScoped<ReviewRepo>();
-
+            builder.Services.AddScoped<AdminRepo>();
 
 
             builder.Services.AddScoped<ProductService>();
@@ -45,6 +45,7 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<PaymentService>();
             builder.Services.AddScoped<ReviewService>();
+            builder.Services.AddScoped<AdminService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
