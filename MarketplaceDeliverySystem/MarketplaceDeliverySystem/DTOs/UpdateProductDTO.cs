@@ -19,7 +19,7 @@ namespace MarketplaceDeliverySystem.DTOs
         public decimal Price { get; set; }
 
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
         public int StockQuantity { get; set; }
 
         [Required]

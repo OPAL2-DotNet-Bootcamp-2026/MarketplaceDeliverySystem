@@ -41,7 +41,7 @@ namespace MarketplaceDeliverySystem.Models
         //User Input
 
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative and less than one")]
         public int StockQuantity { get; set; }
         //User Input
 
