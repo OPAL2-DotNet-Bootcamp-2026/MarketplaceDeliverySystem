@@ -4,8 +4,6 @@ namespace MarketplaceDeliverySystem.DTOs
 {
     public class UpdateProductDTO
     {
-        [Required]
-        public int ProductId { get; set; }
 
         [Required(ErrorMessage = "Product name is required.")]
         [MaxLength(150)]
@@ -22,7 +20,5 @@ namespace MarketplaceDeliverySystem.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
         public int StockQuantity { get; set; }
 
-        [Required]
-        public int CategoryId { get; set; }
     }
 }
