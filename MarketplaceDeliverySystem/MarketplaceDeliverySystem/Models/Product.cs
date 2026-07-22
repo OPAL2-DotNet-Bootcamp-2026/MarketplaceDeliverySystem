@@ -55,6 +55,7 @@ namespace MarketplaceDeliverySystem.Models
 
         public bool IsAvailable { get; set; } = true;
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //navigation properties
         // (Default = true)
         //product.IsAvailable = product.StockQuantity > 0; other way??
     }
