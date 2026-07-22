@@ -1,4 +1,5 @@
 ﻿using MarketplaceDeliverySystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos
 {
@@ -27,10 +28,17 @@ namespace MarketplaceDeliverySystem.Repos
             public Driver? GetDriverByVehiclePlate(string plateNumber)
             {
                 return context.Drivers
+                 
                     .FirstOrDefault(d => d.VehiclePlateNumber == plateNumber);
             }
+        public Driver? GetDriverById(int driverId)
+        {
+            return context.Drivers
+                   .Include(d => d.User)
+                .FirstOrDefault(d => d.DriverId == driverId);
+        }
 
-            public void Save()
+        public void Save()
             {
                 context.SaveChanges();
             }

@@ -7,13 +7,14 @@ namespace MarketplaceDeliverySystem.Services
     public class OrderService
     {
 
-        private OrderRepo _orderRepo;
-        private OrderItemRepo _orderItemRepo;
-        private CustomerRepo _customerRepo;
-        private BusinessRepo _businessRepo;
-        private ProductRepo _productRepo;
-        private PaymentRepo _paymentRepo;
-        private DeliveryRepo _deliveryRepo;
+        private readonly OrderRepo _orderRepo;
+        private readonly OrderItemRepo _orderItemRepo;
+        private readonly CustomerRepo _customerRepo;
+        private readonly BusinessRepo _businessRepo;
+        private readonly ProductRepo _productRepo;
+        private readonly PaymentRepo _paymentRepo;
+        private readonly DeliveryRepo _deliveryRepo;
+        private readonly DriverRepo _driverRepo;
 
         public OrderService(
             OrderRepo orderRepo,
@@ -22,7 +23,8 @@ namespace MarketplaceDeliverySystem.Services
             BusinessRepo businessRepo,
             ProductRepo productRepo,
             PaymentRepo paymentRepo,
-            DeliveryRepo deliveryRepo)
+            DeliveryRepo deliveryRepo,
+            DriverRepo driverRepo)
         {
             _orderRepo = orderRepo;
             _orderItemRepo = orderItemRepo;
@@ -31,65 +33,77 @@ namespace MarketplaceDeliverySystem.Services
             _productRepo = productRepo;
             _paymentRepo = paymentRepo;
             _deliveryRepo = deliveryRepo;
+            _driverRepo = driverRepo;
         }
 
-        public Order CreateOrder(OrderCreateDTO dto)
+        public Order? CreateOrder(OrderCreateDTO dto)
         {
             // Check if customer exists
-            Customer customer =
+            Customer? customer =
                 _customerRepo.GetCustomerById(dto.CustomerId);
 
             if (customer == null)
+            {
                 return null;
+            }
 
             // Check if business exists
-            Business business =
+            Business? business =
                 _businessRepo.GetBusinessById(dto.BusinessId);
 
             if (business == null)
+            {
                 return null;
+            }
 
             // Check if business is open
-            if (business.IsOpen == false)
+            if (!business.IsOpen)
+            {
                 return null;
+            }
 
-            // Order must contain at least one item
-            if (dto.OrderItems == null ||
-                dto.OrderItems.Count == 0)
+            // Order must contain at least one product
+            if (dto.OrderItems == null || dto.OrderItems.Count == 0)
             {
                 return null;
             }
 
             decimal subtotal = 0;
 
-            // Validate all products before creating the order
+            // Validate all products before saving the order
             foreach (OrderItemCreateDTO itemDto in dto.OrderItems)
             {
-                Product product =
-                    _productRepo.GetProductById(itemDto.ProductId);
+                Product? product =
+                    _productRepo.GetById(itemDto.ProductId);
 
-                // Check if product exists
                 if (product == null)
-                    return null;
-
-                // Check product belongs to selected business
-                if (product.BusinessId != dto.BusinessId)
-                    return null;
-
-                // Check product is available
-                if (product.IsAvailable == false)
-                    return null;
-
-                // Check requested quantity
-                if (itemDto.Quantity < 1 ||
-                    itemDto.Quantity > 999)
                 {
                     return null;
                 }
 
-                // Check sufficient stock
-                if (product.StockQuantity < itemDto.Quantity)
+                // Product must belong to selected business
+                if (product.BusinessId != dto.BusinessId)
+                {
                     return null;
+                }
+
+                // Product must be available
+                if (!product.IsAvailable)
+                {
+                    return null;
+                }
+
+                // Quantity must be between 1 and 999
+                if (itemDto.Quantity < 1 || itemDto.Quantity > 999)
+                {
+                    return null;
+                }
+
+                // Check available stock
+                if (product.StockQuantity < itemDto.Quantity)
+                {
+                    return null;
+                }
 
                 subtotal += product.Price * itemDto.Quantity;
             }
@@ -106,14 +120,19 @@ namespace MarketplaceDeliverySystem.Services
                 Status = "Pending"
             };
 
-            // Save first to generate OrderId
+            // Save order first to generate OrderId
             _orderRepo.AddOrder(order);
 
-            // Create order items and reduce stock
+            // Create order items and reduce product stock
             foreach (OrderItemCreateDTO itemDto in dto.OrderItems)
             {
-                Product product =
-                    _productRepo.GetProductById(itemDto.ProductId);
+                Product? product =
+                    _productRepo.GetById(itemDto.ProductId);
+
+                if (product == null)
+                {
+                    return null;
+                }
 
                 OrderItem orderItem = new OrderItem
                 {
@@ -125,14 +144,16 @@ namespace MarketplaceDeliverySystem.Services
 
                 _orderItemRepo.AddOrderItem(orderItem);
 
+                // Reduce stock
                 product.StockQuantity -= itemDto.Quantity;
 
+                // Make product unavailable if stock reaches zero
                 if (product.StockQuantity == 0)
                 {
                     product.IsAvailable = false;
                 }
 
-                _productRepo.UpdateProduct(product);
+                _productRepo.Update();
             }
 
             // Create payment
@@ -158,5 +179,92 @@ namespace MarketplaceDeliverySystem.Services
 
             return order;
         }
+
+        public MessageOutputDTO CancelOrder(OrderCancelDTO dto)
+        {
+            Order? order =
+       _orderRepo.GetOrderWithDetails(dto.OrderId);
+
+            if (order == null)
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Order not found."
+                };
+            }
+
+            if (order.Status == "Cancelled")
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Order is already cancelled."
+                };
+            }
+
+            if (order.Status == "Delivered")
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Delivered order cannot be cancelled."
+                };
+            }
+
+            foreach (OrderItem orderItem in order.OrderItems)
+            {
+                Product? product =
+                    _productRepo.GetById(orderItem.ProductId);
+
+                if (product != null)
+                {
+                    product.StockQuantity += orderItem.Quantity;
+                    product.IsAvailable = true;
+                }
+            }
+
+            order.Status = "Cancelled";
+
+            Delivery? delivery =
+                _deliveryRepo.GetByOrderId(order.OrderId);
+
+            if (delivery != null)
+            {
+                delivery.DeliveryStatus = "Cancelled";
+
+                if (delivery.DriverId > 0)
+                {
+                    Driver? driver =
+                        _driverRepo.GetDriverById(delivery.DriverId);
+
+                    if (driver != null)
+                    {
+                        driver.AvailabilityStatus = "Available";
+                    }
+                }
+            }
+
+            Payment? payment =
+                _paymentRepo.GetByOrderId(order.OrderId);
+
+            if (payment != null &&
+                payment.PaymentStatus == "Paid")
+            {
+                payment.PaymentStatus = "Refunded";
+            }
+
+            _orderRepo.Update();
+
+            return new MessageOutputDTO
+            {
+                Success = true,
+                Message = "Order cancelled successfully."
+            };
+        }
     }
-}
+    }
+
+
+ 
+

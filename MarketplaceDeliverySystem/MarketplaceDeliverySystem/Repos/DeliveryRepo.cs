@@ -1,4 +1,5 @@
 ﻿using MarketplaceDeliverySystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos
 {
@@ -11,15 +12,26 @@ namespace MarketplaceDeliverySystem.Repos
                 _context = context;
             }
 
-            public Delivery? GetById(int deliveryId)
-            {
-                return _context.Deliveries
-                    .FirstOrDefault(d => d.DeliveryId == deliveryId);
-            }
+        public Delivery? GetById(int deliveryId)
+        {
+            return _context.Deliveries
+                .Include(d => d.Order)
+                .FirstOrDefault(d => d.DeliveryId == deliveryId);
+        }
+        public Delivery? GetByOrderId(int orderId)
+        {
+            return _context.Deliveries
+                .FirstOrDefault(d => d.OrderId == orderId);
+        }
 
-            public void Update()
+        public void Update()
             {
                 _context.SaveChanges();
             }
+        public void AddDelivery(Delivery delivery)
+        {
+            _context.Deliveries.Add(delivery);
+            _context.SaveChanges();
         }
+    }
     }
