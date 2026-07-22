@@ -36,6 +36,8 @@ namespace MarketplaceDeliverySystem.Models
         [Required(ErrorMessage = "Order status is required.")]
 
         public string Status { get; set; } = string.Empty; //System Generated (Default)
+        public Payment Payment { get; set; } //navigation properety
+        public Delivery Delivery { get; set; } //navigation properety
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>(); //navigation properities
     }
 }
