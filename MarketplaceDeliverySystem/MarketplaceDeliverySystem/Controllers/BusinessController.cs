@@ -23,5 +23,12 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok("Business registered successfully.");
         }
+        [HttpGet("best-products")]
+        public async Task<IActionResult> GetBestProductForEachBusiness()
+        {
+            var result = await _businessService.GetBestProductForEachBusinessAsync();
+
+            return Ok(result);
+        }
     }
 }
