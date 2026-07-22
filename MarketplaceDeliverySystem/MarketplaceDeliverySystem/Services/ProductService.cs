@@ -7,36 +7,40 @@ namespace MarketplaceDeliverySystem.Services
     public class ProductService
     {
         private readonly ProductRepo _productRepository;
-        private readonly CategoryRepo _categoryRepository;
+        
 
-        public ProductService(ProductRepo productRepository, CategoryRepo categoryRepository)
+        public ProductService(ProductRepo productRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
+            
         }
 
-        public void UpdateProduct(UpdateProductDTO dto)
+        public ProductUpdatedRespDTO UpdateProduct(int id,UpdateProductDTO dto)
         {
-            // Check product exists
-            var product = _productRepository.GetById(dto.ProductId);
+            var product = _productRepository.GetById(id);
 
             if (product == null)
-                throw new Exception("Product not found.");
-
-            // Check category exists
-            var category = _categoryRepository.GetById(dto.CategoryId);
-
-            if (category == null)
-                throw new Exception("Category not found.");
+                return null;
 
             // Update product
             product.ProductName = dto.ProductName;
             product.Description = dto.Description;
             product.Price = dto.Price;
             product.StockQuantity = dto.StockQuantity;
-            product.CategoryId = dto.CategoryId;
 
-            _productRepository.Update(product);
+ 
+
+            _productRepository.Update();
+
+            ProductUpdatedRespDTO response = new ProductUpdatedRespDTO
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                Price = product.Price,
+                StockQuantity = product.StockQuantity,
+            };
+            return response;
         }
     }
 }

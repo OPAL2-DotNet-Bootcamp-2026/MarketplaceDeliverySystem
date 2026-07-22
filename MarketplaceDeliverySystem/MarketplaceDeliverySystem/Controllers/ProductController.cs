@@ -15,12 +15,15 @@ namespace MarketplaceDeliverySystem.Controllers
             _productService = productService;
         }
 
-        [HttpPut("update")]
-        public IActionResult UpdateProduct(ProductUpdateDTO dto)
+        [HttpPut("update/{id}")]
+        public IActionResult UpdateProduct(int id, UpdateProductDTO dto)
         {
-            _productService.UpdateProduct(dto);
-
-            return Ok("Product updated successfully.");
+            ProductUpdatedRespDTO updated = _productService.UpdateProduct(id,dto);
+            if (updated == null)
+            {
+                return NotFound("Product not found.");
+            }
+            return Ok(updated);
         }
     }
 }

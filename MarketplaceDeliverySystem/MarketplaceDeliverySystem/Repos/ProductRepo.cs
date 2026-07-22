@@ -31,10 +31,6 @@ namespace MarketplaceDeliverySystem.Repos
         {
             _context.SaveChanges();
         }
-        public void Update(Product product)
-        {
-            _context.Products.Update(product);
-            _context.SaveChanges();
-        }
+
     }
 }
