@@ -25,5 +25,12 @@ namespace MarketplaceDeliverySystem.Controllers
             }
             return Ok(updated);
         }
-    }
+
+        [HttpPost("FilterProducts")]
+        public IActionResult FilterProducts(FilterProductsDTO dto)
+        {
+            List<FilterProductsOutputDto> result = _productService.FilterProducts(dto);
+
+            return Ok(result);
+        }    }
 }
