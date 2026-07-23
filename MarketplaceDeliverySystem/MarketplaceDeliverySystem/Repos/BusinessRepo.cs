@@ -1,4 +1,5 @@
-﻿using MarketplaceDeliverySystem.Models;
+﻿using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos
@@ -28,6 +29,45 @@ namespace MarketplaceDeliverySystem.Repos
         {
             return _context.Businesses
                 .FirstOrDefault(b => b.BusinessId == businessId);
+        }
+
+        public async Task<List<BestProductDTO>> GetBestProductForEachBusinessAsync()
+        {
+            var businesses = await _context.Businesses
+                .Include(b => b.Products)
+                    .ThenInclude(p => p.Reviews)
+                .ToListAsync();
+
+            var result = new List<BestProductDTO>();
+
+            foreach (var business in businesses)
+            {
+                var bestProduct = business.Products
+                    .Select(product => new
+                    {
+                        Product = product,
+                        AverageRating = product.Reviews.Any()
+                            ? product.Reviews.Average(r => r.Rating)
+                            : 0,
+                        ReviewCount = product.Reviews.Count
+                    })
+                    .OrderByDescending(x => x.AverageRating)
+                    .ThenByDescending(x => x.ReviewCount)
+                    .FirstOrDefault();
+
+                if (bestProduct != null)
+                {
+                    result.Add(new BestProductDTO
+                    {
+                        BusinessName = business.BusinessName,
+                        ProductName = bestProduct.Product.ProductName,
+                        AverageRating = Math.Round(bestProduct.AverageRating, 2),
+                        NumberOfReviews = bestProduct.ReviewCount
+                    });
+                }
+            }
+
+            return result;
         }
     }
 }
