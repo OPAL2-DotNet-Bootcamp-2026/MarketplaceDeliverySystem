@@ -44,7 +44,7 @@ namespace MarketplaceDeliverySystem.Models
 
         public bool IsOpen { get; set; } = true;//Default = true
 
-        public ICollection<Product> products { get; set; } = new List<Product>();
+        public ICollection<Product> Products { get; set; } = new List<Product>();
 
     }
 }
