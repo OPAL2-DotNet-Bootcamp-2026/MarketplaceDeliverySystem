@@ -51,6 +51,45 @@ namespace MarketplaceDeliverySystem.Services
         {
             return await _businessRepository.GetBestProductForEachBusinessAsync();
         }
+
+        public List<BusinessWithProductsRespDTO> GetAllBusinessesWithProducts()
+        {
+            //businesses contains a list of Business objects.
+            List <Business> businesses = _businessRepository.GetAllBusinessesWithProducts();
+            
+            //Convert each Business into a DTO
+            return businesses.Select(b => new BusinessWithProductsRespDTO
+            {
+
+                BusinessName = b.BusinessName,
+
+                Address = b.Address,
+
+                Email = b.Email,
+
+                ProductCount = b.Products.Count,
+
+                Products = b.Products.Select(p => new BusinessProductRespDTO
+                {
+
+                    ProductName = p.ProductName,
+
+                    Price = p.Price,
+
+                    StockQuantity = p.StockQuantity,
+
+                    IsAvailable = p.StockQuantity > 0,
+
+                    //Does this product have any reviews? if yes calculate the average 
+                    // product has reviews and Review class includes rating
+                    AverageRating = p.Reviews.Any()
+                        ? p.Reviews.Average(r => r.Rating)
+                        : 0 // if no will be 0
+
+                }).ToList()
+
+            }).ToList();
+        }
     }
     }
 
