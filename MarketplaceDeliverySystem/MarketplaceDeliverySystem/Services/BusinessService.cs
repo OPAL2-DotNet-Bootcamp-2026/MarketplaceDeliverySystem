@@ -47,5 +47,10 @@ namespace MarketplaceDeliverySystem.Services
 
             _businessRepository.Add(business);
         }
+        public async Task<List<BestProductDTO>> GetBestProductForEachBusinessAsync()
+        {
+            return await _businessRepository.GetBestProductForEachBusinessAsync();
+        }
     }
-}
+    }
+
