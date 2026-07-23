@@ -69,5 +69,14 @@ namespace MarketplaceDeliverySystem.Repos
 
             return result;
         }
+
+        // returns A list of Business objects include products of each business.
+        public List<Business> GetAllBusinessesWithProducts()
+        {
+            //load each business with its products.
+            return _context.Businesses
+                .Include(b => b.Products)
+                .ToList();//converts the result into a C# list = List<Business>
+        }
     }
 }
