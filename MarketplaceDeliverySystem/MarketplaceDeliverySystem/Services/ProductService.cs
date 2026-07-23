@@ -1,5 +1,6 @@
 ﻿using MarketplaceDeliverySystem.Controllers;
 using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 
 namespace MarketplaceDeliverySystem.Services
@@ -41,6 +42,23 @@ namespace MarketplaceDeliverySystem.Services
                 StockQuantity = product.StockQuantity,
             };
             return response;
+        }
+        public List<FilterProductsOutputDto> FilterProducts(FilterProductsDTO dto)
+        {
+            List<Product> products = _productRepository.FilterProducts(dto);
+
+            return products.Select(p => new FilterProductsOutputDto
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                Price = p.Price,
+                BusinessName = p.Business.BusinessName,
+                CategoryName = p.Category.CategoryName,
+                IsAvailable = p.IsAvailable,
+                AverageRating = p.Reviews.Any()
+                    ? p.Reviews.Average(r => r.Rating)
+                    : 0
+            }).ToList();
         }
     }
 }

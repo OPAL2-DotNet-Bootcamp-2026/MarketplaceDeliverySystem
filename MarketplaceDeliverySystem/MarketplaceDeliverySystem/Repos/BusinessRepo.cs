@@ -34,7 +34,7 @@ namespace MarketplaceDeliverySystem.Repos
         public async Task<List<BestProductDTO>> GetBestProductForEachBusinessAsync()
         {
             var businesses = await _context.Businesses
-                .Include(b => b.Products)
+                .Include(b => b.products)
                     .ThenInclude(p => p.Reviews)
                 .ToListAsync();
 
@@ -42,7 +42,7 @@ namespace MarketplaceDeliverySystem.Repos
 
             foreach (var business in businesses)
             {
-                var bestProduct = business.Products
+                var bestProduct = business.products
                     .Select(product => new
                     {
                         Product = product,
@@ -61,7 +61,7 @@ namespace MarketplaceDeliverySystem.Repos
                     {
                         BusinessName = business.BusinessName,
                         ProductName = bestProduct.Product.ProductName,
-                        AverageRating = Math.Round(bestProduct.AverageRating, 2),
+                        AverageRating =bestProduct.AverageRating,
                         NumberOfReviews = bestProduct.ReviewCount
                     });
                 }

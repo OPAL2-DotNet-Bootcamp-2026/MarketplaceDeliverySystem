@@ -1,4 +1,5 @@
-﻿using MarketplaceDeliverySystem.Models;
+﻿using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos
@@ -32,5 +33,45 @@ namespace MarketplaceDeliverySystem.Repos
             _context.SaveChanges();
         }
 
+        public List<Product> FilterProducts(FilterProductsDTO dto)
+        {
+            var products = _context.Products
+                .Include(p => p.Business)
+                .Include(p => p.Category)
+                .Include(p => p.Reviews)
+                .AsQueryable();
+
+            // Category 
+            if (dto.CategoryId.HasValue)
+                products = products.Where(p => p.CategoryId == dto.CategoryId);
+
+            // Business
+            if (dto.BusinessId.HasValue)
+                products = products.Where (p => p.BusinessId == dto.BusinessId);
+
+            // MinPrice
+            if (dto.MinPrice.HasValue)
+                products = products.Where(p => p.Price >= dto.MinPrice);
+            // MaxPrice
+            if (dto.MaxPrice.HasValue)
+                products = products.Where(p => p.Price <= dto.MaxPrice);
+
+            // Availability
+            if (dto.IsAvailable.HasValue)
+                products = products.Where(p => p.IsAvailable == dto.IsAvailable);
+
+            // Search by name
+            if (!string.IsNullOrWhiteSpace(dto.ProductName))
+                products = products.Where(p => p.ProductName.Contains(dto.ProductName));
+
+            //
+            if (dto.SortByPrice == "asc")
+                products = products.OrderBy(p => p.Price);
+
+            else if (dto.SortByPrice == "desc")
+                products = products.OrderByDescending(p => p.Price);
+
+            return products.ToList();
+        }
     }
 }
