@@ -30,5 +30,14 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetAllBusinessesWithProducts")]
+        public IActionResult GetAllBusinessesWithProducts()
+        {
+            List<BusinessWithProductsRespDTO> businesses =
+                _businessService.GetAllBusinessesWithProducts();
+
+            return Ok(businesses);
+        }
     }
 }
