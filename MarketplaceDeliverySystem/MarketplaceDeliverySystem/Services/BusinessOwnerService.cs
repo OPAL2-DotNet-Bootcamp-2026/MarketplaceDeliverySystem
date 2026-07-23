@@ -15,7 +15,7 @@ namespace MarketplaceDeliverySystem.Services
                 _businessOwnerRepo = businessOwnerRepo;
             }
 
-            public void Register(RegBusinessOwnerDTO dto)
+            public void RegisterBusinessOwner(RegBusinessOwnerDTO dto)
             {
                 // Validation
                 if (_userRepo.EmailExists(dto.Email))

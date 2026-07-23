@@ -23,14 +23,15 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok("Business registered successfully.");
         }
-        [HttpGet("best-products")]
-        public async Task<IActionResult> GetBestProductForEachBusiness()
+
+        [HttpGet("GetBestProductForEachBusiness")]
+        public IActionResult GetBestProductForEachBusiness()
         {
-            var result = await _businessService.GetBestProductForEachBusinessAsync();
+            List<BestProductDTO> bestProducts =
+                _businessService.GetBestProductForEachBusiness();
 
-            return Ok(result);
+            return Ok(bestProducts);
         }
-
         [HttpGet("GetAllBusinessesWithProducts")]
         public IActionResult GetAllBusinessesWithProducts()
         {
