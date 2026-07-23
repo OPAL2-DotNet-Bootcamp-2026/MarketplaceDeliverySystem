@@ -1,5 +1,6 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
@@ -8,6 +9,7 @@ namespace MarketplaceDeliverySystem.Controllers
 
         [ApiController]
         [Route("api/[controller]")]
+        [Authorize]
         public class BusinessOwnerController : ControllerBase
         {
             private readonly BusinessOwnerService _businessOwnerService;
@@ -17,10 +19,10 @@ namespace MarketplaceDeliverySystem.Controllers
                 _businessOwnerService = businessOwnerService;
             }
 
-            [HttpPost("Register")]
+            [HttpPost("RegisterBusinessOwner")]
             public IActionResult Register(RegBusinessOwnerDTO dto)
             {
-                _businessOwnerService.Register(dto);
+                _businessOwnerService.RegisterBusinessOwner(dto);
                 return Ok("Business Owner registered successfully.");
             }
         }
