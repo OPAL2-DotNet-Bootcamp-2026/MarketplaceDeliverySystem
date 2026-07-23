@@ -12,7 +12,7 @@ namespace MarketplaceDeliverySystem.Controllers
 
         public CustomerController(CustomerService customerService)
         {
-
+            _customerService = customerService;
         }
         [HttpGet("ViewOrderHistory/{customerId}")]
         public IActionResult ViewOrderHistory(int customerId)
