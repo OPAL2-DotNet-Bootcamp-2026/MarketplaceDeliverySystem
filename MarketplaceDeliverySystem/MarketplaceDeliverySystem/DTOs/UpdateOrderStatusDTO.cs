@@ -6,5 +6,6 @@ namespace MarketplaceDeliverySystem.DTOs
     {
             [Required]
             public string Status { get; set; } = string.Empty;
+            public string NewStatus { get; set; } = string.Empty;
     }
 }

@@ -1,5 +1,4 @@
-﻿using MarketplaceDeliverySystem.Data;
-using MarketplaceDeliverySystem.Models;
+﻿using MarketplaceDeliverySystem.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceDeliverySystem.Repos

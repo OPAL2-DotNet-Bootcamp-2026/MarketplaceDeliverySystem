@@ -1,9 +1,5 @@
-﻿using MarketplaceDeliverySystem.Constants;
-using MarketplaceDeliverySystem.DTOs;
-using MarketplaceDeliverySystem.DTOs.Product;
+﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers;
