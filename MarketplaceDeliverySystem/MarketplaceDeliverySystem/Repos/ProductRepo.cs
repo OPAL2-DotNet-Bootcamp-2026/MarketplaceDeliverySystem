@@ -12,23 +12,52 @@ namespace MarketplaceDeliverySystem.Repos
             _context = context;
         }
 
-        public List<Product> GetAllProducts()
+        public Product? GetProductById(int productId)
         {
             return _context.Products
-                .Include(p => p.Business)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .ToList();
+                .FirstOrDefault(product =>
+                    product.ProductId == productId);
         }
 
-        public Product? GetById(int productId)
+        public Business? GetBusinessById(int businessId)
         {
-            return _context.Products
-                .FirstOrDefault(p => p.ProductId == productId);
+            return _context.Businesses
+                .FirstOrDefault(business =>
+                    business.BusinessId == businessId);
         }
 
-        public void Update()
+        public Category? GetCategoryById(int categoryId)
         {
+            return _context.Categories
+                .FirstOrDefault(category =>
+                    category.CategoryId == categoryId);
+        }
+
+        public async Task<Business?> GetBusinessByIdAsync(
+            int businessId)
+        {
+            return await _context.Businesses
+                .FirstOrDefaultAsync(business =>
+                    business.BusinessId == businessId);
+        }
+
+        public async Task<Category?> GetCategoryByIdAsync(
+            int categoryId)
+        {
+            return await _context.Categories
+                .FirstOrDefaultAsync(category =>
+                    category.CategoryId == categoryId);
+        }
+
+        public async Task AddProductAsync(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            _context.Products.Update(product);
             _context.SaveChanges();
         }
     }

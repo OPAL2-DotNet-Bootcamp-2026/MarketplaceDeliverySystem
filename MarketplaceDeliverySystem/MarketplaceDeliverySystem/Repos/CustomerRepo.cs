@@ -22,5 +22,6 @@ namespace MarketplaceDeliverySystem.Repos
             _context.Customers.Add(customer);
             _context.SaveChanges();
         }
+
     }
 }
