@@ -6,157 +6,109 @@ namespace MarketplaceDeliverySystem.Services
 {
     public class OrderService
     {
+        private readonly OrderRepo _orderRepo;
 
-        private OrderRepo _orderRepo;
-        private OrderItemRepo _orderItemRepo;
-        private CustomerRepo _customerRepo;
-        private BusinessRepo _businessRepo;
-        private ProductRepo _productRepo;
-        private PaymentRepo _paymentRepo;
-        private DeliveryRepo _deliveryRepo;
-
-        public OrderService(
-            OrderRepo orderRepo,
-            OrderItemRepo orderItemRepo,
-            CustomerRepo customerRepo,
-            BusinessRepo businessRepo,
-            ProductRepo productRepo,
-            PaymentRepo paymentRepo,
-            DeliveryRepo deliveryRepo)
+        public OrderService(OrderRepo orderRepo)
         {
             _orderRepo = orderRepo;
-            _orderItemRepo = orderItemRepo;
-            _customerRepo = customerRepo;
-            _businessRepo = businessRepo;
-            _productRepo = productRepo;
-            _paymentRepo = paymentRepo;
-            _deliveryRepo = deliveryRepo;
         }
 
-        public Order CreateOrder(OrderCreateDTO dto)
+        public UpdateOrderStatusOutputDTO UpdateOrderStatus(
+            int orderId,
+            UpdateOrderStatusDTO dto)
         {
-            // Check if customer exists
-            Customer customer =
-                _customerRepo.GetCustomerById(dto.CustomerId);
+            Order? order =
+                _orderRepo.GetOrderWithDelivery(orderId);
 
-            if (customer == null)
-                return null;
-
-            // Check if business exists
-            Business business =
-                _businessRepo.GetBusinessById(dto.BusinessId);
-
-            if (business == null)
-                return null;
-
-            // Check if business is open
-            if (business.IsOpen == false)
-                return null;
-
-            // Order must contain at least one item
-            if (dto.OrderItems == null ||
-                dto.OrderItems.Count == 0)
+            if (order == null)
             {
-                return null;
+                throw new Exception("Order not found.");
             }
 
-            decimal subtotal = 0;
-
-            // Validate all products before creating the order
-            foreach (OrderItemCreateDTO itemDto in dto.OrderItems)
+            if (order.Delivery == null)
             {
-                Product product =
-                    _productRepo.GetProductById(itemDto.ProductId);
-
-                // Check if product exists
-                if (product == null)
-                    return null;
-
-                // Check product belongs to selected business
-                if (product.BusinessId != dto.BusinessId)
-                    return null;
-
-                // Check product is available
-                if (product.IsAvailable == false)
-                    return null;
-
-                // Check requested quantity
-                if (itemDto.Quantity < 1 ||
-                    itemDto.Quantity > 999)
-                {
-                    return null;
-                }
-
-                // Check sufficient stock
-                if (product.StockQuantity < itemDto.Quantity)
-                    return null;
-
-                subtotal += product.Price * itemDto.Quantity;
+                throw new Exception(
+                    "Delivery record not found.");
             }
 
-            // Create order
-            Order order = new Order
+            string newStatus =
+                dto.NewStatus.Trim().ToLower();
+
+            switch (newStatus)
             {
-                CustomerId = dto.CustomerId,
-                BusinessId = dto.BusinessId,
-                OrderDate = DateTime.UtcNow,
-                Subtotal = subtotal,
-                DeliveryFee = 0.700m,
-                TotalAmount = subtotal + 0.700m,
-                Status = "Pending"
-            };
+                case "pending":
 
-            // Save first to generate OrderId
-            _orderRepo.AddOrder(order);
+                    order.Status = "Pending";
 
-            // Create order items and reduce stock
-            foreach (OrderItemCreateDTO itemDto in dto.OrderItems)
-            {
-                Product product =
-                    _productRepo.GetProductById(itemDto.ProductId);
+                    order.Delivery.DeliveryStatus =
+                        "Waiting for Driver";
 
-                OrderItem orderItem = new OrderItem
-                {
-                    OrderId = order.OrderId,
-                    ProductId = product.ProductId,
-                    Quantity = itemDto.Quantity,
-                    UnitPrice = product.Price
-                };
+                    break;
 
-                _orderItemRepo.AddOrderItem(orderItem);
+                case "preparing":
 
-                product.StockQuantity -= itemDto.Quantity;
+                    order.Status = "Preparing";
 
-                if (product.StockQuantity == 0)
-                {
-                    product.IsAvailable = false;
-                }
+                    order.Delivery.DeliveryStatus =
+                        "Waiting for Driver";
 
-                _productRepo.UpdateProduct(product);
+                    break;
+
+                case "ready":
+
+                    order.Status = "Ready";
+
+                    order.Delivery.DeliveryStatus =
+                        "Waiting for Driver";
+
+                    break;
+
+                case "out for delivery":
+
+                    order.Status = "Out For Delivery";
+
+                    order.Delivery.DeliveryStatus =
+                        "On The Way";
+
+                    break;
+
+                case "delivered":
+
+                    order.Status = "Delivered";
+
+                    order.Delivery.DeliveryStatus =
+                        "Completed";
+
+                    order.Delivery.DeliveredTime =
+                        DateTime.UtcNow;
+
+                    break;
+
+                case "cancelled":
+
+                    order.Status = "Cancelled";
+
+                    order.Delivery.DeliveryStatus =
+                        "Cancelled";
+
+                    break;
+
+                default:
+
+                    throw new Exception(
+                        "Invalid order status.");
             }
 
-            // Create payment
-            Payment payment = new Payment
+            _orderRepo.SaveChanges();
+
+            return new UpdateOrderStatusOutputDTO
             {
                 OrderId = order.OrderId,
-                PaymentMethod = dto.PaymentMethod,
-                PaymentStatus = "Pending",
-                Amount = order.TotalAmount,
-                PaymentDate = DateTime.UtcNow
+                OrderStatus = order.Status,
+                DeliveryId = order.Delivery.DeliveryId,
+                DeliveryStatus =
+                    order.Delivery.DeliveryStatus
             };
-
-            _paymentRepo.AddPayment(payment);
-
-            // Create delivery
-            Delivery delivery = new Delivery
-            {
-                OrderId = order.OrderId,
-                DeliveryStatus = "Waiting for Driver"
-            };
-
-            _deliveryRepo.AddDelivery(delivery);
-
-            return order;
         }
     }
 }
