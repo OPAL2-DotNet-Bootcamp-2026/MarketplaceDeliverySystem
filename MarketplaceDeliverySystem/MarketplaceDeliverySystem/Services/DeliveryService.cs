@@ -11,10 +11,12 @@ namespace MarketplaceDeliverySystem.Services
 
         public DeliveryService(
             DeliveryRepo deliveryRepo,
+            OrderRepo orderRepo,
             DriverRepo driverRepo)
         {
             _deliveryRepo = deliveryRepo;
             _driverRepo = driverRepo;
+
         }
 
         public DriverAssignToDeliveryOutputDTO?
@@ -53,6 +55,8 @@ namespace MarketplaceDeliverySystem.Services
             // Assign driver to delivery
             delivery.DriverId = driver.DriverId;
             delivery.DeliveryStatus = "Assigned";
+            //order.Status = "Ready";
+            //_orderRepo.AddOrder(order);
 
             // Change driver status
             driver.AvailabilityStatus = "Busy";
@@ -68,5 +72,125 @@ namespace MarketplaceDeliverySystem.Services
                 PhoneNumber = driver.User.PhoneNumber
             };
         }
+  
+    public MessageOutputDTO UpdateDeliveryStatus(
+    int deliveryId,
+    UpdateOrderStatusDTO dto)
+        {
+            // Find the delivery with its Order and Driver.
+            Delivery? delivery =
+                _deliveryRepo.GetById(deliveryId);
+
+            if (delivery == null)
+            {
+                return new MessageOutputDTO
+                {
+                    Success = false,
+                    Message = "Delivery was not found."
+                };
+            }
+
+            // Remove extra spaces from the entered status.
+            string newStatus = dto.Status.Trim();
+
+            // =====================================================
+            // DRIVER STARTS THE DELIVERY
+            // =====================================================
+
+            if (newStatus == "On The Way")
+            {
+                // The driver must already be assigned.
+                if (delivery.DeliveryStatus != "Assigned")
+                {
+                    return new MessageOutputDTO
+                    {
+                        Success = false,
+                        Message =
+                            "The delivery must be Assigned before it can be On The Way."
+                    };
+                }
+
+                // The order must be Ready.
+                if (delivery.Order.Status != "Ready")
+                {
+                    return new MessageOutputDTO
+                    {
+                        Success = false,
+                        Message =
+                            "The order must be Ready before delivery starts."
+                    };
+                }
+
+                // Update both statuses together.
+                delivery.DeliveryStatus = "On The Way";
+                delivery.Order.Status = "On The Way";
+
+                // Record when the driver started.
+                delivery.PickupTime = DateTime.UtcNow;
+
+                _deliveryRepo.Update();
+
+                return new MessageOutputDTO
+                {
+                    Success = true,
+                    Message =
+                        "Delivery is now On The Way."
+                };
+            }
+
+            // =====================================================
+            // DRIVER COMPLETES THE DELIVERY
+            // =====================================================
+
+            if (newStatus == "Delivered")
+            {
+                // The delivery must be On The Way first.
+                if (delivery.DeliveryStatus != "On The Way")
+                {
+                    return new MessageOutputDTO
+                    {
+                        Success = false,
+                        Message =
+                            "The delivery must be On The Way before it can be Delivered."
+                    };
+                }
+
+                // Update the order and delivery.
+                delivery.DeliveryStatus = "Delivered";
+                delivery.Order.Status = "Delivered";
+
+                // Record the delivery completion time.
+                delivery.DeliveredTime = DateTime.UtcNow;
+
+                // Calculate delivery duration in minutes.
+                delivery.DeliveryDuration =
+                    (decimal)(
+                        delivery.DeliveredTime -
+                        delivery.PickupTime
+                    ).TotalMinutes;
+
+                // The driver can receive another delivery.
+                delivery.Driver.AvailabilityStatus =
+                    "Available";
+
+                _deliveryRepo.Update();
+
+                return new MessageOutputDTO
+                {
+                    Success = true,
+                    Message =
+                        "Order delivered successfully. Driver is available again."
+                };
+            }
+
+            // Reject statuses outside this workflow.
+            return new MessageOutputDTO
+            {
+                Success = false,
+                Message =
+                    "Status must be 'On The Way' or 'Delivered'."
+            };
+        }
     }
 }
+

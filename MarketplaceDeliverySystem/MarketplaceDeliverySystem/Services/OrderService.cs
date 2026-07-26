@@ -1,6 +1,7 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace MarketplaceDeliverySystem.Services
@@ -197,8 +198,13 @@ namespace MarketplaceDeliverySystem.Services
             {
                 // The order stays saved even when email sending fails.
             }
+            order.Status = "Ready";
+            _orderRepo.AddOrder(order);
             return order;
         }
+
+
+
 
         public MessageOutputDTO CancelOrder(OrderCancelDTO dto)
         {
