@@ -18,10 +18,8 @@ namespace MarketplaceDeliverySystem
             // 1. REGISTER DATABASE CONTEXT
             // =====================================================
 
-            builder.Services.AddDbContext<MarketplaceContext>(options =>
-                options.UseSqlServer(
-                    builder.Configuration.GetConnectionString(
-                        "DefaultConnection")));
+            builder.Services.AddDbContext<MarketplaceContext>(options =>options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // =====================================================
             // 2. REGISTER REPOSITORIES
