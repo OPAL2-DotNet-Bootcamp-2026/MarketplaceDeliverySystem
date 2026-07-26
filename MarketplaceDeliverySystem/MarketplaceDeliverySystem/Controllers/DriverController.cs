@@ -2,6 +2,7 @@
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
@@ -16,8 +17,8 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 _driverService = driverService;
             }
-
-            [HttpPost("register")]
+        [AllowAnonymous] //Anyone can register without a token.
+        [HttpPost("register")]
             public IActionResult RegisterDriver([FromBody] DriverRegDTO dto)
             {
                 Driver? driver = _driverService.RegisterDriver(dto);

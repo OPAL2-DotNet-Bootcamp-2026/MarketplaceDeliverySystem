@@ -1,12 +1,14 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
     [Route("order")]
+    [Authorize(Roles = "Customer")]
     public class OrderController : ControllerBase
     {
         private readonly OrderService _orderService;
