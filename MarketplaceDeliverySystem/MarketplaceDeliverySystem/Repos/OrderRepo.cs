@@ -30,6 +30,16 @@ namespace MarketplaceDeliverySystem.Repos
             _context.SaveChanges();
         }
 
-
+        public Order? GetById(int orderId)
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                    .ThenInclude(c => c.User)
+                .Include(o => o.Business)
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .FirstOrDefault(o => o.OrderId == orderId);
+        }
     }
 }
