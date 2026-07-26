@@ -2,10 +2,12 @@ using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.RateLimiting;
 
 namespace MarketplaceDeliverySystem
 {
@@ -156,7 +158,26 @@ namespace MarketplaceDeliverySystem
         }
     });
             });
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter(
+                    policyName: "fixed",
+                    configureOptions: limiterOptions =>
+                    {
+                        // Maximum number of requests.
+                        limiterOptions.PermitLimit = 20;
 
+                        // The limit resets every minute.
+                        limiterOptions.Window = TimeSpan.FromMinutes(1);
+
+                        // Requests over the limit are not queued.
+                        limiterOptions.QueueLimit = 0;
+                    });
+
+                // Returned when the limit is exceeded.
+                options.RejectionStatusCode =
+                    StatusCodes.Status429TooManyRequests;
+            });
             // All service registrations must be above Build().
             var app = builder.Build();
 
@@ -178,7 +199,7 @@ namespace MarketplaceDeliverySystem
 
             // Then, check [Authorize] and roles.
             app.UseAuthorization();
-
+            app.UseRateLimiter();
             app.MapControllers();
 
             app.Run();

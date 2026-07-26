@@ -3,7 +3,7 @@ using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.RateLimiting;
 namespace MarketplaceDeliverySystem.Controllers
 {
     
@@ -19,9 +19,11 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 _driverService = driverService;
             }
-
+        // Registration is public, but limited to prevent repeated requests.
+        [AllowAnonymous]
+        [EnableRateLimiting("authenticationPolicy")]
         [HttpPost("Register")]
-        [Authorize(Roles ="Driver")]
+        //[Authorize(Roles ="Driver")]
         public IActionResult Register(DriverRegDTO dto)
         {
             UserResponseDTO response = _driverService.Register(dto);
