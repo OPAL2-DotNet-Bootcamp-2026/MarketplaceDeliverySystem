@@ -19,16 +19,19 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         // POST: /order/create
+        //Change the endpoint to async
         [HttpPost("create")]
-        public IActionResult CreateOrder([FromBody] OrderCreateDTO dto)
+        public async Task<IActionResult> CreateOrder(
+    [FromBody] OrderCreateDTO dto)
         {
-            Order? order = _orderService.CreateOrder(dto);
+            Order? order =
+                await _orderService.CreateOrderAsync(dto);
 
             if (order == null)
             {
                 return BadRequest(new
                 {
-                    Message = "Order could not be created. Check the customer, business, products, availability, and stock."
+                    Message = "Order could not be created."
                 });
             }
 
