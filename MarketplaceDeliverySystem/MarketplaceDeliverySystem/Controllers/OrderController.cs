@@ -58,5 +58,16 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetOrderById/{orderId}")]
+        public IActionResult GetOrderById(int orderId)
+        {
+            var order = _orderService.GetOrderById(orderId);
+
+            if (order == null)
+                return NotFound("Order not found.");
+
+            return Ok(order);
+        }
     }
 }

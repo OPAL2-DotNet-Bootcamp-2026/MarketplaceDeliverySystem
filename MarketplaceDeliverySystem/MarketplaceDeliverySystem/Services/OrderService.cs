@@ -16,6 +16,7 @@ namespace MarketplaceDeliverySystem.Services
         private readonly PaymentRepo _paymentRepo;
         private readonly DeliveryRepo _deliveryRepo;
         private readonly DriverRepo _driverRepo;
+       
 
         private readonly EmailService _emailService;
         public OrderService(
@@ -279,6 +280,33 @@ namespace MarketplaceDeliverySystem.Services
             {
                 Success = true,
                 Message = "Order cancelled successfully."
+            };
+        }
+
+        public OrderDetailsDTO? GetOrderById(int orderId)
+        {
+            Order? order = _orderRepo.GetById(orderId);
+
+            if (order == null)
+                return null;
+
+            return new OrderDetailsDTO
+            {
+                OrderId = order.OrderId,
+                CustomerName = order.Customer.User.FullName,
+                BusinessName = order.Business.BusinessName,
+                OrderDate = order.OrderDate,
+                OrderStatus = order.Status,
+                TotalAmount = order.TotalAmount,
+                DeliveryAddress = order.Customer.Address,
+
+                Products = order.OrderItems.Select(item => new OrderItemDTO
+                {
+                    ProductName = item.Product.ProductName,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    SubTotal = item.Quantity * item.UnitPrice
+                }).ToList()
             };
         }
     }
