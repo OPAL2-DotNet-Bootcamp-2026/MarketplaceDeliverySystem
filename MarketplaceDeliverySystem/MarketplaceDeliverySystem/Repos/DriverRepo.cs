@@ -42,5 +42,11 @@ namespace MarketplaceDeliverySystem.Repos
             {
                 context.SaveChanges();
             }
+
+        public void Add(Driver driver)
+        {
+            context.Drivers.Add(driver);
+            context.SaveChanges();
         }
+    }
     }

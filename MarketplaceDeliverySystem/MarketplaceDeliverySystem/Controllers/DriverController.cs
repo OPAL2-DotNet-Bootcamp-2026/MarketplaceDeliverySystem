@@ -17,21 +17,15 @@ namespace MarketplaceDeliverySystem.Controllers
                 _driverService = driverService;
             }
 
-            [HttpPost("register")]
-            public IActionResult RegisterDriver([FromBody] DriverRegDTO dto)
-            {
-                Driver? driver = _driverService.RegisterDriver(dto);
+        [HttpPost("Register")]
+        public IActionResult Register(DriverRegDTO dto)
+        {
+            UserResponseDTO response = _driverService.Register(dto);
 
-                if (driver == null)
-                {
-                    return BadRequest("Driver could not be registered.");
-                }
+            if (response == null)
+                return BadRequest("Email already exists.");
 
-                return Ok(new
-                {
-                    DriverId = driver.DriverId,
-                    Message = "Driver registered successfully."
-                });
-            }
+            return Ok(response);
         }
+    }
     }

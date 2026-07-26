@@ -15,7 +15,7 @@ namespace MarketplaceDeliverySystem.Services
             _userRepo = userRepo;
         }
 
-        public Driver RegisterDriver(DriverRegDTO dto)
+        public UserResponseDTO Register(DriverRegDTO dto)
         {
             // Check if email already exists
             if (_userRepo.EmailExists(dto.Email))
@@ -53,7 +53,13 @@ namespace MarketplaceDeliverySystem.Services
 
             _driverRepo.AddDriver(driver);
 
-            return driver;
+            return new UserResponseDTO
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role
+            };
         }
     }
 }
