@@ -8,8 +8,10 @@ namespace MarketplaceDeliverySystem.Controllers
 {
     
         [ApiController]
-        [Route("driver")]
-        public class DriverController : ControllerBase
+
+    [Route("api/[controller]")]
+    [Authorize]
+    public class DriverController : ControllerBase
         {
             private readonly DriverService _driverService;
 
@@ -19,6 +21,7 @@ namespace MarketplaceDeliverySystem.Controllers
             }
 
         [HttpPost("Register")]
+        [Authorize(Roles ="Driver")]
         public IActionResult Register(DriverRegDTO dto)
         {
             UserResponseDTO response = _driverService.Register(dto);

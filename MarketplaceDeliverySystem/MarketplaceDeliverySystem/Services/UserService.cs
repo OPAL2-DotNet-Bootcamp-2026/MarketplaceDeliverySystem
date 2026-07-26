@@ -7,18 +7,15 @@ namespace MarketplaceDeliverySystem.Services
     public class UserService
     {
         private readonly UserRepo _userRepository;
-        //private readonly AuthService _authService;
+        private readonly AuthService _authService;
 
-        //public UserService(UserRepository userRepository,
-        //           AuthService authService)
-        //{
-        //    _userRepository = userRepository;
-        //    _authService = authService;
-        //}
-        public UserService(UserRepo userRepository)
+        public UserService(UserRepo userRepository,
+                   AuthService authService)
         {
             _userRepository = userRepository;
+            _authService = authService;
         }
+
         public LoginResponseDTO Login(LoginDTO dto)
         {
             User user = _userRepository.GetByEmail(dto.Email);
@@ -33,11 +30,11 @@ namespace MarketplaceDeliverySystem.Services
             if (!valid)
                 return null;
 
-            //string token = GenerateJwtToken(user);
+            string token = _authService.GenerateToken(user);
 
             return new LoginResponseDTO
             {
-                //Token = token,
+                Token = token,
                 Role = user.Role,
                 FullName = user.FullName
             };

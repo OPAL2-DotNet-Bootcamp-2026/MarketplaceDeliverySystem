@@ -1,5 +1,6 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
@@ -33,6 +34,7 @@ namespace MarketplaceDeliverySystem.Controllers
             return Ok(bestProducts);
         }
         [HttpGet("GetAllBusinessesWithProducts")]
+        [AllowAnonymous]
         public IActionResult GetAllBusinessesWithProducts()
         {
             List<BusinessWithProductsRespDTO> businesses =

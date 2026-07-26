@@ -1,9 +1,11 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController: ControllerBase
@@ -15,6 +17,7 @@ namespace MarketplaceDeliverySystem.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(LoginDTO dto)
         {

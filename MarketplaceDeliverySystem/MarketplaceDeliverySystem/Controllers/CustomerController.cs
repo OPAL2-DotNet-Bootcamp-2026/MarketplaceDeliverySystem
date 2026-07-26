@@ -1,11 +1,13 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly CustomerService _customerService;
@@ -26,6 +28,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpPost("Register")]
+        [Authorize(Roles ="Customer")]
         public IActionResult Register(RegisterCustomerDTO dto)
         {
             UserResponseDTO customer =
