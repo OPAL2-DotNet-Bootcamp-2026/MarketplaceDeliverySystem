@@ -19,7 +19,8 @@ namespace MarketplaceDeliverySystem.Controllers
                 _businessOwnerService = businessOwnerService;
             }
 
-            [HttpPost("RegisterBusinessOwner")]
+        [Authorize(Roles = "Business Owner")]
+        [HttpPost("RegisterBusinessOwner")]
             public IActionResult Register(RegBusinessOwnerDTO dto)
             {
             UserResponseDTO response = _businessOwnerService.Register(dto);
