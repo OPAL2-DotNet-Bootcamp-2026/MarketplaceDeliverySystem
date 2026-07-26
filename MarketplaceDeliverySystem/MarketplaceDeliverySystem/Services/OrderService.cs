@@ -1,6 +1,7 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
+using System.Threading.Tasks;
 
 namespace MarketplaceDeliverySystem.Services
 {
@@ -183,12 +184,18 @@ namespace MarketplaceDeliverySystem.Services
 
             _deliveryRepo.AddDelivery(delivery);
             // Send confirmation only after everything was saved.
-            await _emailService.SendOrderConfirmationAsync(
-                customer.User.Email,
-                customer.User.FullName,
-                order.OrderId,
-                order.TotalAmount);
-
+            try
+            {
+                await _emailService.SendOrderConfirmationAsync(
+                    customer.User.Email,
+                    customer.User.FullName,
+                    order.OrderId,
+                    order.TotalAmount);
+            }
+            catch (Exception)
+            {
+                // The order stays saved even when email sending fails.
+            }
             return order;
         }
 
