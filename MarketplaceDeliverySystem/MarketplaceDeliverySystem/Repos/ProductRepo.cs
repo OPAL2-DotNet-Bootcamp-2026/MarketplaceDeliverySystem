@@ -47,7 +47,7 @@ namespace MarketplaceDeliverySystem.Repos
 
             // Business
             if (dto.BusinessId.HasValue)
-                products = products.Where (p => p.BusinessId == dto.BusinessId);
+                products = products.Where(p => p.BusinessId == dto.BusinessId);
 
             // MinPrice
             if (dto.MinPrice.HasValue)
@@ -72,6 +72,30 @@ namespace MarketplaceDeliverySystem.Repos
                 products = products.OrderByDescending(p => p.Price);
 
             return products.ToList();
+        }
+
+        //delete product by id
+        public Product GetProductById(int productId)
+        {
+            return _context.Products
+                .FirstOrDefault(p => p.ProductId == productId);
+        }
+        //check if the product is ordered in any order
+        public bool IsProductOrdered(int productId)
+        {
+            return _context.OrderItems
+                .Any(o => o.ProductId == productId);
+        }
+
+        public void Delete(Product product)
+        {
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+        }
+
+        public void Update1()
+        {
+            _context.SaveChanges();
         }
     }
 }
