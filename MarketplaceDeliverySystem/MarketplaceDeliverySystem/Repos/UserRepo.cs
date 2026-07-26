@@ -11,8 +11,11 @@ namespace MarketplaceDeliverySystem.Repos
             {
                 _context = context;
             }
-
-            public bool EmailExists(string email)
+        public User? GetByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(u => u.Email == email);
+        }
+        public bool EmailExists(string email)
             {
                 return _context.Users.Any(u => u.Email == email);
             }

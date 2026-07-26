@@ -5,7 +5,7 @@ namespace MarketplaceDeliverySystem.DTOs
     public class DriverRegDTO
     {
      
-        [Required, MinLength(3)]
+        [Required, MinLength(4)]
         public string FullName { get; set; } = string.Empty;//User Input
         [Required, MinLength(8)]
         public string PhoneNumber { get; set; } = string.Empty;//User Input 

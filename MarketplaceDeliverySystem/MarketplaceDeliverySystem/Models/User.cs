@@ -25,7 +25,7 @@ namespace MarketplaceDeliverySystem.Models
         [MaxLength(300)] 
         public string? ProfileImage { get; set; }//User Input 
         [Required(ErrorMessage = "User role is required."), MaxLength(30)] 
-        public string Role { get; set; } = "Customer";//user input:From Listsystem allows choosing Customer, BusinessOwner, or Driver
+        public string Role { get; set; }//user input:From Listsystem allows choosing Customer, BusinessOwner, or Driver
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;// System Generated
         public bool IsActive { get; set; } = true;//(Default = true)
 

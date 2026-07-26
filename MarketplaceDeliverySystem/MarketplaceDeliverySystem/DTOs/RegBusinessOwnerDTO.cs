@@ -14,9 +14,9 @@ namespace MarketplaceDeliverySystem.DTOs
         [Required(ErrorMessage = "Password is required.")]
         [MinLength(6, ErrorMessage =
         "Password must contain at least 6 characters.")]
-        public string Password { get; set; } = string.Empty;
-        [Required, MaxLength(20)]
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string Password { get; set; }
+        [Required, MinLength(8)]
+        public string PhoneNumber { get; set; }
         [MaxLength(300)]
         public string? ProfileImage { get; set; }
         [Required]

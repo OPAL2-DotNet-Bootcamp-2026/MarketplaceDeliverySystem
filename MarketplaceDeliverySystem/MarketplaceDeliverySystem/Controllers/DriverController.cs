@@ -17,22 +17,16 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 _driverService = driverService;
             }
-        [AllowAnonymous] //Anyone can register without a token.
-        [HttpPost("register")]
-            public IActionResult RegisterDriver([FromBody] DriverRegDTO dto)
-            {
-                Driver? driver = _driverService.RegisterDriver(dto);
 
-                if (driver == null)
-                {
-                    return BadRequest("Driver could not be registered.");
-                }
+        [HttpPost("Register")]
+        public IActionResult Register(DriverRegDTO dto)
+        {
+            UserResponseDTO response = _driverService.Register(dto);
 
-                return Ok(new
-                {
-                    DriverId = driver.DriverId,
-                    Message = "Driver registered successfully."
-                });
-            }
+            if (response == null)
+                return BadRequest("Email already exists.");
+
+            return Ok(response);
         }
+    }
     }

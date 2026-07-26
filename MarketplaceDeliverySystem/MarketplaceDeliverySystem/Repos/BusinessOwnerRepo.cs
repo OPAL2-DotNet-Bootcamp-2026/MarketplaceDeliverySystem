@@ -1,6 +1,7 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
-﻿using MarketplaceDeliverySystem.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MarketplaceDeliverySystem.Repos
 {
@@ -28,6 +29,7 @@ namespace MarketplaceDeliverySystem.Repos
             context.BusinessOwners.Add(owner);
             context.SaveChanges();
         }
+
 
       
         //The ? after BusinessOwner means the method can return null
