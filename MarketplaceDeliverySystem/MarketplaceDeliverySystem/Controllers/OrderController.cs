@@ -20,7 +20,7 @@ namespace MarketplaceDeliverySystem.Controllers
 
         // POST: /order/create
         //Change the endpoint to async
-        [HttpPost("create")]
+        [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder(
     [FromBody] OrderCreateDTO dto)
         {
