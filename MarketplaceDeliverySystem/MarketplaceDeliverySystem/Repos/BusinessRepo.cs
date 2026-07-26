@@ -61,7 +61,7 @@ namespace MarketplaceDeliverySystem.Repos
                     {
                         BusinessName = business.BusinessName,
                         ProductName = bestProduct.Product.ProductName,
-                        AverageRating = Math.Round(bestProduct.AverageRating, 2),
+                        AverageRating = (decimal)Math.Round(bestProduct.AverageRating, 2),
                         NumberOfReviews = bestProduct.ReviewCount
                     });
                 }

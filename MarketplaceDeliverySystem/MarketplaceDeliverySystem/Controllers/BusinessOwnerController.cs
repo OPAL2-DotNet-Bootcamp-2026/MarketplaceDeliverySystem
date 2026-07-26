@@ -20,9 +20,13 @@ namespace MarketplaceDeliverySystem.Controllers
             [HttpPost("Register")]
             public IActionResult Register(RegBusinessOwnerDTO dto)
             {
-                _businessOwnerService.Register(dto);
-                return Ok("Business Owner registered successfully.");
-            }
+            UserResponseDTO response = _businessOwnerService.Register(dto);
+
+            if (response == null)
+                return BadRequest("Email already exists.");
+
+            return Ok(response);
+        }
         }
     }
 
