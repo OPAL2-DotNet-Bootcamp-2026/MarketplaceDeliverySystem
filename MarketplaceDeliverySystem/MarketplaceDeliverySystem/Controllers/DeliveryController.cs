@@ -1,11 +1,13 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
     [Route("delivery")]
+    [Authorize(Roles = "Admin")]//Assigning a driver should be done by an administrator
     public class DeliveryController : ControllerBase
     {
         private readonly DeliveryService _deliveryService;
