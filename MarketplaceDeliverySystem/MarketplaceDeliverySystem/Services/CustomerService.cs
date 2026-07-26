@@ -7,9 +7,11 @@ namespace MarketplaceDeliverySystem.Services
     public class CustomerService
     {
         private readonly CustomerRepo _customerRepository;
+        private readonly UserRepo _userRepository;
 
-        public CustomerService(CustomerRepo customerRepository) {
+        public CustomerService(CustomerRepo customerRepository, UserRepo userRepository) {
             _customerRepository = customerRepository;
+            _userRepository = userRepository;
 
         }
         public List<OrderHistoryDTO> ViewOrderHistory(int customerId)
@@ -50,6 +52,43 @@ namespace MarketplaceDeliverySystem.Services
                 }).ToList()
 
             }).ToList();
+        }
+        //send the registeration info and receive back the reg comfirmation
+        public UserResponseDTO Register(RegisterCustomerDTO dto)
+        {
+            if (_userRepository.EmailExists(dto.Email))
+                return null;
+
+            User user = new User
+            {
+                FullName = dto.FullName,
+                Email = dto.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                PhoneNumber = dto.PhoneNumber,
+                ProfileImage = dto.ProfileImage,
+                Role = "Customer",
+                RegistrationDate = DateTime.UtcNow,
+                IsActive = true
+            };
+
+            _userRepository.Add(user);
+
+            Customer customer = new Customer
+            {
+                UserId = user.UserId,
+                Address = dto.Address,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _customerRepository.AddCustomer(customer);
+
+            return new UserResponseDTO
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role
+            };
         }
     }
 }

@@ -24,5 +24,17 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(history);
         }
+
+        [HttpPost("Register")]
+        public IActionResult Register(RegisterCustomerDTO dto)
+        {
+            UserResponseDTO customer =
+                _customerService.Register(dto);
+
+            if (customer == null)
+                return BadRequest("Email already exists.");
+
+            return Ok(customer);
+        }
     }
 }
