@@ -47,11 +47,7 @@ namespace MarketplaceDeliverySystem.Services
 
             _businessRepository.Add(business);
         }
-        public async Task<List<BestProductDTO>> GetBestProductForEachBusinessAsync()
-        {
-            return await _businessRepository.GetBestProductForEachBusinessAsync();
-        }
-
+        
         public List<BusinessWithProductsRespDTO> GetAllBusinessesWithProducts()
         {
             //businesses contains a list of Business objects.
@@ -90,6 +86,37 @@ namespace MarketplaceDeliverySystem.Services
 
             }).ToList();
         }
+
+
+        public List<BestProductDTO> GetBestProductForEachBusiness()
+        {
+            List<BestProductDTO> result = new List<BestProductDTO>();
+
+            var businesses = _businessRepository.GetBusinessesProductsReviews();
+
+            foreach (var business in businesses)
+            {
+                var bestProduct = business.Products
+                    .OrderByDescending(p => p.Reviews.Count == 0 ? 0 : p.Reviews.Average(r => r.Rating))
+                    .FirstOrDefault();
+
+                if (bestProduct != null)
+                {
+                    result.Add(new BestProductDTO
+                    {
+                        BusinessName = business.BusinessName,
+                        ProductName = bestProduct.ProductName,
+                        AverageRating = bestProduct.Reviews.Count == 0
+                            ? 0
+                            : bestProduct.Reviews.Average(r => r.Rating),
+                        NumberOfReviews = bestProduct.Reviews.Count
+                    });
+                }
+            }
+
+            return result;
+        
+    }
     }
     }
 

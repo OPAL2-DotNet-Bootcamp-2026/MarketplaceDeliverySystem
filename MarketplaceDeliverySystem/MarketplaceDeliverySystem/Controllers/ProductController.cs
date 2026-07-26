@@ -25,5 +25,27 @@ namespace MarketplaceDeliverySystem.Controllers
             }
             return Ok(updated);
         }
+
+        [HttpPost("FilterProducts")]
+        public IActionResult FilterProducts(FilterProductsDTO dto)
+        {
+            List<FilterProductsOutputDto> result = _productService.FilterProducts(dto);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("DeleteProduct")]
+        public IActionResult DeleteProduct(int productId)
+        {
+            string result = _productService.DeleteProduct(productId);
+
+            if (result == "Product not found")
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
+
     }
 }

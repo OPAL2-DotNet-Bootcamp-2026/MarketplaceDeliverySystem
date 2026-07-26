@@ -2,6 +2,7 @@
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarketplaceDeliverySystem.Controllers
 {

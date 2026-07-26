@@ -15,7 +15,7 @@ namespace MarketplaceDeliverySystem.DTOs
 
         [Required]
         [Range(1, 5)]
-        public decimal AverageRating { get; set; }
+        public double AverageRating { get; set; }
 
         [Range(1, int.MaxValue)]
         public int NumberOfReviews { get; set; }

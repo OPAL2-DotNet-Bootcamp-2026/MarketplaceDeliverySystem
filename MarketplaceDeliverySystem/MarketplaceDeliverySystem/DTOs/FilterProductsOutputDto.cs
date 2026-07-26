@@ -45,7 +45,7 @@ namespace MarketplaceDeliverySystem.DTOs
 
         [Required]
         [Range(1, 5)]
-        public decimal AverageRating { get; set; }//calculated 
+        public double AverageRating { get; set; }//calculated 
 
 
 
