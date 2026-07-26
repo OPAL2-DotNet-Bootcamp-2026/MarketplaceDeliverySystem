@@ -1,6 +1,7 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
+using System.Threading.Tasks;
 
 namespace MarketplaceDeliverySystem.Services
 {
@@ -16,6 +17,7 @@ namespace MarketplaceDeliverySystem.Services
         private readonly DeliveryRepo _deliveryRepo;
         private readonly DriverRepo _driverRepo;
 
+        private readonly EmailService _emailService;
         public OrderService(
             OrderRepo orderRepo,
             OrderItemRepo orderItemRepo,
@@ -24,7 +26,8 @@ namespace MarketplaceDeliverySystem.Services
             ProductRepo productRepo,
             PaymentRepo paymentRepo,
             DeliveryRepo deliveryRepo,
-            DriverRepo driverRepo)
+            DriverRepo driverRepo,
+             EmailService emailService)
         {
             _orderRepo = orderRepo;
             _orderItemRepo = orderItemRepo;
@@ -34,9 +37,13 @@ namespace MarketplaceDeliverySystem.Services
             _paymentRepo = paymentRepo;
             _deliveryRepo = deliveryRepo;
             _driverRepo = driverRepo;
+            // Save the injected EmailService
+            _emailService = emailService;
         }
 
-        public Order? CreateOrder(OrderCreateDTO dto)
+
+        // public Order? CreateOrder(OrderCreateDTO dto)
+        public async Task<Order?> CreateOrderAsync(OrderCreateDTO dto)
         {
             // Check if customer exists
             Customer? customer =
@@ -176,7 +183,19 @@ namespace MarketplaceDeliverySystem.Services
             };
 
             _deliveryRepo.AddDelivery(delivery);
-
+            // Send confirmation only after everything was saved.
+            try
+            {
+                await _emailService.SendOrderConfirmationAsync(
+                    customer.User.Email,
+                    customer.User.FullName,
+                    order.OrderId,
+                    order.TotalAmount);
+            }
+            catch (Exception)
+            {
+                // The order stays saved even when email sending fails.
+            }
             return order;
         }
 

@@ -15,7 +15,9 @@ namespace MarketplaceDeliverySystem.Repos
         public Customer? GetCustomerById(int customerId)
         {
             return context.Customers
-                .FirstOrDefault(c => c.CustomerId == customerId);
+                .Include(c => c.User)
+                .FirstOrDefault(c =>
+                    c.CustomerId == customerId);
         }
 
         public void AddCustomer(Customer customer)

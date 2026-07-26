@@ -58,7 +58,8 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<PaymentService>();
             builder.Services.AddScoped<ReviewService>();
             builder.Services.AddScoped<AdminService>();
-
+            // Email sending service
+            builder.Services.AddScoped<EmailService>();
             // AuthService generates JWT tokens.
             builder.Services.AddScoped<AuthService>();
 
