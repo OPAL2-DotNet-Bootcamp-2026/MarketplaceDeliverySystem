@@ -7,7 +7,6 @@ namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
     [Route("delivery")]
-    [Authorize(Roles = "Admin")]//Assigning a driver should be done by an administrator
     public class DeliveryController : ControllerBase
     {
         private readonly DeliveryService _deliveryService;
@@ -17,7 +16,9 @@ namespace MarketplaceDeliverySystem.Controllers
             _deliveryService = deliveryService;
         }
 
-        // PUT: /delivery/assign-driver
+        // Only Admin can assign a driver.
+        // PUT: /delivery/assign-driver?deliveryId=1&driverId=2
+        [Authorize(Roles = "Admin")]
         [HttpPut("assign-driver")]
         public IActionResult AssignDriverToDelivery(
             [FromQuery] int deliveryId,
@@ -32,8 +33,30 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Driver could not be assigned. Check the delivery, order status, and driver availability."
+                    Message =
+                        "Driver could not be assigned. Check the delivery, order status, and driver availability."
                 });
+            }
+
+            return Ok(result);
+        }
+
+        // Only the Driver can update the delivery status.
+        // PUT: /delivery/1/status
+        [Authorize(Roles = "Driver")]
+        [HttpPut("{deliveryId}/status")]
+        public IActionResult UpdateDeliveryStatus(
+            int deliveryId,
+            [FromBody] UpdateOrderStatusDTO dto)
+        {
+            MessageOutputDTO result =
+                _deliveryService.UpdateDeliveryStatus(
+                    deliveryId,
+                    dto);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
             }
 
             return Ok(result);

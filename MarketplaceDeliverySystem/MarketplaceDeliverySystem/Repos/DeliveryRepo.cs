@@ -16,7 +16,9 @@ namespace MarketplaceDeliverySystem.Repos
         {
             return _context.Deliveries
                 .Include(d => d.Order)
-                .FirstOrDefault(d => d.DeliveryId == deliveryId);
+                .Include(d => d.Driver)
+                .FirstOrDefault(d =>
+                    d.DeliveryId == deliveryId);
         }
         public Delivery? GetByOrderId(int orderId)
         {
