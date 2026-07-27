@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -30,9 +31,13 @@ namespace MarketplaceDeliverySystem.Models
         [MaxLength(20)]
         public string AvailabilityStatus { get; set; }//(Default = "Available")
 
-        public decimal? CurrentLatitude { get; set; }// System Generated 
+        [Range(-90, 90, ErrorMessage = "Latitude must be between -90 and 90.")]
+        [Precision(9, 6)]
+        public decimal? CurrentLatitude { get; set; }
 
-        public decimal? CurrentLongitude { get; set; }//System Generated 
+        [Range(-180, 180, ErrorMessage = "Longitude must be between -180 and 180.")]
+        [Precision(9, 6)]
+        public decimal? CurrentLongitude { get; set; }
 
         [Required]
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;//System Generated 

@@ -124,7 +124,7 @@ namespace MarketplaceDeliverySystem
 
             builder.Services.AddControllers();
 
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
 
             // All service registrations must be above Build().
             var app = builder.Build();
@@ -135,7 +135,7 @@ namespace MarketplaceDeliverySystem
 
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                //app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();

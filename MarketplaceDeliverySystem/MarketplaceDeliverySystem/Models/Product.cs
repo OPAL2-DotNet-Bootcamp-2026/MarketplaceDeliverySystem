@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -37,6 +38,7 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         [Range(0.01, double.MaxValue)]
+        [Precision(10, 3)]
         public decimal Price { get; set; }
         //User Input
 

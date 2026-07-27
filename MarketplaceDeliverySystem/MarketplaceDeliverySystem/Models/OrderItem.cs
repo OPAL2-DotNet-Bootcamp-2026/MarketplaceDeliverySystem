@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -27,6 +28,7 @@ namespace MarketplaceDeliverySystem.Models
         public int Quantity { get; set; }// User Input
 
         [Required]
+        [Precision(10, 3)]
         public decimal UnitPrice { get; set; }//System Generated (Copied from Product.Price at the time of the order)
     }
 }

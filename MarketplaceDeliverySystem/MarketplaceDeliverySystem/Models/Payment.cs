@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -22,6 +23,7 @@ namespace MarketplaceDeliverySystem.Models
         public string PaymentStatus { get; set; } = string.Empty;//System Generated 
 
         [Required]
+        [Precision(10, 3)]
         public decimal Amount { get; set; } //Calculated
 
         [Required]

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -38,6 +39,8 @@ namespace MarketplaceDeliverySystem.Models
         public DateTime DeliveredTime { get; set; }
         //System Generated (Recorded when the order is delivered)
 
+        [Range(1, 1440, ErrorMessage = "Delivery duration must be between 1 and 1440 minutes.")]
+        [Precision(5, 2)]
         public decimal DeliveryDuration { get; set; }
         //Calculated (DeliveredTime - PickupTime)
     }

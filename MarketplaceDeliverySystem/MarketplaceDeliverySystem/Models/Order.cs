@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketplaceDeliverySystem.Models
@@ -25,11 +26,15 @@ namespace MarketplaceDeliverySystem.Models
         public DateTime OrderDate { get; set; } = DateTime.UtcNow; //System Generated
 
         [Required]
-        public decimal Subtotal { get; set; } = 0;//Calculated
+        [Precision(10, 3)]
+        public decimal Subtotal { get; set; } = 0m;//Calculated
 
-        public decimal DeliveryFee { get; set; } = (decimal)0.700; //Default value
+        [Precision(10, 3)]
+        public decimal DeliveryFee { get; set; } =0.700m; //Default value
 
         [Required]
+
+        [Precision(10, 3)]
         public decimal TotalAmount { get; set; }//Calculated (Subtotal + DeliveryFee)
 
 
