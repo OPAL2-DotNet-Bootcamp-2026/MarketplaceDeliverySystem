@@ -4,6 +4,7 @@ using MarketplaceDeliverySystem;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketplaceDeliverySystem.Migrations
 {
     [DbContext(typeof(MarketplaceContext))]
-    partial class MarketplaceContextModelSnapshot : ModelSnapshot
+    [Migration("20260727072328_MakeDriverNullable")]
+    partial class MakeDriverNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +183,7 @@ namespace MarketplaceDeliverySystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DriverId")
+                    b.Property<int>("DriverId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
@@ -524,7 +527,9 @@ namespace MarketplaceDeliverySystem.Migrations
                 {
                     b.HasOne("MarketplaceDeliverySystem.Models.Driver", "Driver")
                         .WithMany()
-                        .HasForeignKey("DriverId");
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MarketplaceDeliverySystem.Models.Order", "Order")
                         .WithOne("Delivery")

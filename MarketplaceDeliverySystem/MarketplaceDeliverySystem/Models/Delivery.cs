@@ -20,11 +20,10 @@ namespace MarketplaceDeliverySystem.Models
         //Navigation Property
 
         [ForeignKey(nameof(Driver))]
-        [Required]
-        public int DriverId { get; set; }
+        public int? DriverId { get; set; }
         //From List (Selected Driver)
 
-        public Driver Driver { get; set; } = null!;
+        public Driver? Driver { get; set; } = null!;
         //Navigation Property
 
         [Required]

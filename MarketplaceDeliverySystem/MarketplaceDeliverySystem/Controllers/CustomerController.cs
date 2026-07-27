@@ -28,7 +28,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpPost("Register")]
-        [Authorize(Roles ="Customer")]
+        [AllowAnonymous]
         public IActionResult Register(RegisterCustomerDTO dto)
         {
             UserResponseDTO customer =

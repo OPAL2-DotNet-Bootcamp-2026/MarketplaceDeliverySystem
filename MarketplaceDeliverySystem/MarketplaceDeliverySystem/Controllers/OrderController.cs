@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
-    [Route("order")]
-    [Authorize(Roles = "Customer")]
+    [Route("api/[controller]")]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly OrderService _orderService;
@@ -20,7 +20,7 @@ namespace MarketplaceDeliverySystem.Controllers
 
         // POST: /order/create
         //Change the endpoint to async
-        [Authorize]
+        [Authorize(Roles ="Customer")]
         [EnableRateLimiting("orderPolicy")]
         [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder(

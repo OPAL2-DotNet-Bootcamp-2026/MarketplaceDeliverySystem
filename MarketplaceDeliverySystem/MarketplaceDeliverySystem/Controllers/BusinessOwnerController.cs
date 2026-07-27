@@ -19,7 +19,7 @@ namespace MarketplaceDeliverySystem.Controllers
                 _businessOwnerService = businessOwnerService;
             }
 
-        [Authorize(Roles = "Business Owner")]
+        [AllowAnonymous]
         [HttpPost("RegisterBusinessOwner")]
             public IActionResult Register(RegBusinessOwnerDTO dto)
             {

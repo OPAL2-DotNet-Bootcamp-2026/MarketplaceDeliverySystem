@@ -199,7 +199,7 @@ namespace MarketplaceDeliverySystem.Services
                 // The order stays saved even when email sending fails.
             }
             order.Status = "Ready";
-            _orderRepo.AddOrder(order);
+            _orderRepo.Update();
             return order;
         }
 
@@ -258,11 +258,12 @@ namespace MarketplaceDeliverySystem.Services
             if (delivery != null)
             {
                 delivery.DeliveryStatus = "Cancelled";
-
-                if (delivery.DriverId > 0)
+                //HasValue checks whether a driver has actually been assigned
+                //.Value converts the nullable int? into a normal int only after you've confirmed it's not null.
+                if (delivery.DriverId.HasValue)
                 {
                     Driver? driver =
-                        _driverRepo.GetDriverById(delivery.DriverId);
+    _driverRepo.GetDriverById(delivery.DriverId.Value);
 
                     if (driver != null)
                     {

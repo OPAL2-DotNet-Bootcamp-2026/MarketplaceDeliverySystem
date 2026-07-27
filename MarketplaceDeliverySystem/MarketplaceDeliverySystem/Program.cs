@@ -161,7 +161,7 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddRateLimiter(options =>
             {
                 options.AddFixedWindowLimiter(
-                    policyName: "fixed",
+                    policyName: "authenticationPolicy",
                     configureOptions: limiterOptions =>
                     {
                         // Maximum number of requests.
@@ -173,7 +173,15 @@ namespace MarketplaceDeliverySystem
                         // Requests over the limit are not queued.
                         limiterOptions.QueueLimit = 0;
                     });
-
+                // Order endpoints
+                options.AddFixedWindowLimiter(
+                    policyName: "orderPolicy",
+                    configureOptions: limiterOptions =>
+                    {
+                        limiterOptions.PermitLimit = 20;
+                        limiterOptions.Window = TimeSpan.FromMinutes(1);
+                        limiterOptions.QueueLimit = 0;
+                    });
                 // Returned when the limit is exceeded.
                 options.RejectionStatusCode =
                     StatusCodes.Status429TooManyRequests;

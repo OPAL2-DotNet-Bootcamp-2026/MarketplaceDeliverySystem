@@ -29,5 +29,13 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("GenerateHash")]
+        [AllowAnonymous]
+        public IActionResult GenerateHash()
+        {
+            string hash = BCrypt.Net.BCrypt.HashPassword("Admin123!");
+            return Ok(hash);
+        }
     }
 }
