@@ -3,7 +3,7 @@ using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.RateLimiting;
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
@@ -20,6 +20,8 @@ namespace MarketplaceDeliverySystem.Controllers
 
         // POST: /order/create
         //Change the endpoint to async
+        [Authorize]
+        [EnableRateLimiting("orderPolicy")]
         [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder(
     [FromBody] OrderCreateDTO dto)

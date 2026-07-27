@@ -2,7 +2,7 @@
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.RateLimiting;
 namespace MarketplaceDeliverySystem.Controllers
 {
     [Authorize]
@@ -18,6 +18,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [AllowAnonymous]
+        [EnableRateLimiting("authenticationPolicy")]
         [HttpPost("Login")]
         public IActionResult Login(LoginDTO dto)
         {
