@@ -61,6 +61,9 @@ namespace MarketplaceDeliverySystem.Services
             // Change driver status
             driver.AvailabilityStatus = "Busy";
 
+            delivery.Order.Status = "On the Way";
+
+            delivery.PickupTime = DateTime.UtcNow;
             // Save changes
             _deliveryRepo.Update();
             _driverRepo.Save();
@@ -94,64 +97,19 @@ namespace MarketplaceDeliverySystem.Services
             string newStatus = dto.Status.Trim();
 
             // =====================================================
-            // DRIVER STARTS THE DELIVERY
-            // =====================================================
-
-            if (newStatus == "On The Way")
-            {
-                // The driver must already be assigned.
-                if (delivery.DeliveryStatus != "Assigned")
-                {
-                    return new MessageOutputDTO
-                    {
-                        Success = false,
-                        Message =
-                            "The delivery must be Assigned before it can be On The Way."
-                    };
-                }
-
-                // The order must be Ready.
-                if (delivery.Order.Status != "Ready")
-                {
-                    return new MessageOutputDTO
-                    {
-                        Success = false,
-                        Message =
-                            "The order must be Ready before delivery starts."
-                    };
-                }
-
-                // Update both statuses together.
-                delivery.DeliveryStatus = "On The Way";
-                delivery.Order.Status = "On The Way";
-
-                // Record when the driver started.
-                delivery.PickupTime = DateTime.UtcNow;
-
-                _deliveryRepo.Update();
-
-                return new MessageOutputDTO
-                {
-                    Success = true,
-                    Message =
-                        "Delivery is now On The Way."
-                };
-            }
-
-            // =====================================================
             // DRIVER COMPLETES THE DELIVERY
             // =====================================================
 
             if (newStatus == "Delivered")
             {
                 // The delivery must be On The Way first.
-                if (delivery.DeliveryStatus != "On The Way")
+                if (delivery.DeliveryStatus != "Assigned")
                 {
                     return new MessageOutputDTO
                     {
                         Success = false,
                         Message =
-                            "The delivery must be On The Way before it can be Delivered."
+                           "The delivery must be Assigned before it can be Delivered."
                     };
                 }
 
@@ -170,8 +128,7 @@ namespace MarketplaceDeliverySystem.Services
                     ).TotalMinutes;
 
                 // The driver can receive another delivery.
-                delivery.Driver.AvailabilityStatus =
-                    "Available";
+                delivery.Driver.AvailabilityStatus = "Available";
 
                 _deliveryRepo.Update();
 
@@ -188,7 +145,7 @@ namespace MarketplaceDeliverySystem.Services
             {
                 Success = false,
                 Message =
-                    "Status must be 'On The Way' or 'Delivered'."
+                    "Status must be 'Delivered'."
             };
         }
     }
