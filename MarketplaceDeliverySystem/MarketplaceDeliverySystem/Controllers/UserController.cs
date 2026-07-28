@@ -34,7 +34,7 @@ namespace MarketplaceDeliverySystem.Controllers
         [AllowAnonymous]
         public IActionResult GenerateHash()
         {
-            string hash = BCrypt.Net.BCrypt.HashPassword("Admin123!");
+            string hash = BCrypt.Net.BCrypt.HashPassword("123456");
             return Ok(hash);
         }
     }
