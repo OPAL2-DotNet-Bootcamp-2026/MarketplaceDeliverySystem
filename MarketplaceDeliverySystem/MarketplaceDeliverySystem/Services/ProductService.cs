@@ -23,7 +23,7 @@ namespace MarketplaceDeliverySystem.Services
             if (product == null)
                 return null;
 
-            // Update product
+            // Update product: It replaces the old values with the new values received from the user
             product.ProductName = dto.ProductName;
             product.Description = dto.Description;
             product.Price = dto.Price;
@@ -32,7 +32,7 @@ namespace MarketplaceDeliverySystem.Services
 
 
             _productRepository.Update();
-
+            //Return the updated product
             ProductUpdatedRespDTO response = new ProductUpdatedRespDTO
             {
                 ProductId = product.ProductId,
