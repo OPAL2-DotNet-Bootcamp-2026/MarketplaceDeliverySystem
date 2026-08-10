@@ -1,6 +1,6 @@
 
 // Go and get footer.html
-fetch("sharedComponents/footer.html")
+fetch("../sharedComponents/footer.html")
     .then(response => response.text())  //Read the HTML inside that file as text.
     .then(data => {
         // document.getElementById("footer-container") will find <div id="footer-container"></div>
