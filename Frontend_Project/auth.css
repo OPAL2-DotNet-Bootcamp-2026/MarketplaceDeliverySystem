@@ -3,3 +3,12 @@
   min-height: 100vh;
 }
 
+.auth-panel-left {
+  width: 42%;
+  background-color: var(--color-bg-panel);
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
