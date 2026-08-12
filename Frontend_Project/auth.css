@@ -54,3 +54,15 @@
   font-size: 1.1rem;
 }
 
+.auth-hero-placeholder {
+  border: 1px dashed var(--color-border);
+  border-radius:10px;
+  background-color: var(--color-white);
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
