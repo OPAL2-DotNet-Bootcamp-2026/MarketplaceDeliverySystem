@@ -26,6 +26,11 @@
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
+.auth-submit {
+  width: 100%;
+  align-self: stretch;
+}
+
 /* ===========================================
    LEFT PANEL — logo, hero placeholder, copy
    =========================================== */
