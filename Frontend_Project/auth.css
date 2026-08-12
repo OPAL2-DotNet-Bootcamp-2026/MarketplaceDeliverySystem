@@ -12,3 +12,11 @@
   gap: 1.5rem;
 }
 
+.auth-panel-right {
+  width: 58%;
+  background-color: var(--color-white);
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
