@@ -1,0 +1,25 @@
+.pagination .page-link {
+  color: var(--brand-navy);
+  border-color: #E2E8F0;
+  font-weight: 500;
+  border-radius: 8px;
+  margin: 0 3px;
+}
+
+.pagination .page-link:hover {
+  color: var(--brand-teal);
+  background-color: var(--brand-light-cyan);
+  border-color: var(--brand-teal);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--brand-orange) !important;
+  border-color: var(--brand-orange) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(243, 125, 66, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #94A3B8;
+  background-color: #F1F5F9;
+}

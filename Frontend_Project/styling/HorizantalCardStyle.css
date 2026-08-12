@@ -1,0 +1,63 @@
+:root {
+  --brand-navy: #0A1F44;
+  --brand-orange: #F37D42;
+  --brand-teal: #3580A4;
+  --brand-light-cyan: #D6F1F1;
+  --brand-bg-light: #F8FAFC;
+}
+
+
+.business-horizontal-card {
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+
+.business-horizontal-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
+  border-color: var(--brand-teal);
+}
+
+
+.business-horizontal-card .card-title {
+  color: var(--brand-navy);
+  font-weight: 700;
+}
+
+.business-horizontal-card .card-title a {
+  color: var(--brand-navy) !important;
+  transition: color 0.2s ease;
+}
+
+.business-horizontal-card:hover .card-title a {
+  color: var(--brand-teal) !important;
+}
+
+
+.business-horizontal-card .business-card-img {
+  width: 100%;
+  height: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  padding: 12px;
+  background-color: var(--brand-bg-light);
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+
+.badge-status-open {
+  background-color: var(--brand-light-cyan);
+  color: var(--brand-navy) !important; 
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+}

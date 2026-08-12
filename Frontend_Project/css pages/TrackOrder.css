@@ -1,0 +1,590 @@
+/* =========================
+   TRACK ORDER PAGE
+   ========================= */
+
+.track-page {
+    min-height: 100vh;
+
+    padding: 50px 60px 80px;
+
+    background: linear-gradient(
+        135deg,
+        #faaf8a 0%,
+        #f8f8f8 50%,
+       #faaf8a  100%
+    );
+
+    font-family: Arial, sans-serif;
+
+    color: #0A1F44;
+}
+
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+.track-header {
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+.track-label {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: #35B0A4;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+}
+
+.track-header h1 {
+    margin: 0;
+
+    color: #0A1F44;
+
+    font-size: 34px;
+}
+
+.track-header p {
+    margin-top: 10px;
+
+    color: #667085;
+
+    font-size: 15px;
+}
+
+.track-header p span {
+    margin: 0 8px;
+
+    color: #F37D42;
+}
+
+
+/* =========================
+   TRACKING CARD
+   ========================= */
+
+.tracking-card {
+    max-width: 1050px;
+
+    margin: 0 auto 28px;
+
+    padding: 45px 50px;
+
+    background-color: white ;
+
+    border: 1px solid white ;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 25px rgba(10, 31, 68, 0.08);
+}
+
+
+/* Progress layout */
+
+.progress-container {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+}
+
+
+/* Step */
+
+.progress-step {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 110px;
+
+    color: #7b8491;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* Circle */
+
+.step-circle {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 2px solid #d9dee5;
+
+    background-color: white;
+
+    color: #7b8491;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    box-sizing: border-box;
+}
+
+
+/* Completed */
+
+.progress-step.completed .step-circle {
+    background-color: #35B0A4;
+
+    border-color: #35B0A4;
+
+    color: white;
+}
+
+.progress-step.completed span {
+    color: #0A1F44;
+
+    font-weight: 600;
+}
+
+
+/* Current */
+
+/* Current active stage */
+.progress-step.current .step-circle {
+    background-color: #F37D42;
+    border-color: #F37D42;
+    color: white;
+
+    animation: currentStepPulse 1.8s infinite;
+}
+
+
+/* Pulse animation */
+@keyframes currentStepPulse {
+
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(243, 125, 66, 0.35);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 14px rgba(243, 125, 66, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(243, 125, 66, 0);
+    }
+
+}
+.progress-step:not(.completed):not(.current) .step-circle {
+    background-color: white;
+    border-color: #d9dee5;
+    color: #7b8491;
+}
+.progress-step.current span {
+    color: #F37D42;
+
+    font-weight: bold;
+}
+
+
+/* Progress lines */
+
+.progress-line {
+    height: 4px;
+
+    flex: 1;
+
+    background-color: #e5e7eb;
+
+    margin-bottom: 28px;
+
+    border-radius: 5px;
+}
+
+.completed-line {
+    background-color: #35B0A4;
+}
+
+.active-line {
+    background: linear-gradient(
+        90deg,
+        #35B0A4,
+        #F37D42
+    );
+}
+
+
+/* =========================
+   CURRENT STATUS
+   ========================= */
+
+.current-status {
+    max-width: 1050px;
+
+    margin: 0 auto 28px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+           white,
+            white
+        );
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 25px rgba(47, 111, 222, 0.08);
+}
+
+
+/* Delivery icon */
+
+.delivery-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: white;
+
+    border: 2px solid #35B0A4;
+
+    color: #35B0A4;
+}
+
+.delivery-icon svg {
+    width: 30px;
+    height: 30px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    animation: truckMove 1.5s ease-in-out infinite;
+}
+
+
+@keyframes truckMove {
+
+    0%,
+    100% {
+        transform: translateX(-3px);
+    }
+
+    50% {
+        transform: translateX(3px);
+    }
+
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-block;
+
+    padding: 6px 14px;
+
+    margin-bottom: 12px;
+
+    border-radius: 20px;
+
+    background-color: #35B0A4;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+}
+
+
+.current-status h2 {
+    margin: 5px 0 10px;
+
+    color: #0A1F44;
+
+    font-size: 25px;
+}
+
+
+.current-status > p {
+    margin: 0 auto 25px;
+
+    max-width: 600px;
+
+    color: #536274;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   DELIVERY TIME
+   ========================= */
+
+.delivery-time {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 70px;
+
+    margin: 20px auto 25px;
+
+    padding: 18px 30px;
+
+    max-width: 500px;
+
+    background-color: rgba(244, 211, 197, 0.7);
+
+    border-radius: 15px;
+}
+
+.delivery-time div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.delivery-time span {
+    font-size: 10px;
+
+    color: #6b7280;
+
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+}
+
+.delivery-time strong {
+    color: #0A1F44;
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   DRIVER BUTTON
+   ========================= */
+
+.driver-button {
+    display: inline-block;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+    background-color: #F37D42;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.driver-button:hover {
+    background-color: #0A1F44;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 15px rgba(10, 31, 68, 0.2);
+}
+
+
+.current-status small {
+    display: block;
+
+    margin-top: 15px;
+
+    color: #7b8491;
+}
+
+
+/* =========================
+   INFORMATION CARDS
+   ========================= */
+
+.track-info {
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+}
+
+
+.info-card {
+    padding: 25px;
+
+    background-color: white;
+
+    border: 1px solid #D6F1F1;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 5px 18px rgba(10, 31, 68, 0.06);
+}
+
+
+/* Card header */
+
+.info-card-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.info-card-header h3 {
+    margin: 0;
+
+    color: #0A1F44;
+
+    font-size: 18px;
+}
+
+
+/* Icons */
+
+.info-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 20px;
+}
+
+.orange-icon {
+    background-color: #fff0e7;
+
+    color: #F37D42;
+}
+
+.teal-icon {
+    background-color: #D6F1F1;
+
+    color: #35B0A4;
+}
+
+
+/* Rows */
+
+.info-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #eef2f4;
+
+    font-size: 14px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row span {
+    color: #6b7280;
+}
+
+.info-row strong {
+    color: #0A1F44;
+}
+
+.teal-text {
+    color: #35B0A4 !important;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 800px) {
+
+    .track-page {
+        padding: 35px 20px;
+    }
+
+    .tracking-card {
+        padding: 30px 15px;
+
+        overflow-x: auto;
+    }
+
+    .progress-container {
+        min-width: 650px;
+    }
+
+    .track-info {
+        grid-template-columns: 1fr;
+    }
+
+    .delivery-time {
+        gap: 30px;
+    }
+}
