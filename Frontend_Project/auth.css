@@ -36,3 +36,15 @@
   gap: 10px;
 }
 
+.auth-logo-mark {
+  width: 35px;
+  height: 35px;  
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
