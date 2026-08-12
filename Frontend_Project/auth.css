@@ -171,6 +171,12 @@
   text-decoration: none;
 }
 
+.auth-forgot-link,
+.auth-footer-link a {
+  color: var(--color-primary-text);
+  text-decoration: underline;
+}
+
 .login-dual-actions {
   display: flex;
   gap: 12px;
@@ -227,7 +233,7 @@
   .auth-panel-right {
     width: 100%;
   }
-
+  
   /* Left panel gets shorter on mobile */
   .auth-panel-left {
     padding: 2rem 1.5rem;
