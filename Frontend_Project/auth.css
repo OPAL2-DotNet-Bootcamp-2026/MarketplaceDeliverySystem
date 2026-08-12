@@ -49,7 +49,11 @@
   gap: 10px;
 }
 
-
+.auth-logo-mark {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
 
 .auth-logo-text {
   color: var(--color-secondary);
