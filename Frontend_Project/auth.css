@@ -129,7 +129,19 @@
   max-width: 460px;
 }
 
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.25rem rgba(243, 125, 66, 0.25);
+}
 
+.form-floating > label {
+  color: var(--color-text-muted);
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: var(--color-primary);
+}
 
 .auth-checkbox {
   display: flex;
