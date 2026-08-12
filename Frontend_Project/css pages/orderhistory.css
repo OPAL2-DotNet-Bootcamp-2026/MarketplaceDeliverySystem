@@ -1,4 +1,4 @@
-body{
+main{
 
    margin:0;
    padding: 100px 100PX; 
@@ -11,7 +11,10 @@ body{
     margin-bottom: 12px;
     padding: 15px;
     background-color:#FFF5F0;
+
 }
+
+
 
 .order-header {
     display: flex;
@@ -20,6 +23,8 @@ body{
     cursor: pointer;
     list-style: none;
 }
+
+
 
 .order-header small {
     display: block;
@@ -79,4 +84,130 @@ body{
     color:black;
 
 }
+
+
+
+
+
+
+
+/* =========================
+   ORDER ANIMATIONS
+   ========================= */
+
+/* Orders appear when the page loads */
+.order {
+    animation: orderAppear 0.7s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes orderAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Second order appears slightly later */
+.order:nth-of-type(2) {
+    animation-delay: 0.2s;
+}
+
+
+/* Hover animation */
+.order:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Arrow animation */
+.order-header::before {
+    content: "▶";
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.order[open] .order-header::before {
+    transform: rotate(90deg);
+}
+
+
+/* Order details animation */
+.order[open] .order-details {
+    animation: detailsAppear 0.5s ease;
+}
+
+@keyframes detailsAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Status cards animation */
+.order[open] .status-container article {
+    animation: statusAppear 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes statusAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Status cards appear one after another */
+.order[open] .status-container article:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.order[open] .status-container article:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.order[open] .status-container article:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+
+/* Table animation */
+.order[open] .table {
+    animation: tableAppear 0.6s ease 0.4s forwards;
+    opacity: 0;
+}
+
+@keyframes tableAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
 
