@@ -162,3 +162,15 @@
   text-decoration: none;
 }
 
+.login-dual-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.login-dual-actions .auth-submit {
+  flex: 1;
+}
+
+.auth-submit {
+  width: 100%;
+}
