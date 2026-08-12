@@ -1,0 +1,956 @@
+/* =========================
+   DELIVERY STATUS PAGE
+   ========================= */
+
+.delivery-status-page {
+    min-height: 100vh;
+
+    padding: 50px 60px 80px;
+
+    font-family: Arial, sans-serif;
+
+    color: #0A1F44;
+
+    background: linear-gradient(135deg,
+            #faaf8a 0%,
+            #f8f8f8 50%,
+            #faaf8a 100%);
+}
+
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+.delivery-header {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+
+.delivery-label {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: #35B0A4;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+}
+
+
+.delivery-header h1 {
+    margin: 0;
+
+    color: #0A1F44;
+
+    font-size: 34px;
+}
+
+
+.delivery-header p {
+    margin-top: 12px;
+
+    color: #667085;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   MAIN CARD
+   ========================= */
+
+.delivery-status-card {
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    padding: 35px 45px;
+
+    background-color: white;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 10px 30px rgba(10, 31, 68, 0.10);
+}
+
+
+/* =========================
+   ORDER INFORMATION
+   ========================= */
+
+.delivery-order-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.order-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background-color: #D6F1F1;
+
+    color: #35B0A4;
+}
+
+
+.order-icon svg {
+    width: 32px;
+    height: 32px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.order-small-title {
+    color: #F37D42;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.delivery-order-info h2 {
+    margin: 5px 0;
+
+    color: #0A1F44;
+
+    font-size: 25px;
+}
+
+
+.delivery-order-info p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   DIVIDER
+   ========================= */
+
+.delivery-divider {
+    height: 1px;
+
+    margin: 30px 0;
+
+    background-color: #e7ecec;
+}
+
+
+/* =========================
+   STATUS SECTION
+   ========================= */
+
+.status-update-section h3 {
+    margin: 0 0 8px;
+
+    color: #0A1F44;
+
+    font-size: 21px;
+}
+
+
+.status-description {
+    margin: 0 0 25px;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   STATUS OPTIONS
+   ========================= */
+
+.status-options {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.status-option {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 16px 18px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.status-option:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 15px rgba(10, 31, 68, 0.06);
+}
+
+
+/* Circle */
+
+.status-circle {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    border: 2px solid #d9dee5;
+
+    color: #7b8491;
+
+    font-weight: bold;
+}
+
+
+/* Completed */
+
+.status-option.completed {
+    background-color: rgba(214, 241, 241, 0.35);
+}
+
+
+.status-option.completed .status-circle {
+    background-color: #35B0A4;
+
+    border-color: #35B0A4;
+
+    color: white;
+}
+
+
+/* Delivered */
+
+.status-option.delivered-status {
+    border: 2px solid #F37D42;
+
+    background-color: #fff6f1;
+
+    box-shadow:
+        0 0 0 4px rgba(243, 125, 66, 0.10);
+}
+
+
+.status-option.delivered-status .status-circle {
+    background-color: #F37D42;
+
+    border-color: #F37D42;
+
+    color: white;
+}
+
+
+/* Status text */
+
+.status-option-content {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.status-option-content strong {
+    color: #0A1F44;
+
+    font-size: 15px;
+}
+
+
+.status-option-content span {
+    color: #667085;
+
+    font-size: 13px;
+}
+
+/* =========================
+   PROOF OF DELIVERY
+   ========================= */
+
+.proof-of-delivery {
+    margin-top: 30px;
+}
+
+.proof-of-delivery h3 {
+    margin: 0 0 18px;
+
+    color: #0A1F44;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* Add Photo Box */
+
+.add-photo-box {
+    width: 100%;
+    height: 125px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid #d9e0e4;
+    border-radius: 18px;
+
+    background-color: #f8fafb;
+
+    color: #667085;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Hide actual file input */
+
+.add-photo-box input {
+    display: none;
+}
+
+
+/* Camera Icon */
+
+.camera-icon {
+    font-size: 26px;
+}
+
+
+/* Add Photo Text */
+
+.add-photo-box span {
+    color: #0A1F44;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/* Hover */
+
+.add-photo-box:hover {
+    transform: translateY(-2px);
+
+    border-color: #35B0A4;
+
+    background-color: #D6F1F1;
+
+    box-shadow:
+        0 6px 16px rgba(10, 31, 68, 0.08);
+}
+
+
+/* Delivery Note */
+
+.delivery-note {
+    width: 100%;
+
+    min-height: 95px;
+
+    margin-top: 15px;
+
+    padding: 18px;
+
+    border: 1px solid #d9e0e4;
+    border-radius: 18px;
+
+    background-color: #f8fafb;
+
+    color: #0A1F44;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    resize: vertical;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* When writing the note */
+
+.delivery-note:focus {
+    border-color: #35B0A4;
+
+    box-shadow:
+        0 0 0 4px rgba(53, 176, 164, 0.10);
+}
+
+
+.delivery-note::placeholder {
+    color: #8a94a3;
+}
+
+/* =========================
+   BUTTON
+   ========================= */
+
+.delivery-actions {
+    margin-top: 30px;
+
+    text-align: center;
+    position: relative;
+}
+
+
+/* =========================
+   SLIDE TO CONFIRM
+   ========================= */
+
+
+/* Report Issue */
+
+.report-issue {
+    margin: 0 0 15px;
+
+    text-align: center;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+.report-issue a {
+    color: #0A1F44;
+
+    font-weight: bold;
+
+    text-decoration: underline;
+
+    text-underline-offset: 4px;
+
+    transition: color 0.2s ease;
+}
+
+
+.report-issue a:hover {
+    color: #F37D42;
+}
+
+
+/* Main Slide Bar */
+
+.slide-confirm {
+    position: relative;
+
+    width: 100%;
+    max-width: 570px;
+
+    height: 85px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid rgba(10, 31, 68, 0.15);
+
+    border-radius: 50px;
+
+    background: linear-gradient(90deg,
+            #D6F1F1,
+            #ffffff);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 5px 18px rgba(10, 31, 68, 0.08);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.delivery-confirm-toggle {
+    display: none;
+}
+
+.slide-confirm:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 22px rgba(10, 31, 68, 0.12);
+}
+
+
+/* Sliding Circle */
+
+.slide-button {
+    position: absolute;
+
+    left: 7px;
+
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(135deg,
+            #F37D42,
+            #ffb067);
+
+    color: #0A1F44;
+
+    font-size: 42px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    box-shadow:
+        0 0 0 7px rgba(243, 125, 66, 0.12),
+        0 5px 15px rgba(243, 125, 66, 0.25);
+
+    z-index: 2;
+
+    transition:
+        left 0.8s ease,
+        transform 0.3s ease;
+}
+
+.delivery-confirm-toggle:checked+.slide-confirm .slide-button {
+    left: calc(100% - 77px);
+}
+
+.slide-button span {
+    display: block;
+
+    margin-top: -4px;
+}
+
+
+/* Main Text */
+
+.slide-text {
+    width: 100%;
+
+    padding: 0 100px;
+
+    text-align: center;
+
+    color: #0A1F44;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    transition: opacity 0.3s ease;
+}
+
+
+/* Right Dots */
+
+.slide-dots {
+    position: absolute;
+
+    right: 28px;
+
+    display: flex;
+
+    gap: 6px;
+    transition: opacity 0.3s ease;
+}
+
+
+.slide-dots span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background-color: #35B0A4;
+
+    opacity: 0.6;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .slide-confirm {
+        height: 75px;
+    }
+
+
+    .slide-button {
+        width: 60px;
+        height: 60px;
+
+        font-size: 35px;
+    }
+
+
+    .slide-text {
+        font-size: 11px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .slide-dots {
+        right: 18px;
+    }
+
+}
+
+
+/* =========================
+   DELIVERY DETAILS
+   ========================= */
+
+.delivery-details {
+    max-width: 850px;
+
+    margin: 25px auto 0;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+
+.delivery-detail-card {
+    padding: 20px;
+
+    text-align: center;
+
+    background-color: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 18px rgba(10, 31, 68, 0.06);
+}
+
+
+.delivery-detail-card span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #667085;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.delivery-detail-card strong {
+    color: #0A1F44;
+
+    font-size: 15px;
+}
+
+
+.delivery-detail-card .onway-status {
+    color: #F37D42;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 800px) {
+
+    .delivery-status-page {
+        padding: 35px 20px;
+    }
+
+
+    .delivery-status-card {
+        padding: 25px 20px;
+    }
+
+
+    .delivery-header h1 {
+        font-size: 28px;
+    }
+
+
+    .delivery-details {
+        grid-template-columns: 1fr;
+    }
+
+
+    .delivery-order-info {
+        align-items: flex-start;
+    }
+
+}
+
+/* =========================
+   CSS-ONLY DELIVERY CONFIRMATION
+   ========================= */
+
+/* Hide the checkbox */
+.delivery-confirm-toggle {
+    display: none;
+}
+
+
+/* =========================
+   SLIDE BUTTON MOVEMENT
+   ========================= */
+
+.slide-button {
+    transition:
+        left 0.8s ease,
+        transform 0.8s ease,
+        opacity 0.5s ease;
+}
+
+/* Fade out slide text */
+.delivery-confirm-toggle:checked + .slide-confirm .slide-text {
+    opacity: 0;
+}
+
+/* Hide dots after confirmation */
+.delivery-confirm-toggle:checked + .slide-confirm .slide-dots {
+    opacity: 0;
+}
+
+/* Fade the whole slider after the movement */
+.delivery-confirm-toggle:checked + .slide-confirm {
+    opacity: 0;
+    transform: scale(0.98);
+    pointer-events: none;
+
+    transition:
+        opacity 0.4s ease 0.7s,
+        transform 0.4s ease 0.7s;
+}
+
+
+/* =========================
+   DELIVERED MESSAGE
+   ========================= */
+
+.delivered-message {
+    display: none;
+
+    text-align: center;
+
+    padding: 35px 20px;
+
+    animation: showDeliveredMessage 0.6s ease;
+}
+
+/* Show confirmation when checkbox is checked */
+.delivery-confirm-toggle:checked ~ .delivered-message {
+    display: block;
+}
+
+
+/* Check icon */
+.delivered-check {
+    width: 85px;
+    height: 85px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #D6F1F1;
+
+    border: 3px solid #35B0A4;
+
+    color: #35B0A4;
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    animation: checkAppear 0.5s ease;
+}
+
+
+/* Title */
+.delivered-message h2 {
+    margin: 0 0 12px;
+
+    color: #0A1F44;
+
+    font-size: 28px;
+
+    letter-spacing: 1px;
+}
+
+
+/* Main message */
+.delivered-message p {
+    margin: 8px 0;
+
+    color: #536274;
+
+    font-size: 15px;
+}
+
+
+/* Closed message */
+.delivered-message .delivery-closed {
+    color: #667085;
+
+    margin-bottom: 25px;
+}
+
+
+/* Next Stop button */
+.next-stop-button {
+    padding: 14px 35px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: linear-gradient(
+        135deg,
+        #F37D42,
+        #ffb067
+    );
+
+    color: #0A1F44;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.next-stop-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(243, 125, 66, 0.3);
+}
+
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes showDeliveredMessage {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes checkAppear {
+
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
