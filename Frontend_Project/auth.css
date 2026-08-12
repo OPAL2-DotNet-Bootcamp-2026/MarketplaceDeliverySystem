@@ -167,3 +167,42 @@
 .auth-submit {
   width: 100%;
 }
+
+
+/* RESPONSIVE (tablets and phones) */
+
+@media (max-width: 768px) {
+
+  /* Switch the split from side-by-side to top-and-bottom */
+  .auth-layout {
+    flex-direction: column;
+    min-height: auto;       
+  }
+
+  /* Both panels now take the full width instead of 48/52 */
+  .auth-panel-left,
+  .auth-panel-right {
+    width: 100%;
+  }
+
+  /* Left panel gets shorter on mobile */
+  .auth-panel-left {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Remove the large left inset we added for desktop; center the form instead */
+  .auth-panel-right {
+    align-items: center;
+    padding: 2rem 1.5rem;
+  }
+
+  /* Let the form use the full width on small screens */
+  .auth-form,
+  .auth-form-title {
+    max-width: 100%;
+  }
+
+  .auth-hero-placeholder {
+    height: 140px;
+  }
+}
