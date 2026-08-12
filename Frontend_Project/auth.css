@@ -4,7 +4,7 @@
 }
 
 .auth-panel-left {
-  width: 42%;
+  width: 48%;
   background-color: var(--color-bg-panel);
   padding: 3rem 2.5rem;
   display: flex;
@@ -13,12 +13,14 @@
 }
 
 .auth-panel-right {
-  width: 58%;
+  width: 52%;
   background-color: var(--color-white);
   padding: 3rem 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;  
+  padding-left: 5rem;        
 }
 
 
@@ -31,27 +33,23 @@
   align-self: stretch;
 }
 
-/* ===========================================
-   LEFT PANEL — logo, hero placeholder, copy
-   =========================================== */
+@view-transition {
+  navigation: auto;
+}
 
+.auth-panel-left {
+  view-transition-name: brand-panel;
+}
+
+
+/* LEFT PANEL */
 .auth-logo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.auth-logo-mark {
-  width: 35px;
-  height: 35px;  
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
+
 
 .auth-logo-text {
   color: var(--color-secondary);
@@ -69,6 +67,12 @@
   justify-content: center;
   color: var(--color-text-muted);
   font-size: 1rem;
+}
+
+.auth-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .auth-headline {
@@ -93,50 +97,39 @@
 }
 
 .auth-bullet-list li {
-  padding-left: 20px;
-  position: relative;
   color: var(--color-secondary);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.auth-bullet-list li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
+.auth-bullet-list li .bi {
   color: var(--color-accent);
-  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 
-/* ===========================================
-   RIGHT PANEL — form title, field spacing
-   =========================================== */
+
+
+/*RIGHT PANEL*/
 
 .auth-form-title {
   color: var(--color-secondary);
   font-size: 1.8rem;
   margin: 0 0 1.5rem;
+  width: 100%;
+  max-width: 460px; 
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  max-width: 380px;
+  max-width: 460px;
 }
 
-.auth-field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
 
-.auth-field-group label {
-  color: var(--color-secondary);
-  font-size: 0.90rem;
-  font-weight: 600;
-}
 
 .auth-checkbox {
   display: flex;
@@ -158,7 +151,7 @@
 .auth-forgot-link {
   color: var(--color-primary);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
 }
 
