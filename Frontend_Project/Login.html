@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <body>
+
     <main class="auth-layout">
 
         <aside class="auth-panel-left">
-            <div class="auth-logo">
-                <span class="auth-logo-mark">M</span>
-                <span class="auth-logo-text">Marketplace</span>
-            </div>
+            
 
-            <div class="auth-hero-placeholder">
-                <span>Hero image</span>
-            </div>
+            
 
-            <p class="auth-headline">Shop local. Delivered to your door.</p>
+            <p class="auth-headline">Shop local. <span class="auth-highlight">Delivered</span> to your door.</p>
 
             <ul class="auth-bullet-list">
-                <li>Browse homemade products</li>
-                <li>Track your delivery live</li>
+                <li><i class="bi bi-check-circle-fill"></i> Browse homemade products</li>
+                <li><i class="bi bi-check-circle-fill"></i> Track your delivery </li>
             </ul>
         </aside>
 
@@ -27,14 +24,15 @@
 
             <form class="auth-form" action="#" method="post">
 
-                <div class="auth-field-group">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
                 </div>
 
-                <div class="auth-field-group">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        required minlength="6">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required minlength="6">
                 </div>
 
                 <div class="auth-options-row">
@@ -46,8 +44,10 @@
                 </div>
 
                 <div class="login-dual-actions">
-                    <button type="submit" class="btn btn-primary auth-submit" name="role" value="customer">Login as Customer</button>
-                    <button type="submit" class="btn btn-outline-primary auth-submit" name="role" value="driver">Login as Driver</button>
+                    <button type="submit" class="btn btn-primary auth-submit" name="role" value="customer">Login as
+                        Customer</button>
+                    <button type="submit" class="btn btn-outline-primary auth-submit" name="role" value="driver">Login
+                        as Driver</button>
                 </div>
 
             </form>
@@ -56,4 +56,5 @@
         </section>
     </main>
 </body>
+
 </html>
