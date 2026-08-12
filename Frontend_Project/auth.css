@@ -58,7 +58,7 @@
   border: 1px dashed var(--color-border);
   border-radius:10px;
   background-color: var(--color-white);
-  height: 250px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,3 +78,27 @@
   color: var(--color-accent);
 }
 
+.auth-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-bullet-list li {
+  padding-left: 20px;
+  position: relative;
+  color: var(--color-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.auth-bullet-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
