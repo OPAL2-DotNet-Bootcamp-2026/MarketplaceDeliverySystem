@@ -20,3 +20,19 @@
   flex-direction: column;
   justify-content: center;
 }
+
+
+.auth-layout {
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* ===========================================
+   LEFT PANEL — logo, hero placeholder, copy
+   =========================================== */
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
