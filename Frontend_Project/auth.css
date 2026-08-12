@@ -168,6 +168,33 @@
   width: 100%;
 }
 
+.auth-footer-link {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.auth-footer-link a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+.form-floating { animation: fieldIn 0.5s ease both; }
+.form-floating:nth-child(1) { animation-delay: 0.10s; }
+.form-floating:nth-child(2) { animation-delay: 0.30s; }
+.form-floating:nth-child(3) { animation-delay: 0.60s; }
+.form-floating:nth-child(4) { animation-delay: 0.80s; }
+.form-floating:nth-child(5) { animation-delay: 1s; }
+
+@keyframes fieldIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-field-group:focus-within label { color: var(--color-primary); }
 
 /* RESPONSIVE (tablets and phones) */
 
