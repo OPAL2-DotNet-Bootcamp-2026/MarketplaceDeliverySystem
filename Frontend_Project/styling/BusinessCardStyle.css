@@ -1,0 +1,74 @@
+
+.business-header-card {
+  max-width: 850px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+
+.business-square-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: var(--brand-bg-light);
+  border: 1px solid #E2E8F0;
+}
+
+
+.text-navy {
+  color: var(--brand-navy) !important;
+}
+
+
+.badge-status-open {
+  background-color: var(--brand-light-cyan);
+  color: var(--brand-navy) !important;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+
+.min-w-action {
+  min-width: 180px;
+}
+
+
+.btn-call-brand {
+  background-color: var(--brand-orange, #F37D42) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border: none;
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-call-brand:hover {
+  background-color: #e0682b !important;
+  color: #ffffff !important;
+}
+
+
+.btn-outline-favorite {
+  border: 1px solid #CBD5E1;
+  color: var(--brand-navy, #0A1F44);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.btn-outline-favorite:hover {
+  background-color: #FFF5F2;
+  border-color: var(--brand-orange);
+  color: var(--brand-orange);
+}
+
+.min-w-action {
+  min-width: 200px;
+}
