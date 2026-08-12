@@ -118,3 +118,11 @@
   font-size: 1.8rem;
   margin: 0 0 1.5rem;
 }
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 380px;
+}
+
