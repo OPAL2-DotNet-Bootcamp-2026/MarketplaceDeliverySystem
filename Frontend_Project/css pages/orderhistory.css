@@ -1,7 +1,23 @@
-main{
+/* =========================
+   STICKY FOOTER LAYOUT
+   ========================= */
 
-   margin:0;
-   padding: 100px 100PX; 
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    margin: 0;
+    padding: 100px 100px;
 }
 
 
