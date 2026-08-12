@@ -132,3 +132,9 @@
   gap: 3px;
 }
 
+.auth-field-group label {
+  color: var(--color-secondary);
+  font-size: 0.90rem;
+  font-weight: 600;
+}
+
