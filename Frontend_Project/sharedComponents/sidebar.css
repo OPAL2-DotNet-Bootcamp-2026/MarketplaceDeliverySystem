@@ -233,7 +233,17 @@
     color: #7d7470;
 }
 
+.track-icon {
+    width: 22px;
+    height: 22px;
 
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 /* Hover */
 
 .sidebar-item:hover {
@@ -433,7 +443,17 @@
     font-size: 25px;
 }
 
+.profile-icon {
+    width: 22px;
+    height: 22px;
 
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 /* =========================
    CLOSE BUTTON
    ========================= */
@@ -511,3 +531,4 @@
 
     border-radius: 10px;
 }
+
