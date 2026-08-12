@@ -48,3 +48,9 @@
   font-weight: 700;
 }
 
+.auth-logo-text {
+  color: var(--color-secondary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
