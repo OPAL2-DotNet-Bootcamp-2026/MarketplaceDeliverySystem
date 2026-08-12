@@ -1,0 +1,23 @@
+/* =========================
+   STICKY FOOTER LAYOUT
+   ========================= */
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg,
+            #faaf8a 0%,
+            #f8f8f8 50%,
+            #faaf8a 100%);
+}
+
+main {
+    flex: 1;
+}
