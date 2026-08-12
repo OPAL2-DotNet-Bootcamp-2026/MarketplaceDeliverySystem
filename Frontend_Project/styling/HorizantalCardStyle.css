@@ -1,36 +1,90 @@
-
 :root {
-  --brand-navy: #0A1F44;
-  --brand-orange: #F37D42;
-  --brand-teal: #3580A4;
-  --brand-light-cyan: #D6F1F1;
-  --brand-bg-light: #F8FAFC;
+  --brand-navy: #0A1F44;       /* Primary Dark Navy */
+  --brand-orange: #F37D42;     /* Accent Orange */
+  --brand-teal: #3580A4;       /* Teal Accent */
+  --brand-cyan: #AFFFFF;       /* Vibrant Cyan */
+  --brand-light-cyan: #D6F1F1; /* Light Cyan Soft Backgrounds */
+  --brand-bg-light: #F8FAFC;   /* Card Background Tint */
 }
 
+/* ===================================================
+   Typography & Utility Classes
+=================================================== */
+.text-brand-navy {
+  color: var(--brand-navy) !important;
+}
 
+.text-brand-teal {
+  color: var(--brand-teal) !important;
+}
+
+.text-brand-orange {
+  color: var(--brand-orange) !important;
+}
+
+.badge-brand-count {
+  background-color: var(--brand-light-cyan);
+  color: var(--brand-navy);
+  font-weight: 600;
+}
+
+.shadow-modern {
+  box-shadow: 0 4px 15px rgba(10, 31, 68, 0.05) !important;
+}
+
+.modal-description-text {
+  line-height: 1.6;
+}
+
+/* Back Button Above Aside */
+.btn-back-aside {
+  background-color: var(--brand-bg-light);
+  color: var(--brand-teal);
+  border: 1.5px solid var(--brand-teal);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-back-aside:hover {
+  background-color: var(--brand-light-cyan);
+  border-color: var(--brand-teal);
+  color: var(--brand-navy);
+  transform: translateY(-1px);
+}
+
+/* ===================================================
+   Full-Width Business Horizontal Cards
+=================================================== */
 .business-horizontal-card {
-  max-width: 540px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #E2E8F0;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid #F1F5F9;
   border-radius: 12px;
-  overflow: hidden;
   background-color: #ffffff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
 }
 
-
 .business-horizontal-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
   border-color: var(--brand-teal);
 }
 
-
 .business-horizontal-card .card-title {
   color: var(--brand-navy);
   font-weight: 700;
+  font-size: 1.15rem;
 }
 
 .business-horizontal-card .card-title a {
@@ -42,18 +96,19 @@
   color: var(--brand-teal) !important;
 }
 
-
 .business-horizontal-card .business-card-img {
-  width: 100%;
-  height: 100%;
-  max-height: 160px;
-  object-fit: contain;
-  padding: 12px;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
   background-color: var(--brand-bg-light);
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  border: 1px solid #E2E8F0;
+  transition: transform 0.3s ease;
 }
 
+.business-horizontal-card:hover .business-card-img {
+  transform: scale(1.03);
+}
 
 .badge-status-open {
   background-color: var(--brand-light-cyan);
@@ -61,4 +116,238 @@
   font-weight: 600;
   padding: 6px 12px;
   border-radius: 20px;
+}
+
+/* ===================================================
+   Product Horizontal Card Layout
+=================================================== */
+.product-horizontal-card {
+  border: 1px solid #F1F5F9;
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.product-horizontal-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
+  border-color: var(--brand-teal);
+}
+
+.product-horizontal-card:hover .product-card-title {
+  color: var(--brand-teal);
+}
+
+.product-card-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  background-color: var(--brand-bg-light);
+  border: 1px solid #E2E8F0;
+  transition: transform 0.3s ease;
+}
+
+.product-horizontal-card:hover .product-card-img {
+  transform: scale(1.04);
+}
+
+.product-card-title {
+  color: var(--brand-navy);
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+
+.price-tag {
+  color: var(--brand-orange);
+  font-size: 1.05rem;
+}
+
+.stock-tag-low {
+  background-color: #FEF3C7;
+  color: #92400E;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.stock-tag-good {
+  background-color: #E6F4EA;
+  color: #137333;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* ===================================================
+   Subcategory Pills (Child Categories)
+=================================================== */
+.subcategory-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.subcategory-pill {
+  border: 1px solid #CBD5E1;
+  background-color: #ffffff;
+  color: var(--brand-navy);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.subcategory-pill:hover {
+  border-color: var(--brand-teal);
+  color: var(--brand-teal);
+  background-color: var(--brand-bg-light);
+}
+
+.subcategory-pill.active {
+  background-color: var(--brand-teal);
+  color: #ffffff !important;
+  border-color: var(--brand-teal);
+}
+
+/* ===================================================
+   Quantity Controls & Buttons
+=================================================== */
+.qty-box-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: var(--brand-navy);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.qty-box-btn:hover {
+  border-color: var(--brand-teal);
+  color: #ffffff;
+  background-color: var(--brand-teal);
+}
+
+.qty-box-btn:active {
+  transform: scale(0.95);
+}
+
+.qty-box-val {
+  width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  background-color: var(--brand-bg-light);
+  color: var(--brand-navy);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.btn-add-order {
+  background-color: var(--brand-orange);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: none;
+  padding: 8px 18px;
+  height: 36px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add-order:hover {
+  background-color: #e0682d;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* ===================================================
+   Modal Window Styling
+=================================================== */
+.product-modal .modal-content {
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  overflow: hidden;
+}
+
+.product-modal .modal-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 14px 20px;
+}
+
+.product-modal .modal-category-title {
+  color: var(--brand-navy);
+  font-weight: 700;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+}
+
+.product-modal .modal-close-btn {
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: var(--brand-navy);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+}
+
+.product-modal .modal-close-btn:hover {
+  background-color: #f1f5f9;
+  border-color: var(--brand-navy);
+}
+
+.product-modal .modal-product-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background-color: var(--brand-bg-light);
+}
+
+.product-modal .modal-footer {
+  background-color: #f8fafc;
+  border-top: 1px solid #E2E8F0;
+  padding: 16px 20px;
+}
+
+.product-modal .btn-cancel {
+  border: 1px solid #CBD5E1;
+  background-color: #ffffff;
+  color: var(--brand-navy);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 18px;
+  transition: all 0.2s ease;
+}
+
+.product-modal .btn-cancel:hover {
+  background-color: #f1f5f9;
 }
