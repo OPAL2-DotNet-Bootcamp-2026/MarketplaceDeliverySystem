@@ -10,9 +10,155 @@
 </head>
 
 <body>
+<main>
+        <!-- Top Header Navigation -->
+        <header>
+            <a href="#">Back to Shopping</a>
+            <h1>Review Delivery & Items</h1>
+        </header>
 
-    <main>
-        
+        <!-- Main Content -->
+        <div>
+            
+            <!-- LEFT COLUMN: Payment Method & Order Items -->
+            <div>
+                
+                <!-- 1. Payment Method Section -->
+                <section>
+                    <h2>PAYMENT METHOD</h2>
+
+                    <div>
+                        <!-- Option 1: Cash on Delivery -->
+                        <label>
+                            <input type="radio" name="payment_method" value="cod" checked>
+                            <span>Cash On Delivery</span>
+                            <p>Pay at your doorstep</p>
+                        </label>
+
+                        <!-- Option 2: Apple Pay -->
+                        <label>
+                            <input type="radio" name="payment_method" value="apple_pay">
+                            <span>Apple Pay</span>
+                            <p>Fast checkout</p>
+                        </label>
+
+                        <!-- Option 3: Credit/Debit Card -->
+                        <label>
+                            <input type="radio" name="payment_method" value="card">
+                            <span>Credit/Debit Card</span>
+                            <p>Visa, Mastercard, Amex</p>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- 2. Order Items Section -->
+                <section>
+                    <h2>ORDER ITEMS (3)</h2>
+
+                    <ul>
+                        <!-- Product Item 1 -->
+                        <li>
+                            <div>
+                                <img src="../assets/img/shoes.png" alt="AeroStride Carbon Running Shoes">
+                                <div>
+                                    <h4>AeroStride Carbon Running Shoes</h4>
+                                    <p>Category: Sports & Outdoors</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <button type="button" aria-label="Decrease quantity">−</button>
+                                    <span>1</span>
+                                    <button type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span>24.900 OMR</span>
+                            </div>
+                        </li>
+
+                        <!-- Product Item 2 -->
+                        <li>
+                            <div>
+                                <img src="../assets/img/headphones.png" alt="AeroSound Headphones">
+                                <div>
+                                    <h4>AeroSound ANC Wireless Over-Ear Headphones</h4>
+                                    <p>Category: Consumer Electronics</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <button type="button" aria-label="Decrease quantity">−</button>
+                                    <span>1</span>
+                                    <button type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span>18.500 OMR</span>
+                            </div>
+                        </li>
+
+                        <!-- Product Item 3 -->
+                        <li>
+                            <div>
+                                <img src="../assets/img/backpack.png" alt="Nomad Laptop Backpack">
+                                <div>
+                                    <h4>Nomad Weatherproof Laptop Backpack 20L</h4>
+                                    <p>Category: Bags & Travel</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <button type="button" aria-label="Decrease quantity">−</button>
+                                    <span>1</span>
+                                    <button type="button" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span>9.200 OMR</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Order Summary Sidebar -->
+            <aside>
+                <section>
+                    <h2>Order Summary</h2>
+
+                    <div>
+                        <div>
+                            <span>Items Subtotal</span>
+                            <span>52.600 OMR</span>
+                        </div>
+                        <div>
+                            <span>Standard Delivery Fee</span>
+                            <span>1.000 OMR</span>
+                        </div>
+                        <div>
+                            <span>VAT & Custom Duties (5%)</span>
+                            <span>2.630 OMR</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div>
+                        <span>Total Amount</span>
+                        <span>56.230 OMR</span>
+                    </div>
+
+                    <div>
+                        <span>Safe & Secure checkout SSL encrypted payment</span>
+                    </div>
+
+                    <button type="submit">
+                        Place Order (56.230 OMR)
+                    </button>
+
+                    <p>
+                        By finalizing the transaction, you agree to our Terms of Service and authorize the Delivery platform to execute contact-free delivery at your selected address.
+                    </p>
+                </section>
+            </aside>
+
+        </div>
     </main>
 
     <div id="footer-container"></div>
