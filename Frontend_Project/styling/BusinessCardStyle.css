@@ -72,3 +72,41 @@
 .min-w-action {
   min-width: 200px;
 }
+
+/* Container Centering Constraints */
+.max-content-width {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Top Back Link */
+.top-back-link {
+  color: #64748B;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.top-back-link:hover {
+  color: var(--brand-navy, #0A1F44);
+  text-decoration: underline;
+}
+
+/* Round Circular Logo */
+.business-circle-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50% !important;
+  background-color: var(--brand-bg-light, #F8FAFC);
+  border: 1px solid #E2E8F0;
+}
+
+/* Active Subcategory Pill (Matches Image) */
+.subcategory-pill.active {
+  background-color: var(--brand-navy, #0A1F44) !important;
+  color: #ffffff !important;
+  border-color: var(--brand-navy, #0A1F44) !important;
+}
