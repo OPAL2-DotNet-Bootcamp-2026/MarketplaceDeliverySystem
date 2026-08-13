@@ -532,3 +532,14 @@
     border-radius: 10px;
 }
 
+.sidebar-icon svg {
+  display: inline-block;
+  vertical-align: middle;
+  stroke: var(--brand-navy, #0A1F44);
+  transition: stroke 0.2s ease;
+}
+
+.sidebar-item:hover .sidebar-icon svg,
+.sidebar-item.active .sidebar-icon svg {
+  stroke: var(--brand-teal, #3580A4);
+}
