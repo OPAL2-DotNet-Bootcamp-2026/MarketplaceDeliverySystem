@@ -52,26 +52,7 @@
 }
 
 
-.sidebar-logo-icon {
-    width: 50px;
-    height: 50px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 15px;
-
-    background-color: #F37D42;
-
-    color: white;
-
-    font-size: 25px;
-    font-weight: bold;
-
-    box-shadow:
-        0 8px 15px rgba(243, 125, 66, 0.25);
-}
 
 
 .sidebar-logo-name {
@@ -83,9 +64,7 @@
 }
 
 
-.sidebar-logo-name span {
-    color: #F37D42;
-}
+
 
 
 .sidebar-logo-subtitle {
@@ -98,6 +77,63 @@
     color: #35B0A4;
 }
 
+/* =========================
+   LOGO
+   ========================= */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 0px;
+
+    margin-bottom: 35px;
+    margin-left: -40px;
+}
+
+
+.sidebar-logo-image {
+    width: 90px;
+    height: 90px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+}
+
+
+.sidebar-logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: -15px;
+}
+
+
+.sidebar-logo-name {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    color: #0A1F44;
+
+    line-height: 1;
+}
+
+
+.sidebar-logo-subtitle {
+    margin-top: 8px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #35B0A4;
+
+    white-space: nowrap;
+}
 
 /* =========================
    USER CARD
@@ -244,6 +280,7 @@
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+
 /* Hover */
 
 .sidebar-item:hover {
@@ -336,11 +373,9 @@
     border-radius: 24px;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #F37D42,
-            #ff6655
-        );
+            #ff6655);
 
     color: white;
 
@@ -454,6 +489,7 @@
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+
 /* =========================
    CLOSE BUTTON
    ========================= */
@@ -533,13 +569,13 @@
 }
 
 .sidebar-icon svg {
-  display: inline-block;
-  vertical-align: middle;
-  stroke: var(--brand-navy, #0A1F44);
-  transition: stroke 0.2s ease;
+    display: inline-block;
+    vertical-align: middle;
+    stroke: var(--brand-navy, #0A1F44);
+    transition: stroke 0.2s ease;
 }
 
 .sidebar-item:hover .sidebar-icon svg,
 .sidebar-item.active .sidebar-icon svg {
-  stroke: var(--brand-teal, #3580A4);
+    stroke: var(--brand-teal, #3580A4);
 }
