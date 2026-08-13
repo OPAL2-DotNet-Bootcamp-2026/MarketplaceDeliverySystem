@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delivered Status</title>
+
+    <link rel="stylesheet" href="../sharedComponents/footer.css">
+    <link rel="stylesheet" href="../sharedComponents/header.css">
+    <link rel="stylesheet" href="../sharedComponents/sidebar.css">
+    <link rel="stylesheet" href="../css pages/DeliveredStatus.css">
+    <link rel="stylesheet" href="../sharedComponents/layout.css">
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <div id="sidebar-container"></div>
+    <main class="delivery-status-page">
+
+        <!-- Page Header -->
+        <section class="delivery-header">
+
+            <span class="delivery-label">
+                DELIVERY MANAGEMENT
+            </span>
+
+            <h1>Update Delivery Status</h1>
+
+            <p>
+                Manage the current delivery status for your order.
+            </p>
+
+        </section>
+
+
+        <!-- Main Delivery Card -->
+        <section class="delivery-status-card">
+
+            <!-- Order Information -->
+            <div class="delivery-order-info">
+
+                <div class="order-icon">
+                    <svg viewBox="0 0 24 24">
+
+                        <path d="M3 6h11v11H3z"></path>
+
+                        <path d="M14 10h4l3 3v4h-7z"></path>
+
+                        <circle cx="7" cy="19" r="2"></circle>
+
+                        <circle cx="18" cy="19" r="2"></circle>
+
+                    </svg>
+                </div>
+
+
+                <div>
+
+                    <span class="order-small-title">
+                        CURRENT ORDER
+                    </span>
+
+                    <h2>#ORD-10245</h2>
+
+                    <p>
+                        Delivery is currently on the way.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Divider -->
+            <div class="delivery-divider"></div>
+
+
+            <!-- Status Section -->
+            <div class="status-update-section">
+
+                <h3>Delivery Status</h3>
+
+
+
+                <!-- Status Options -->
+                <div class="status-options">
+
+                    <div class="status-option completed">
+
+                        <div class="status-circle">
+                            ✓
+                        </div>
+
+                        <div class="status-option-content">
+                            <strong>Order Placed</strong>
+                            <span>Order has been received</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-option completed">
+
+                        <div class="status-circle">
+                            ✓
+                        </div>
+
+                        <div class="status-option-content">
+                            <strong>Order Ready</strong>
+                            <span>Order is ready for pickup</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-option completed">
+
+                        <div class="status-circle">
+                            ✓
+                        </div>
+
+                        <div class="status-option-content">
+                            <strong>On the Way</strong>
+                            <span>Order is being delivered</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Current / Delivered -->
+                    <div class="status-option delivered-status">
+
+                        <div class="status-circle">
+                            4
+                        </div>
+
+                        <div class="status-option-content">
+                            <strong>Delivered</strong>
+                            <span>Mark the order as successfully delivered</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Proof of Delivery -->
+            <section class="proof-of-delivery">
+
+                <h3>PROOF OF DELIVERY</h3>
+
+                <!-- Add Photo -->
+                <label class="add-photo-box">
+
+                    <input type="file" accept="image/*">
+
+                    <div class="camera-icon">
+                        📷
+                    </div>
+
+                    <span>Add Photo</span>
+
+                </label>
+
+
+                <!-- Delivery Note -->
+                <textarea class="delivery-note"
+                    placeholder="Add a delivery note (optional) — e.g. left with neighbor, at the front desk..."></textarea>
+
+            </section>
+            <br>
+            <p class="report-issue">
+                Can't deliver this stop?
+                <a href="#">Report an issue</a>
+            </p>
+            <!-- Slide To Confirm -->
+            <!-- Slide To Confirm -->
+            <div class="delivery-actions">
+
+                <!-- Hidden checkbox controls the CSS interaction -->
+                <input type="checkbox" id="delivery-confirm-toggle" class="delivery-confirm-toggle">
+
+                <label for="delivery-confirm-toggle" class="slide-confirm">
+
+                    <!-- Sliding Circle -->
+                    <span class="slide-button">
+                        ›
+                    </span>
+
+                    <!-- Main Text -->
+                    <span class="slide-text">
+                        SLIDE TO CONFIRM DELIVERED
+                    </span>
+
+                    <!-- Decorative Dots -->
+                    <span class="slide-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                </label>
+
+
+                <!-- Confirmation Message -->
+                <div class="delivered-message">
+
+                    <div class="delivered-check">
+                        ✓
+                    </div>
+
+                    <h2>MARKED AS DELIVERED</h2>
+
+                    <p>
+                        Order #ORD-10245 has been successfully delivered.
+                    </p>
+
+                    <p class="delivery-closed">
+                        This delivery is now closed.
+                    </p>
+
+                    <button class="next-stop-button">
+                        Next Delivery →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Additional Information -->
+        <section class="delivery-details">
+
+            <div class="delivery-detail-card">
+
+                <span>ORDER NUMBER</span>
+
+                <strong>#ORD-10245</strong>
+
+            </div>
+
+
+            <div class="delivery-detail-card">
+
+                <span>CUSTOMER</span>
+
+                <strong>Marketplace Customer</strong>
+
+            </div>
+
+
+            <div class="delivery-detail-card">
+
+                <span>CURRENT STATUS</span>
+
+                <strong class="onway-status">
+                    On the Way
+                </strong>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../sharedComponents/header.js"></script>
+    <div id="footer-container"></div>
+    <!-- Load and run the JavaScript code from component.js -->
+    <!-- <script> is an HTML element used to include or write JavaScript in an HTML page. -->
+    <script src="../sharedComponents/component.js"></script>
+
+</body>
+
+</html>

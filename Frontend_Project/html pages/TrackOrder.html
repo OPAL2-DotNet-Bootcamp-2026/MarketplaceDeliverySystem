@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Track Order</title>
+
+    <link rel="stylesheet" href="../sharedComponents/footer.css">
+    <link rel="stylesheet" href="../sharedComponents/header.css">
+    <link rel="stylesheet" href="../sharedComponents/sidebar.css">
+    <link rel="stylesheet" href="../css pages/TrackOrder.css">
+    <link rel="stylesheet" href="../sharedComponents/layout.css">
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <div id="sidebar-container"></div>
+    <main class="track-page">
+
+        <!-- Page Header -->
+        <section class="track-header">
+
+            <span class="track-label">ORDER TRACKING</span>
+
+            <h1>Track Your Order</h1>
+
+            <p>
+                Order #ORD-10245
+                <span>•</span>
+                Placed Aug 9, 2026
+            </p>
+
+        </section>
+
+
+        <!-- Order Progress -->
+        <section class="tracking-card">
+
+            <div class="progress-container">
+
+                <!-- Order Placed -->
+                <div class="progress-step" data-status="placed">
+
+                    <div class="step-circle">
+                        1
+                    </div>
+
+                    <span>Order Placed</span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <!-- Order Ready -->
+                <div class="progress-step" data-status="ready">
+
+                    <div class="step-circle">
+                        2
+                    </div>
+
+                    <span>Order Ready</span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <!-- On The Way -->
+                <div class="progress-step" data-status="onway">
+
+                    <div class="step-circle">
+                        3
+                    </div>
+
+                    <span>On the Way</span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <!-- Delivered -->
+                <div class="progress-step" data-status="delivered">
+
+                    <div class="step-circle">
+                        4
+                    </div>
+
+                    <span>Delivered</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Current Status -->
+        <section class="current-status">
+
+            <div class="delivery-icon">
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M3 6h11v11H3z"></path>
+
+                    <path d="M14 10h4l3 3v4h-7z"></path>
+
+                    <circle cx="7" cy="19" r="2"></circle>
+
+                    <circle cx="18" cy="19" r="2"></circle>
+
+                </svg>
+            </div>
+
+
+            <span class="status-badge" id="status-badge">
+                ON THE WAY
+            </span>
+
+
+            <h2 id="status-title">
+                Your order is on the way
+            </h2>
+
+
+            <p id="status-description">
+                Your driver has picked up your order
+                and is currently delivering it to you.
+            </p>
+
+
+            <div class="delivery-time">
+
+                <div>
+                    <span>ESTIMATED ARRIVAL</span>
+                    <strong>2:30 PM</strong>
+                </div>
+
+                <div>
+                    <span>STATUS</span>
+
+                    <strong id="current-status-text">
+                        On the way
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <a href="DriverInfo.html" class="driver-button" id="driver-button">
+
+                View Driver Information
+
+            </a>
+
+
+            <small>
+                Updated just now
+            </small>
+
+        </section>
+
+
+        <!-- Information Cards -->
+        <section class="track-info">
+
+
+            <!-- Order Details -->
+            <div class="info-card">
+
+                <div class="info-card-header">
+
+                    <div class="info-icon orange-icon">
+                        🛍
+                    </div>
+
+                    <h3>Order Details</h3>
+
+                </div>
+
+                <div class="info-row">
+                    <span>Order Number</span>
+                    <strong>#ORD-10245</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Items</span>
+                    <strong>3 Items</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Total</span>
+                    <strong>24.500 OMR</strong>
+                </div>
+
+            </div>
+
+
+            <!-- Delivery Information -->
+            <div class="info-card">
+
+                <div class="info-card-header">
+
+                    <div class="info-icon teal-icon">
+                        🚚
+                    </div>
+
+                    <h3>Delivery Information</h3>
+
+                </div>
+
+                <div class="info-row">
+                    <span>Delivery Status</span>
+
+                    <strong class="teal-text" id="delivery-status-text">
+                        On the way
+                    </strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Estimated Arrival</span>
+                    <strong>2:30 PM</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Driver</span>
+                    <strong>Assigned</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+    <script src="../sharedComponents/header.js"></script>
+    <div id="footer-container"></div>
+    <!-- Load and run the JavaScript code from component.js -->
+    <!-- <script> is an HTML element used to include or write JavaScript in an HTML page. -->
+    <script src="../sharedComponents/component.js"></script>
+    <script src="TrackOrder.js"></script>
+
+</body>
+
+</html>
