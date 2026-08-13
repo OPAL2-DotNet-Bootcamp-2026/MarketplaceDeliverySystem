@@ -717,20 +717,23 @@ main{
 
 
 
-/* 
+/*
    HOME PAGE ANIMATIONS
+*/
 
-   */
 
-
-/* ================= HERO ================= */
+/* ================= HERO IMAGE ================= */
 
 /* حركة بسيطة للصورة كاملة */
 
 .hero-image {
-    animation: heroFloat 4s ease-in-out infinite;
+    animation:
+        fadeFromRight 0.8s ease-out,
+        heroFloat 4s ease-in-out 0.8s infinite;
 }
 
+
+/* حركة الصورة للأعلى والأسفل */
 
 @keyframes heroFloat {
 
@@ -749,7 +752,7 @@ main{
 }
 
 
-/* ================= HERO IMAGE ================= */
+/* تكبير بسيط للصورة عند مرور الماوس */
 
 .hero-image img {
 
@@ -757,11 +760,100 @@ main{
 }
 
 
-/* عند مرور الماوس على الـ Hero */
-
 .hero-section:hover .hero-image img {
 
     transform: scale(1.03);
+}
+
+
+
+/* ================= HERO TITLE ================= */
+
+/* ظهور العنوان من اليسار */
+
+.hero-title {
+
+    animation: titleSlide 1s ease-out;
+}
+
+
+@keyframes titleSlide {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(-40px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
+}
+
+
+
+/* ================= MOVING TEXT ================= */
+
+/* حركة بسيطة للكلام */
+
+.moving-text {
+
+    animation: movingText 3s ease-in-out infinite;
+}
+
+
+@keyframes movingText {
+
+    0% {
+
+        transform: translateX(0);
+    }
+
+    50% {
+
+        transform: translateX(8px);
+    }
+
+    100% {
+
+        transform: translateX(0);
+    }
+
+}
+
+
+
+/* ================= HERO TEXT ================= */
+
+/* ظهور النص من اليسار */
+
+.hero-text {
+
+    animation: fadeFromLeft 0.8s ease-out;
+}
+
+
+@keyframes fadeFromLeft {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(-25px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
 }
 
 
@@ -963,36 +1055,21 @@ main{
 
 /* ================= PAGE LOAD ================= */
 
+/* ظهور النص من اليسار */
+
 .hero-text {
 
     animation: fadeFromLeft 0.8s ease-out;
 }
 
 
+/* ظهور الصورة من اليمين + الحركة المستمرة */
+
 .hero-image {
 
     animation:
         fadeFromRight 0.8s ease-out,
         heroFloat 4s ease-in-out 0.8s infinite;
-}
-
-
-@keyframes fadeFromLeft {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateX(-25px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateX(0);
-    }
-
 }
 
 
@@ -1013,4 +1090,3 @@ main{
     }
 
 }
-
