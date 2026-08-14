@@ -28,8 +28,8 @@
                     </div>
 
                     <div class="payment-options">
-                        <label class="payment-card active">
-                            <input type="radio" name="payment_method" value="cod" checked>
+                        <label class="payment-card">
+                            <input type="radio" name="payment_method" value="cod">
                             <span class="radio-dot"></span>
                             <div class="payment-text">
                                 <span class="payment-title">Cash On Delivery</span>
@@ -176,7 +176,7 @@
             <p>Thank you for your purchase. Your order is being prepared and will be on its way shortly.</p>
             
             <div class="modal-actions">
-                <a href="driverInfo.html" class="btn-track-order">Track Your Order</a>
+                <a href="TrackOrder.html" class="btn-track-order">Track Your Order</a>
                 <button type="button" class="btn-close-modal" id="closeModalBtn">Close</button>
             </div>
         </div>
@@ -192,6 +192,11 @@
 
         placeOrderBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+            if (!selectedPayment) {
+                alert('Please select a payment method before placing your order.');
+                return;
+            }
             modal.classList.add('active');
         });
 
