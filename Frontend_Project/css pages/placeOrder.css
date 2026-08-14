@@ -122,7 +122,6 @@ main.container {
     display: none;
 }
 
-.payment-card.active,
 .payment-card:has(input[type="radio"]:checked) {
     border: 2px solid #ff7a00;
 }
@@ -135,6 +134,7 @@ main.container {
     margin-top: 2px;
     flex-shrink: 0;
     display: inline-block;
+    transition: all 0.2s ease;
 }
 
 .payment-card:has(input[type="radio"]:checked) .radio-dot {
@@ -152,12 +152,13 @@ main.container {
 
 .payment-sub {
     font-size: 12px;
-    color: #0d9488;
+    color: #6b7280;
     margin: 0;
+    transition: color 0.2s ease;
 }
 
-.payment-card:not(:first-child) .payment-sub {
-    color: #6b7280;
+.payment-card:has(input[type="radio"]:checked) .payment-sub {
+    color: #0d9488;
 }
 
 .item-list {
