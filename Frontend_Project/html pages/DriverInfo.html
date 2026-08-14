@@ -4,13 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../sharedComponents/layout.css">
+    <link rel="stylesheet" href="../sharedComponents/header.css">
+    <link rel="stylesheet" href="../sharedComponents/sidebar.css">
     <title>Track Order - Review Delivery & Items</title>
     <link rel="stylesheet" href="../sharedComponents/footer.css">
     <link rel="stylesheet" href="../css pages/driverInfo.css">
 </head>
 
 <body>
+    <div id="header-container"></div>
 
+    <div id="sidebar-container"></div>
     <main class="container">
         <!-- Top Title Row -->
         <header class="page-header">
@@ -26,7 +31,7 @@
                 <img src="../assets/img/TruckIconCircle.png" alt="Delivery Icon" class="card-icon">
                 <h2>DELIVERY STATUS</h2>
             </div>
-            
+
             <div class="info-box">
                 <span class="label"><span class="dot">•</span> Your Driver</span>
                 <span class="value">Mohammed Alkahali</span>
@@ -78,7 +83,7 @@
                         <img src="../assets/img/Om-Ali.jpg" alt="Om Ali" class="item-thumb">
                         <div class="item-text">
                             <h4>Om Ali</h4>
-                            <p class="category">Category: Food & Beverage  </p>
+                            <p class="category">Category: Food & Beverage </p>
                         </div>
                     </div>
                     <div class="item-price-info">
@@ -95,14 +100,14 @@
                 <img src="../assets/img/TruckIconCircle2.png" alt="Total Icon" class="card-icon">
                 <h2>TOTAL</h2>
             </div>
-            
+
             <div class="info-box">
                 <span class="payment-method">Payed With Apple Pay</span>
                 <span class="total-price">52.8 OMR</span>
             </div>
         </section>
     </main>
-
+    <script src="../sharedComponents/header.js"></script>
     <div id="footer-container"></div>
 
     <script src="../sharedComponents/component.js"></script>
