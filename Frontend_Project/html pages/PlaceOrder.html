@@ -12,7 +12,6 @@
 <body>
 
     <main class="container">
-        <!-- Top Title Row -->
         <header class="page-header">
             <div class="heading-row">
                 <a href="Products.html" class="back-link">← Back to Shopping</a>
@@ -20,13 +19,8 @@
             </div>
         </header>
 
-        <!-- Main 2-Column Grid -->
         <div class="checkout-grid">
-            
-            <!-- LEFT COLUMN: Payment Method & Items -->
             <div class="main-content">
-                
-                <!-- 1. Payment Method Card -->
                 <section class="card payment-section">
                     <div class="card-header">
                         <img src="../assets/img/TruckIconCircle.png" alt="Payment Icon" class="card-icon">
@@ -34,7 +28,6 @@
                     </div>
 
                     <div class="payment-options">
-                        <!-- Option 1: Cash On Delivery -->
                         <label class="payment-card active">
                             <input type="radio" name="payment_method" value="cod" checked>
                             <span class="radio-dot"></span>
@@ -44,7 +37,6 @@
                             </div>
                         </label>
 
-                        <!-- Option 2: Apple Pay -->
                         <label class="payment-card">
                             <input type="radio" name="payment_method" value="apple_pay">
                             <span class="radio-dot"></span>
@@ -54,7 +46,6 @@
                             </div>
                         </label>
 
-                        <!-- Option 3: Credit/Debit Card -->
                         <label class="payment-card">
                             <input type="radio" name="payment_method" value="card">
                             <span class="radio-dot"></span>
@@ -66,14 +57,12 @@
                     </div>
                 </section>
 
-                <!-- 2. Order Items Card -->
                 <section class="card order-items">
                     <div class="card-header">
                         <h2>ORDER ITEMS (3)</h2>
                     </div>
 
                     <ul class="item-list">
-                        <!-- Item 1 -->
                         <li class="item-row">
                             <div class="item-details">
                                 <img src="../assets/img/Chicken-Sambusa.jpg" alt="Chicken Sambusa" class="item-thumb">
@@ -92,7 +81,6 @@
                             </div>
                         </li>
 
-                        <!-- Item 2 -->
                         <li class="item-row">
                             <div class="item-details">
                                 <img src="../assets/img/MeatKabuli.jpg" alt="Meat Kabuli" class="item-thumb">
@@ -111,7 +99,6 @@
                             </div>
                         </li>
 
-                        <!-- Item 3 -->
                         <li class="item-row">
                             <div class="item-details">
                                 <img src="../assets/img/Om-Ali.jpg" alt="Om Ali" class="item-thumb">
@@ -131,10 +118,8 @@
                         </li>
                     </ul>
                 </section>
-
             </div>
 
-            <!-- RIGHT COLUMN: Order Summary Sidebar -->
             <aside class="sidebar-summary">
                 <div class="card summary-card">
                     <h2 class="summary-title">Order Summary</h2>
@@ -166,7 +151,7 @@
                         <span>Safe & Secure checkout SSL encrypted payment</span>
                     </div>
 
-                    <button type="submit" class="btn-place-order">
+                    <button type="button" class="btn-place-order">
                         Place Order (56.230 OMR)
                     </button>
 
@@ -175,13 +160,53 @@
                     </p>
                 </div>
             </aside>
-
         </div>
     </main>
+
+    <div id="orderSuccessModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+
+            <h2>Order Placed Successfully!</h2>
+            <p>Thank you for your purchase. Your order is being prepared and will be on its way shortly.</p>
+            
+            <div class="modal-actions">
+                <a href="driverInfo.html" class="btn-track-order">Track Your Order</a>
+                <button type="button" class="btn-close-modal" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
 
     <div id="footer-container"></div>
 
     <script src="../sharedComponents/component.js"></script>
+    <script>
+        const placeOrderBtn = document.querySelector('.btn-place-order');
+        const modal = document.getElementById('orderSuccessModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        placeOrderBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 
 </html>
