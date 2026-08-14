@@ -4,10 +4,10 @@
 
 :root {
     --navy: #0A1F44;
-    --orange: #F37D42;
-    --teal: #35B0A4;
-    --light-cyan: #AFFFFF;
-    --very-light-cyan: #D6F1F1;
+    --orange: #FD751F;
+    --teal: #0A1F44;
+    --light-cyan: #FD751F;
+    --very-light-cyan: #FDFDFF;
 }
 
 
@@ -20,12 +20,10 @@
     color: var(--navy);
 
     /* Main gradient */
-    background: linear-gradient(
-        90deg,
-        var(--very-light-cyan),
-        var(--light-cyan),
-        var(--very-light-cyan)
-    );
+    background: linear-gradient(90deg,
+            var(--very-light-cyan),
+            var(--light-cyan),
+            var(--very-light-cyan));
 
     box-shadow: 0 3px 12px rgba(10, 31, 68, 0.12);
 }
@@ -37,18 +35,16 @@
 
 .header-top {
     height: 110px;
-    padding: 0 0px;
+    padding: 0 60px;
 
     display: flex;
     align-items: center;
 
     border-bottom: 1px solid rgba(10, 31, 68, 0.12);
 
-    background: linear-gradient(
-        90deg,
-        var(--very-light-cyan),
-        var(--light-cyan)
-    );
+    background: linear-gradient(90deg,
+            var(--very-light-cyan),
+            var(--light-cyan));
 }
 
 
@@ -58,10 +54,8 @@
 
 .logo-area {
     min-width: 270px;
-
     display: flex;
     align-items: center;
-    gap: 0px;
 }
 
 /* Logo image */
@@ -71,6 +65,7 @@
     height: 100px;
 
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 /* Holds both text titles */
@@ -79,7 +74,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-     margin-left: -20px;
+    margin-left: -20px;
 }
 
 /* MARKETPLACE */
@@ -98,9 +93,24 @@
     letter-spacing: 4px;
     color: var(--teal);
 
-    margin-top: 5px;
+    margin-top: -5px;
 }
 
+/* Small orange dot */
+
+.logo-dot {
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    background-color: var(--orange);
+    border-radius: 50%;
+
+    margin-left: 5px;
+
+    vertical-align: middle;
+}
 
 /* =========================
    TAGLINE
