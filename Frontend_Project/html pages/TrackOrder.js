@@ -180,5 +180,5 @@ function updateOrderStatus(status) {
 // Test the order status
 updateOrderStatus("placed");
 updateOrderStatus("ready");
-//updateOrderStatus("onway");
+updateOrderStatus("onway");
 //updateOrderStatus("delivered");

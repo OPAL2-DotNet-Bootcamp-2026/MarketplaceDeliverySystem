@@ -4,13 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../sharedComponents/header.css">
+    <link rel="stylesheet" href="../sharedComponents/sidebar.css">
+    <link rel="stylesheet" href="../sharedComponents/layout.css">
     <title>Place Order - Review Delivery & Items</title>
     <link rel="stylesheet" href="../sharedComponents/footer.css">
     <link rel="stylesheet" href="../css pages/placeOrder.css">
 </head>
 
 <body>
+    <div id="header-container"></div>
 
+    <div id="sidebar-container"></div>
     <main class="container">
         <header class="page-header">
             <div class="heading-row">
@@ -156,7 +161,8 @@
                     </button>
 
                     <p class="disclaimer">
-                        By finalizing the transaction, you agree to our Terms of Service and authorize the Delivery platform to execute contact-free delivery at your selected address.
+                        By finalizing the transaction, you agree to our Terms of Service and authorize the Delivery
+                        platform to execute contact-free delivery at your selected address.
                     </p>
                 </div>
             </aside>
@@ -167,21 +173,21 @@
         <div class="modal-card">
             <div class="checkmark-wrapper">
                 <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                 </svg>
             </div>
 
             <h2>Order Placed Successfully!</h2>
             <p>Thank you for your purchase. Your order is being prepared and will be on its way shortly.</p>
-            
+
             <div class="modal-actions">
                 <a href="TrackOrder.html" class="btn-track-order">Track Your Order</a>
                 <button type="button" class="btn-close-modal" id="closeModalBtn">Close</button>
             </div>
         </div>
     </div>
-
+    <script src="../sharedComponents/header.js"></script>
     <div id="footer-container"></div>
 
     <script src="../sharedComponents/component.js"></script>
@@ -190,7 +196,7 @@
         const modal = document.getElementById('orderSuccessModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
 
-        placeOrderBtn.addEventListener('click', function(e) {
+        placeOrderBtn.addEventListener('click', function (e) {
             e.preventDefault();
             const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
             if (!selectedPayment) {
@@ -200,11 +206,11 @@
             modal.classList.add('active');
         });
 
-        closeModalBtn.addEventListener('click', function() {
+        closeModalBtn.addEventListener('click', function () {
             modal.classList.remove('active');
         });
 
-        modal.addEventListener('click', function(e) {
+        modal.addEventListener('click', function (e) {
             if (e.target === modal) {
                 modal.classList.remove('active');
             }
