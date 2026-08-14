@@ -3,24 +3,208 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Place Order</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order - Review Delivery & Items</title>
     <link rel="stylesheet" href="../sharedComponents/footer.css">
-    <link rel="stylesheet" href="../sharedComponents/layout.css">
+    <link rel="stylesheet" href="../css pages/placeOrder.css">
 </head>
 
 <body>
 
-    <main>
-        
+    <main class="container">
+        <header class="page-header">
+            <div class="heading-row">
+                <a href="Products.html" class="back-link">← Back to Shopping</a>
+                <h1>Review Delivery & Items</h1>
+            </div>
+        </header>
+
+        <div class="checkout-grid">
+            <div class="main-content">
+                <section class="card payment-section">
+                    <div class="card-header">
+                        <img src="../assets/img/TruckIconCircle.png" alt="Payment Icon" class="card-icon">
+                        <h2>PAYMENT METHOD</h2>
+                    </div>
+
+                    <div class="payment-options">
+                        <label class="payment-card active">
+                            <input type="radio" name="payment_method" value="cod" checked>
+                            <span class="radio-dot"></span>
+                            <div class="payment-text">
+                                <span class="payment-title">Cash On Delivery</span>
+                                <p class="payment-sub">Pay at your doorstep</p>
+                            </div>
+                        </label>
+
+                        <label class="payment-card">
+                            <input type="radio" name="payment_method" value="apple_pay">
+                            <span class="radio-dot"></span>
+                            <div class="payment-text">
+                                <span class="payment-title">Apple Pay</span>
+                                <p class="payment-sub">Fast checkout</p>
+                            </div>
+                        </label>
+
+                        <label class="payment-card">
+                            <input type="radio" name="payment_method" value="card">
+                            <span class="radio-dot"></span>
+                            <div class="payment-text">
+                                <span class="payment-title">Credit/Debit Card</span>
+                                <p class="payment-sub">Visa, Mastercard, Amex</p>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="card order-items">
+                    <div class="card-header">
+                        <h2>ORDER ITEMS (3)</h2>
+                    </div>
+
+                    <ul class="item-list">
+                        <li class="item-row">
+                            <div class="item-details">
+                                <img src="../assets/img/Chicken-Sambusa.jpg" alt="Chicken Sambusa" class="item-thumb">
+                                <div class="item-text">
+                                    <h4>Chicken Sambusa</h4>
+                                    <p class="category">Category: Food & Beverage</p>
+                                </div>
+                            </div>
+                            <div class="item-controls">
+                                <div class="quantity-picker">
+                                    <button type="button" class="qty-btn" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">1</span>
+                                    <button type="button" class="qty-btn" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span class="price">24.900 OMR</span>
+                            </div>
+                        </li>
+
+                        <li class="item-row">
+                            <div class="item-details">
+                                <img src="../assets/img/MeatKabuli.jpg" alt="Meat Kabuli" class="item-thumb">
+                                <div class="item-text">
+                                    <h4>Meat Kabuli</h4>
+                                    <p class="category">Category: Food & Beverage</p>
+                                </div>
+                            </div>
+                            <div class="item-controls">
+                                <div class="quantity-picker">
+                                    <button type="button" class="qty-btn" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">1</span>
+                                    <button type="button" class="qty-btn" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span class="price">18.500 OMR</span>
+                            </div>
+                        </li>
+
+                        <li class="item-row">
+                            <div class="item-details">
+                                <img src="../assets/img/Om-Ali.jpg" alt="Om Ali" class="item-thumb">
+                                <div class="item-text">
+                                    <h4>Om Ali</h4>
+                                    <p class="category">Category: Food & Beverage</p>
+                                </div>
+                            </div>
+                            <div class="item-controls">
+                                <div class="quantity-picker">
+                                    <button type="button" class="qty-btn" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">1</span>
+                                    <button type="button" class="qty-btn" aria-label="Increase quantity">+</button>
+                                </div>
+                                <span class="price">9.200 OMR</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <aside class="sidebar-summary">
+                <div class="card summary-card">
+                    <h2 class="summary-title">Order Summary</h2>
+
+                    <div class="summary-breakdown">
+                        <div class="summary-row">
+                            <span class="label">Items Subtotal</span>
+                            <span class="value">52.600 OMR</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Standard Delivery Fee</span>
+                            <span class="value">1.000 OMR</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">VAT & Custom Duties (5%)</span>
+                            <span class="value">2.630 OMR</span>
+                        </div>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-row total-row">
+                        <span class="label">Total Amount</span>
+                        <span class="total-price">56.230 OMR</span>
+                    </div>
+
+                    <div class="security-badge">
+                        <span class="badge-dot">🔒</span>
+                        <span>Safe & Secure checkout SSL encrypted payment</span>
+                    </div>
+
+                    <button type="button" class="btn-place-order">
+                        Place Order (56.230 OMR)
+                    </button>
+
+                    <p class="disclaimer">
+                        By finalizing the transaction, you agree to our Terms of Service and authorize the Delivery platform to execute contact-free delivery at your selected address.
+                    </p>
+                </div>
+            </aside>
+        </div>
     </main>
+
+    <div id="orderSuccessModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="checkmark-wrapper">
+                <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+
+            <h2>Order Placed Successfully!</h2>
+            <p>Thank you for your purchase. Your order is being prepared and will be on its way shortly.</p>
+            
+            <div class="modal-actions">
+                <a href="driverInfo.html" class="btn-track-order">Track Your Order</a>
+                <button type="button" class="btn-close-modal" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
 
     <div id="footer-container"></div>
 
-    <!-- Load and run the JavaScript code from component.js -->
-    <!-- <script> is an HTML element used to include or write JavaScript in an HTML page. -->
-    <script src="../sharedComponents/component.js"></script> 
+    <script src="../sharedComponents/component.js"></script>
+    <script>
+        const placeOrderBtn = document.querySelector('.btn-place-order');
+        const modal = document.getElementById('orderSuccessModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
+        placeOrderBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 
 </html>
