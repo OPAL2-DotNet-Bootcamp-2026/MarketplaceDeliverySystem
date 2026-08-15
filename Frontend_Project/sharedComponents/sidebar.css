@@ -22,7 +22,7 @@
     box-shadow: 5px 0 25px rgba(10, 31, 68, 0.18);
 
     z-index: 1000;
-
+    /* This means the sidebar starts outside the screen */
     transform: translateX(-100%);
 
     transition: transform 0.4s ease;
@@ -32,7 +32,17 @@
 
 
 /* Open sidebar */
+/* when JavaScript adds:
 
+sidebar.classList.add("open");
+
+your CSS:
+
+.sidebar.open {
+    transform: translateX(0);
+} 
+takes effect.
+Now the sidebar moves into the screen*/
 .sidebar.open {
     transform: translateX(0);
 }

@@ -54,6 +54,7 @@
 
 .logo-area {
     min-width: 270px;
+    /*  Without display: flex, the elements might appear one above another.*/
     display: flex;
     align-items: center;
 }
@@ -74,6 +75,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* A negative margin moves the text to the left */
     margin-left: -20px;
 }
 
@@ -115,17 +117,23 @@
 /* =========================
    TAGLINE
    ========================= */
-
+/* So when the page first loads:
+[LOGO] [MARKETPLACE]
+The tagline is hidden. */
 .tagline-container {
     display: flex;
     align-items: center;
-
+    /* you cannot see it */
     width: 0;
+    /* transparent */
     opacity: 0;
-
+    /* hides its content */
     overflow: hidden;
     white-space: nowrap;
-
+    /* The animation happens because of: */
+    /* width = animate the width
+    0.6s = animation takes 0.6 seconds
+    ease = starts slowly, becomes faster, then slows down at the end */
     transition:
         width 0.6s ease,
         opacity 0.4s ease;
@@ -216,7 +224,17 @@
 
 
 /* Show tagline */
+/* When you hover over the header */
+/* When the mouse is over .header, show .tagline-container */
+/* it changes from:
 
+width: 0;
+opacity: 0;
+
+to:
+
+width: 430px;
+opacity: 1; */
 .header:hover .tagline-container {
     width: 430px;
     opacity: 1;
@@ -266,11 +284,14 @@
     background-color: rgba(214, 241, 241, 0.85);
 
     border-bottom: 2px solid var(--teal);
-
+    /* initially hidden */
+    /* No visible height */
     max-height: 0;
+    /* Invisible */
     opacity: 0;
+    /* Anything inside is hidden. */
     overflow: hidden;
-
+    /* It is moved 20px upward. */
     transform: translateY(-20px);
 
     transition:
@@ -281,7 +302,14 @@
 
 
 /* Show navigation */
+/* When you hover over the header
+This code runs: */
+/* Now the navigation:
 
+gets height
+becomes visible
+moves into its normal position */
+/* So the header expands when the user hovers over it */
 .header:hover .header-bottom {
     max-height: 70px;
     opacity: 1;
@@ -317,14 +345,20 @@
 /* =========================
    NAVIGATION
    ========================= */
-
+/* This makes them appear horizontally:
+Home | Businesses | Track Order | Orders | Your Driver */
 .navigation {
+    /* Makes the navigation links appear in one row.
+For example:
+Home | Businesses | Track Order | Orders | Your Driver */
     display: flex;
+    /* Centers the items vertically inside .navigation. */
     align-items: center;
+    /* Centers all the navigation links horizontally inside .navigation. */
     justify-content: center;
-
+    /* space between them */
     gap: 55px;
-
+    /* Makes .navigation take the remaining available space */
     flex: 1;
 }
 
@@ -340,7 +374,9 @@
         color 0.2s ease,
         transform 0.2s ease;
 }
-
+/* So when the mouse is over a link inside the navigation:
+1- Its color changes to orange.
+2- It moves 2px upward. */
 .navigation a:hover {
     color: var(--orange);
 
