@@ -275,39 +275,34 @@
 
 
 /* ===================================================
-   Proceed to Place Order (Outline / Light Style)
+   Proceed to Place Order (Matches Add to Order Style)
 =================================================== */
 .btn-proceed-order {
-  background-color: var(--brand-bg-light, #F5F0E8); /* Matches card/page background */
-  color: var(--brand-navy, #0A1F44) !important;      /* Navy text */
-  font-weight: 700;
+  background-color: var(--brand-orange, #F37D42);
+  color: #ffffff !important;
+  font-weight: 600;
   font-size: 0.95rem;
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
   text-decoration: none;
-  border: 1.5px solid var(--brand-navy, #0A1F44);    /* Solid Navy Border */
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(10, 31, 68, 0.05);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(243, 125, 66, 0.25);
   transition: all 0.2s ease;
 }
 
 .btn-proceed-order svg {
-  stroke: var(--brand-navy, #0A1F44);
-  transition: stroke 0.2s ease;
+  stroke: #ffffff;
 }
 
 .btn-proceed-order:hover {
-  background-color: var(--brand-light-cyan, #D6F1F1);
-  border-color: var(--brand-teal, #3580A4);
-  color: var(--brand-teal, #3580A4) !important;
+  background-color: #e0682d;
+  color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(10, 31, 68, 0.1);
-}
-
-.btn-proceed-order:hover svg {
-  stroke: var(--brand-teal, #3580A4);
+  box-shadow: 0 6px 16px rgba(243, 125, 66, 0.35);
 }
 
 .btn-proceed-order:active {
