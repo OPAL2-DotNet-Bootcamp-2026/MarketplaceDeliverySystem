@@ -223,10 +223,10 @@
 }
 
 .product-modal .modal-close-btn {
-  border: 1px solid #CBD5E1;
+  border: 1px solid #fa5252;
   border-radius: 6px;
-  background-color: #ffffff;
-  color: var(--brand-navy);
+  background-color: #fa5252;
+  color: rgb(102, 0, 0);
   font-size: 0.85rem;
   font-weight: 600;
   padding: 4px 10px;
