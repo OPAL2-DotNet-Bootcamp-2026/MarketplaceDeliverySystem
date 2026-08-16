@@ -272,3 +272,39 @@
   padding: 6px 12px;
   border-radius: 20px;
 }
+
+
+/* ===================================================
+   Proceed to Place Order (Matches Add to Order Style)
+=================================================== */
+.btn-proceed-order {
+  background-color: var(--brand-orange, #F37D42);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(243, 125, 66, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-proceed-order svg {
+  stroke: #ffffff;
+}
+
+.btn-proceed-order:hover {
+  background-color: #e0682d;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(243, 125, 66, 0.35);
+}
+
+.btn-proceed-order:active {
+  transform: scale(0.98);
+}

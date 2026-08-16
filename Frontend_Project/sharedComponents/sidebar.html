@@ -9,10 +9,11 @@
     <aside class="sidebar" id="category-sidebar">
 
         <!-- Logo -->
+        <!-- This creates a container for the logo section -->
         <div class="sidebar-logo">
-
+            <!-- Displays your Marketplace logo image -->
             <img src="../assets/img/logo.png" alt="Marketplace Logo" class="sidebar-logo-image">
-
+            <!-- Contains the two text lines -->
             <div class="sidebar-logo-text">
 
                 <div class="sidebar-logo-name">
@@ -28,8 +29,12 @@
         </div>
 
         <!-- User Card -->
+        <!-- Creates the box that says:
+            👤  Hi, Shopper!
+            MARKETPLACE MEMBER -->
         <div class="user-card">
             <div class="user-icon">
+                <!-- The <svg> inside creates the person icon(SVG is a way to create icons using code) -->
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
@@ -43,9 +48,11 @@
         </div>
 
         <!-- Menu -->
+        <!-- section contains navigation links -->
         <nav class="sidebar-menu">
 
             <!-- Home -->
+            <!-- The active class means this item is currently selected -->
             <a href="homePage.html" class="sidebar-item active">
                 <span class="sidebar-icon">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
@@ -58,6 +65,7 @@
             </a>
 
             <!-- Browse Products -->
+            <!-- class="sidebar-item" means → normal menu item(unselected) -->
             <a href="Products.html" class="sidebar-item">
                 <span class="sidebar-icon">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
@@ -143,6 +151,7 @@
         </nav>
 
         <!-- Promotional Card -->
+        <!-- creates the orange promotional box -->
         <div class="sidebar-promo">
             <div class="promo-content">
                 <h2>Ready to Shop?</h2>
@@ -170,10 +179,16 @@
         </div>
 
         <!-- Close Button -->
+        <!--  The important part is:id="close-sidebar"
+              because JavaScript uses this ID:
+              const closeButton = document.getElementById("close-sidebar");
+              Then it knows which button should close the sidebar-->
         <button class="close-sidebar" id="close-sidebar">&times;</button>
 
     </aside>
-
+    <!-- This creates the dark background behind the sidebar -->
+    <!-- JavaScript uses this ID to find that exact element:
+         const overlay = document.getElementById("sidebar-overlay") -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 </body>
 
