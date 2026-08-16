@@ -1,13 +1,17 @@
+// JS-->Changes the status, colors, messages, and progress
+// Find ALL elements with the class progress-step.
+// Step 1 → Order Placed | Step 2 → Order Ready | Step 3 → On the Way | Step 4 → Delivered
 const steps = document.querySelectorAll(".progress-step");
+// Find all the progress lines
 const lines = document.querySelectorAll(".progress-line");
-
+// in html we have id="status-badge" JavaScript finds it by .getElementById
 const statusBadge = document.getElementById("status-badge");
 const statusTitle = document.getElementById("status-title");
 const statusDescription = document.getElementById("status-description");
 const currentStatusText = document.getElementById("current-status-text");
 const driverButton = document.getElementById("driver-button");
 
-
+// It stores information for every possible order status
 const orderStatuses = {
 
     placed: {
@@ -66,7 +70,7 @@ const orderStatuses = {
     }
 
 };
-
+// Updates the page based on the given status
 function updateOrderStatus(status) {
 
     const statusIndex = {
@@ -79,9 +83,9 @@ function updateOrderStatus(status) {
     const currentIndex = statusIndex[status];
 
 
-    // Update steps
+    // Update all the steps = Go through every step one by one.
     steps.forEach((step, index) => {
-
+        // Finding the circle inside each step
         const circle = step.querySelector(".step-circle");
 
 
@@ -151,7 +155,7 @@ function updateOrderStatus(status) {
 
     // Update message
     const data = orderStatuses[status];
-
+    //change its text JavaScript can change: ON THE WAY to DELIVERED without manually changing the HTML
     statusBadge.textContent = data.badge;
 
     statusTitle.textContent = data.title;
@@ -177,6 +181,7 @@ function updateOrderStatus(status) {
     }
 
 }
+//In your current JavaScript, you are using the status names through:
 // Test the order status
 updateOrderStatus("placed");
 updateOrderStatus("ready");

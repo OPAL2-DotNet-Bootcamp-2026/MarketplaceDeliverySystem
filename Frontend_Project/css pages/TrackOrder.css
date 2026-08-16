@@ -1,9 +1,9 @@
-
 /* =========================
    TRACK ORDER PAGE
    ========================= */
 
 .track-page {
+    /* 100% of the screen height */
     min-height: 100vh;
 
     padding: 50px 60px 80px;
@@ -72,9 +72,9 @@
 
     padding: 45px 50px;
 
-    background-color: white ;
+    background-color: white;
 
-    border: 1px solid white ;
+    border: 1px solid white;
 
     border-radius: 22px;
 
@@ -116,7 +116,7 @@
 
 
 /* Circle */
-
+/* This displays a circle containing the number of the process 1,2,3 and 4(before) */
 .step-circle {
     width: 42px;
     height: 42px;
@@ -190,11 +190,13 @@
     }
 
 }
+
 .progress-step:not(.completed):not(.current) .step-circle {
     background-color: white;
     border-color: #d9dee5;
     color: #7b8491;
 }
+
 .progress-step.current span {
     color: #F37D42;
 
@@ -203,7 +205,7 @@
 
 
 /* Progress lines */
-
+/* Initially, the line is gray. JavaScript later changes its color. */
 .progress-line {
     height: 4px;
 
@@ -221,11 +223,9 @@
 }
 
 .active-line {
-    background: linear-gradient(
-        90deg,
-        #35B0A4,
-        #F37D42
-    );
+    background: linear-gradient(90deg,
+            #35B0A4,
+            #F37D42);
 }
 
 
@@ -243,11 +243,9 @@
     text-align: center;
 
     background:
-        linear-gradient(
-            135deg,
-           white,
-            white
-        );
+        linear-gradient(135deg,
+            white,
+            white);
 
     border-radius: 22px;
 
@@ -338,7 +336,7 @@
 }
 
 
-.current-status > p {
+.current-status>p {
     margin: 0 auto 25px;
 
     max-width: 600px;
