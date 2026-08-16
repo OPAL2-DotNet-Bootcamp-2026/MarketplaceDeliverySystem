@@ -51,11 +51,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  
 }
 
 .auth-logo-mark {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
@@ -128,6 +129,7 @@
   margin: 0 0 1.5rem;
   width: 100%;
   max-width: 560px; 
+  text-align: center;
 }
 
 .auth-form {
@@ -177,7 +179,7 @@
 
 .auth-forgot-link,
 .auth-footer-link a {
-  color: var(--color-primary-text);
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
@@ -195,8 +197,8 @@
 }
 
 .btn-primary {
-  --bs-btn-bg: var(--color-primary-text);
-  --bs-btn-border-color: var(--color-primary-text);
+  --bs-btn-bg: var(--color-primary);
+  --bs-btn-border-color: var(--color-primary);
   --bs-btn-hover-bg: #a5450f;
   --bs-btn-hover-border-color: #a5450f;
   --bs-btn-active-bg: #8f3a0d;
