@@ -29,9 +29,11 @@ function initializeSidebar() {
 
     const closeButton = document.getElementById("close-sidebar");
     // This finds the HTML element with:<div id="sidebar-overlay"></div>
-    //overlay covers the page when the sidebar opens
+    // overlay covers the page when the sidebar opens
+    // Find the HTML element whose ID is sidebar-overlay and store it in the variable overlay
     const overlay = document.getElementById("sidebar-overlay");
     // This finds:<div class="categories"></div>
+    //querySelector with classes(.categories is a class)
     const categories = document.querySelector(".categories");
 
 
