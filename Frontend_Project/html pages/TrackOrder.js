@@ -1,19 +1,20 @@
 // JS-->Changes the status, colors, messages, and progress
-// Find ALL elements with the class progress-step.
+// Find ALL elements with the class progress-step(contains all 4 steps).
 // Step 1 → Order Placed | Step 2 → Order Ready | Step 3 → On the Way | Step 4 → Delivered
 const steps = document.querySelectorAll(".progress-step");
-// Find all the progress lines
+// Find all the progress lines between the steps.
 const lines = document.querySelectorAll(".progress-line");
 // in html we have id="status-badge" JavaScript finds it by .getElementById
 const statusBadge = document.getElementById("status-badge");
+//need these elements to change them later.
 const statusTitle = document.getElementById("status-title");
 const statusDescription = document.getElementById("status-description");
 const currentStatusText = document.getElementById("current-status-text");
 const driverButton = document.getElementById("driver-button");
 
-// It stores information for every possible order status
+// orderStatuses stores information for every statusc
 const orderStatuses = {
-
+    //this is as a dictionary of order information.
     placed: {
         badge: "ORDER RECEIVED",
 
@@ -51,7 +52,7 @@ const orderStatuses = {
             "A driver has been assigned to your order and is currently delivering it.",
 
         statusText: "On the Way",
-
+        //when the order is on the way, the customer can view the driver.
         showDriverButton: true
     },
 
@@ -70,9 +71,9 @@ const orderStatuses = {
     }
 
 };
-// Updates the page based on the given status
+// Updates the page based on the given order status
 function updateOrderStatus(status) {
-
+    //This tells JavaScript: The current step is step number?
     const statusIndex = {
         placed: 0,
         ready: 1,
@@ -89,7 +90,8 @@ function updateOrderStatus(status) {
         const circle = step.querySelector(".step-circle");
 
 
-        // Remove previous classes
+        // Before adding the new status, remove the old status styles
+        // It removes CSS classes from an HTML element to can determine the current class
         step.classList.remove(
             "completed",
             "current"
@@ -97,24 +99,28 @@ function updateOrderStatus(status) {
 
 
         // Completed steps
+        //If this step comes before the current step, mark it as completed
         if (index < currentIndex) {
-
+            //JavaScript adds: class="completed"
             step.classList.add("completed");
 
             circle.textContent = "✓";
+            //Then the CSS will change it to green(the completed circle becomes teal)
         }
 
 
         // Current step
         else if (index === currentIndex) {
-
+            //JavaScript adds: class="current"
             step.classList.add("current");
-
+            //to write the number inside the circle
             circle.textContent = index + 1;
+
         }
 
 
         // Future steps
+        //If the step is after the current step, it is still in the future
         else {
 
             circle.textContent = index + 1;
@@ -124,15 +130,16 @@ function updateOrderStatus(status) {
 
 
     // Update lines
+    //JavaScript goes through each line
     lines.forEach((line, index) => {
-
+        //It removes any old line styles
         line.classList.remove(
             "completed-line",
             "active-line"
         );
 
 
-        // Line before current step
+        // Line before current step(completed line)
         if (index < currentIndex) {
 
             line.classList.add(
