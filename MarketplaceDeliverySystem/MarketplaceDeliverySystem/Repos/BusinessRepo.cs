@@ -19,6 +19,10 @@ namespace MarketplaceDeliverySystem.Repos
             _context.Businesses.Add(business);
             _context.SaveChanges();
         }
+        public List<Business> GetAllBusinesses()
+        {
+            return _context.Businesses.ToList();
+        }
 
         public bool EmailExists(string email)
         {
