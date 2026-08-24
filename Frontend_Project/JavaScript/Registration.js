@@ -16,19 +16,26 @@ registerForm.addEventListener('submit', async function (event) {
   };
 
   const response = await fetch('https://localhost:7299/api/Customer/Register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(registrationData)
-  });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(registrationData)
+});
 
-  const data = await response.json();
+const contentType = response.headers.get('content-type');
+let data;
 
-  if (response.ok) {
-    console.log('Registration succeeded:', data);
-    window.location.href = 'Login.html';
-  } else {
-    console.log('Registration failed:', data);
-  }
+if (contentType && contentType.includes('application/json')) {
+  data = await response.json();
+} else {
+  data = await response.text();
+}
+
+if (response.ok) {
+  console.log('Registration succeeded:', data);
+  window.location.href = 'Login.html';
+} else {
+  console.log('Registration failed:', data);
+}
 });
