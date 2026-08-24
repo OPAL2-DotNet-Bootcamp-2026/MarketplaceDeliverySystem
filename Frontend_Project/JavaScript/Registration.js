@@ -1,7 +1,4 @@
-const registerForm = document.getElementById('registerForm');
-
-registerForm.addEventListener('submit', function (event) 
-{
+registerForm.addEventListener('submit', async function (event) {
   event.preventDefault();
 
   const fullName = document.getElementById('fullName').value;
@@ -11,22 +8,27 @@ registerForm.addEventListener('submit', function (event)
   const address = document.getElementById('address').value;
 
   const registrationData = {
-    fullName : fullName,
-    email : email,
-    phoneNumber : phoneNumber,
-    password : password,
+    fullName: fullName,
+    email: email,
+    phoneNumber: phoneNumber,
+    password: password,
     address: address
   };
-
 
   const response = await fetch('https://localhost:7299/api/Customer/Register', {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(registrationData)
   });
 
-  console.log(response);
+  const data = await response.json();
 
+  if (response.ok) {
+    console.log('Registration succeeded:', data);
+    window.location.href = 'Login.html';
+  } else {
+    console.log('Registration failed:', data);
+  }
 });
