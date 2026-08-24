@@ -18,7 +18,10 @@ namespace MarketplaceDeliverySystem.Services
             _driverRepo = driverRepo;
 
         }
-
+        public Delivery? GetMyDelivery(int userId)
+        {
+            return _deliveryRepo.GetAssignedDeliveryByUserId(userId);
+        }
         public DriverAssignToDeliveryOutputDTO?
             AssignDriverToDelivery(int deliveryId, int driverId)
         {
