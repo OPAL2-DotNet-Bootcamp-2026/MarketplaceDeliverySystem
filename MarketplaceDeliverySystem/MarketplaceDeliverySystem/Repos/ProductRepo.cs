@@ -74,6 +74,16 @@ namespace MarketplaceDeliverySystem.Repos
             return products.ToList();
         }
 
+        public List<Product> GetProductsByBusinessId(int businessId)
+        {
+            return _context.Products
+                .Include(p => p.Business)
+                .Include(p => p.Category)
+                .Include(p => p.Reviews)
+                .Where(p => p.BusinessId == businessId)
+                .ToList();
+        }
+
         //delete product by id
         public Product GetProductById(int productId)
         {
@@ -90,11 +100,6 @@ namespace MarketplaceDeliverySystem.Repos
         public void Delete(Product product)
         {
             _context.Products.Remove(product);
-            _context.SaveChanges();
-        }
-
-        public void Update1()
-        {
             _context.SaveChanges();
         }
     }
