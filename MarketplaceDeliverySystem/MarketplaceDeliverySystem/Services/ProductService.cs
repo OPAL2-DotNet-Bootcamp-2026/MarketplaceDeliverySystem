@@ -64,6 +64,25 @@ namespace MarketplaceDeliverySystem.Services
             }).ToList();
         }
 
+        public List<FilterProductsOutputDto> GetAllProductsByBusinessId(int businessId)
+        {
+            var products = _productRepository.GetAllProductsByBusinessId(businessId);
+
+            return products.Select(p => new FilterProductsOutputDto
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                Description = p.Description,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity,
+                ImageUrl = p.ImageUrl,
+                IsAvailable = p.IsAvailable,
+                BusinessName = p.Business?.BusinessName ?? string.Empty,
+                CategoryName = p.Category?.CategoryName ?? string.Empty,
+                AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0.0
+            }).ToList();
+        }
+
         public string DeleteProduct(int productId)
         {
             // Search using ProductId

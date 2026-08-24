@@ -47,5 +47,13 @@ namespace MarketplaceDeliverySystem.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetByBusinessId/{businessId:int}")]
+        public IActionResult GetAllProductsByBusinessId(int businessId)
+        {
+            List<FilterProductsOutputDto> result = _productService.GetAllProductsByBusinessId(businessId);
+
+            return Ok(result);
+        }
+
     }
 }
