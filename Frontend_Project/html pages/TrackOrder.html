@@ -26,9 +26,9 @@
             <h1>Track Your Order</h1>
 
             <p>
-                Order #ORD-10245
+                Order <span id="order-number">#ORD-</span>
                 <span>•</span>
-                Placed Aug 9, 2026
+                Placed <span id="order-date">Loading...</span>
             </p>
 
         </section>
@@ -121,18 +121,15 @@
 
             <!-- Then JavaScript can change its text -->
             <span class="status-badge" id="status-badge">
-                ON THE WAY
+                LOADING...
             </span>
 
-
             <h2 id="status-title">
-                Your order is on the way
+                Loading your order...
             </h2>
 
-
             <p id="status-description">
-                Your driver has picked up your order
-                and is currently delivering it to you.
+                Please wait while we retrieve your order information.
             </p>
 
 
@@ -147,7 +144,7 @@
                     <span>STATUS</span>
 
                     <strong id="current-status-text">
-                        On the way
+                        Loading...
                     </strong>
 
                 </div>
@@ -188,17 +185,17 @@
 
                 <div class="info-row">
                     <span>Order Number</span>
-                    <strong>#ORD-10245</strong>
+                    <strong id="order-number-details">Loading...</strong>
                 </div>
 
                 <div class="info-row">
                     <span>Items</span>
-                    <strong>3 Items</strong>
+                    <strong id="order-items">Loading...</strong>
                 </div>
 
                 <div class="info-row">
                     <span>Total</span>
-                    <strong>24.500 OMR</strong>
+                    <strong id="order-total">Loading...</strong>
                 </div>
 
             </div>
@@ -221,7 +218,7 @@
                     <span>Delivery Status</span>
 
                     <strong class="teal-text" id="delivery-status-text">
-                        On the way
+                        Loading...
                     </strong>
                 </div>
 
@@ -232,7 +229,7 @@
 
                 <div class="info-row">
                     <span>Driver</span>
-                    <strong>Assigned</strong>
+                    <strong id="driver-status">Loading...</strong>
                 </div>
 
             </div>
