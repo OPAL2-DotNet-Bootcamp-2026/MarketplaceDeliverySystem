@@ -1,70 +1,152 @@
-// URL 
 const API_URL = "https://localhost:7299";
 
-// Get delivery ID from the page URL
-const params = new URLSearchParams(window.location.search);
-const deliveryId = params.get("deliveryId");
+const token = sessionStorage.getItem("token");
 
-// Get elements from the page
-const confirmToggle = document.querySelector("#delivery-confirm-toggle");
-const currentStatus = document.querySelector(".onway-status");
+const confirmToggle =
+    document.querySelector("#delivery-confirm-toggle");
 
-// Listen for the driver confirming the delivery
-confirmToggle.addEventListener("change", async () => {
-    // Do nothing if the checkbox is unchecked
-    if (!confirmToggle.checked) {
+const currentStatus =
+    document.querySelector(".onway-status");
+
+const orderNumber =
+    document.querySelector(".delivery-order-info h2");
+
+let deliveryId = null;
+
+
+// Get the driver's current delivery
+async function loadDelivery() {
+
+    if (!token) {
+        alert("Please login first.");
         return;
     }
-    // Make sure we have a delivery ID
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/delivery/my-delivery`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Request failed with status ${response.status}`
+            );
+        }
+
+        const delivery = await response.json();
+
+        console.log("Current delivery:", delivery);
+
+        // Store the delivery ID
+        deliveryId = delivery.deliveryId;
+
+        // Update order information
+        orderNumber.textContent =
+            `#ORD-${delivery.orderId}`;
+
+        // Update current status
+        if (delivery.orderStatus) {
+            currentStatus.textContent =
+                delivery.orderStatus;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load delivery:",
+            error
+        );
+
+        alert("Could not load your delivery.");
+    }
+}
+
+
+// Mark delivery as Delivered
+async function markAsDelivered() {
+
     if (!deliveryId) {
-        console.error("Delivery ID is missing.");
+
+        alert("No delivery was found.");
 
         confirmToggle.checked = false;
 
-        alert("Delivery information is missing.");
         return;
     }
+
     try {
-        // Send the new status to the backend
+
         const response = await fetch(
             `${API_URL}/delivery/${deliveryId}/status`,
             {
                 method: "PUT",
+
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
+
                 body: JSON.stringify({
                     status: "Delivered"
                 })
             }
         );
-        // Check HTTP status
+
         if (!response.ok) {
+
             throw new Error(
                 `Request failed with status ${response.status}`
             );
         }
-        // Read backend JSON response
+
         const result = await response.json();
 
         console.log("Backend response:", result);
-        // Check the result from the backend
+
         if (!result.success) {
 
             throw new Error(result.message);
         }
-        // Update the status on the page
+
+        // Update the UI
         currentStatus.textContent = "Delivered";
 
-        // Show success message
         console.log(result.message);
-        
+
     } catch (error) {
 
-        console.error("Failed to mark delivery as delivered:", error);
+        console.error(
+            "Failed to mark delivery as delivered:",
+            error
+        );
 
         confirmToggle.checked = false;
 
-        alert("Failed to mark the order as delivered.");
+        alert(error.message);
     }
-});
+}
+
+
+// Load delivery when page opens
+loadDelivery();
+
+
+// Listen for driver confirmation
+confirmToggle.addEventListener(
+    "change",
+    async () => {
+
+        if (!confirmToggle.checked) {
+            return;
+        }
+
+        await markAsDelivered();
+    }
+);
