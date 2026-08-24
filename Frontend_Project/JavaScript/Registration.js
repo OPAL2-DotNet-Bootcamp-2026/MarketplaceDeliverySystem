@@ -1,6 +1,14 @@
 const registerForm = document.getElementById('registerForm');
 
-registerForm.addEventListener('submit', function (event) {
+registerForm.addEventListener('submit', function (event) 
+{
   event.preventDefault();
-  console.log('Registration form intercepted!');
+
+  const fullName = document.getElementById('fullName').value;
+  const email = document.getElementById('email').value;
+  const phoneNumber = document.getElementById('phone').value;
+  const password = document.getElementById('password').value;
+  const address = document.getElementById('address').value;
+
+  console.log(fullName, email, phoneNumber, password, address);
 });
