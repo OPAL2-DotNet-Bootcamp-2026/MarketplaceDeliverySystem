@@ -42,5 +42,13 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(businesses);
         }
+
+        [HttpGet("GetAllBusinesses")]
+        [AllowAnonymous]
+        public IActionResult GetAllBusinesses()
+        {
+            List<BusinessCardRespDTO> result = _businessService.GetAllBusinesses();
+            return Ok(result);
+        }
     }
 }
