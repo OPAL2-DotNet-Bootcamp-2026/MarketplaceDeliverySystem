@@ -1,5 +1,5 @@
 // Base API configuration (adjust port if different)
-const API_URL = "http://localhost:7299/api/Business/GetAllBusinesses";
+const API_URL = "https://localhost:7299/api/Business/GetAllBusinesses";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadBusinesses();
