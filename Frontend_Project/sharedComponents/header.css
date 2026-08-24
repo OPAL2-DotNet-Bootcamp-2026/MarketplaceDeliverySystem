@@ -1,0 +1,432 @@
+/* =========================
+   COLORS
+   ========================= */
+
+:root {
+    --navy: #0A1F44;
+    --orange: #FD751F;
+    --teal: #0A1F44;
+    --light-cyan: #FD751F;
+    --very-light-cyan: #FDFDFF;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.header {
+    font-family: Arial, sans-serif;
+    color: var(--navy);
+
+    /* Main gradient */
+    background: linear-gradient(90deg,
+            var(--very-light-cyan),
+            var(--light-cyan),
+            var(--very-light-cyan));
+
+    box-shadow: 0 3px 12px rgba(10, 31, 68, 0.12);
+}
+
+
+/* =========================
+   TOP SECTION
+   ========================= */
+
+.header-top {
+    height: 110px;
+    padding: 0 60px;
+
+    display: flex;
+    align-items: center;
+
+    border-bottom: 1px solid rgba(10, 31, 68, 0.12);
+
+    background: linear-gradient(90deg,
+            var(--very-light-cyan),
+            var(--light-cyan));
+}
+
+
+/* =========================
+   LOGO
+   ========================= */
+
+.logo-area {
+    min-width: 270px;
+    /*  Without display: flex, the elements might appear one above another.*/
+    display: flex;
+    align-items: center;
+}
+
+/* Logo image */
+
+.marketplace-logo {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Holds both text titles */
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* A negative margin moves the text to the left */
+    margin-left: -20px;
+}
+
+/* MARKETPLACE */
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--navy);
+}
+
+/* YOUR WORLD OF SHOPPING */
+
+.logo-subtitle {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--teal);
+
+    margin-top: -5px;
+}
+
+/* Small orange dot */
+
+.logo-dot {
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    background-color: var(--orange);
+    border-radius: 50%;
+
+    margin-left: 5px;
+
+    vertical-align: middle;
+}
+
+/* =========================
+   TAGLINE
+   ========================= */
+/* So when the page first loads:
+[LOGO] [MARKETPLACE]
+The tagline is hidden. */
+.tagline-container {
+    display: flex;
+    align-items: center;
+    /* you cannot see it */
+    width: 0;
+    /* transparent */
+    opacity: 0;
+    /* hides its content */
+    overflow: hidden;
+    white-space: nowrap;
+    /* The animation happens because of: */
+    /* width = animate the width
+    0.6s = animation takes 0.6 seconds
+    ease = starts slowly, becomes faster, then slows down at the end */
+    transition:
+        width 0.6s ease,
+        opacity 0.4s ease;
+}
+
+
+/* Orange line */
+
+.tagline-line {
+    width: 120px;
+    height: 2px;
+
+    background-color: var(--orange);
+
+    margin-right: 25px;
+
+    position: relative;
+}
+
+
+/* Orange dots */
+
+.tagline-line::before,
+.tagline-line::after {
+    content: "";
+
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    background-color: var(--orange);
+
+    border-radius: 50%;
+
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tagline-line::before {
+    left: 0;
+}
+
+.tagline-line::after {
+    right: 0;
+}
+
+
+.tagline {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    color: var(--navy);
+}
+
+.tagline-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+.tagline-icon {
+    color: var(--teal);
+    font-size: 20px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.tagline-item:hover .tagline-icon {
+    color: var(--orange);
+    transform: translateY(-2px);
+}
+
+
+/* Highlight Enjoy */
+
+.tagline::after {
+    content: "";
+}
+
+
+/* Show tagline */
+/* When you hover over the header */
+/* When the mouse is over .header, show .tagline-container */
+/* it changes from:
+
+width: 0;
+opacity: 0;
+
+to:
+
+width: 430px;
+opacity: 1; */
+.header:hover .tagline-container {
+    width: 430px;
+    opacity: 1;
+}
+
+
+/* =========================
+   ACCOUNT
+   ========================= */
+
+.account {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: var(--navy);
+
+    white-space: nowrap;
+}
+
+.account-icon {
+    font-size: 22px;
+}
+
+.arrow {
+    font-size: 18px;
+}
+
+
+/* =========================
+   BOTTOM NAVIGATION
+   ========================= */
+
+.header-bottom {
+    height: 70px;
+    padding: 0 60px;
+
+    display: flex;
+    align-items: center;
+
+    background-color: rgba(214, 241, 241, 0.85);
+
+    border-bottom: 2px solid var(--teal);
+    /* initially hidden */
+    /* No visible height */
+    max-height: 0;
+    /* Invisible */
+    opacity: 0;
+    /* Anything inside is hidden. */
+    overflow: hidden;
+    /* It is moved 20px upward. */
+    transform: translateY(-20px);
+
+    transition:
+        max-height 0.6s ease,
+        opacity 0.4s ease,
+        transform 0.6s ease;
+}
+
+
+/* Show navigation */
+/* When you hover over the header
+This code runs: */
+/* Now the navigation:
+
+gets height
+becomes visible
+moves into its normal position */
+/* So the header expands when the user hovers over it */
+.header:hover .header-bottom {
+    max-height: 70px;
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================
+   CATEGORIES
+   ========================= */
+
+.categories {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    min-width: 220px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    color: var(--navy);
+}
+
+.menu-icon {
+    font-size: 25px;
+    color: var(--teal);
+}
+
+
+/* =========================
+   NAVIGATION
+   ========================= */
+/* This makes them appear horizontally:
+Home | Businesses | Track Order | Orders | Your Driver */
+.navigation {
+    /* Makes the navigation links appear in one row.
+For example:
+Home | Businesses | Track Order | Orders | Your Driver */
+    display: flex;
+    /* Centers the items vertically inside .navigation. */
+    align-items: center;
+    /* Centers all the navigation links horizontally inside .navigation. */
+    justify-content: center;
+    /* space between them */
+    gap: 55px;
+    /* Makes .navigation take the remaining available space */
+    flex: 1;
+}
+
+.navigation a {
+    color: var(--navy);
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+/* So when the mouse is over a link inside the navigation:
+1- Its color changes to orange.
+2- It moves 2px upward. */
+.navigation a:hover {
+    color: var(--orange);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   RIGHT ICONS
+   ========================= */
+
+.header-icons {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 20px;
+}
+
+.header-icon {
+    width: 27px;
+    height: 27px;
+
+    cursor: pointer;
+    color: var(--navy);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.header-icon svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.header-icon:hover {
+    color: var(--orange);
+    transform: translateY(-2px);
+}

@@ -1,0 +1,20 @@
+
+/* ===========================================
+   COLOR VARIABLES
+        brand palette colors for the system
+   =========================================== */
+
+:root {
+  --color-primary: #F37D42;      /* orange — CTAs: Create Account, Login as Customer */
+  --color-secondary: #0A1F44;    /* navy — headings, logo text, secondary outline button */
+  --color-accent: #35B0A4;       /* teal — checkmarks, "Delivered" highlight */
+  --color-bg-panel: #D6F1F1;     /* light mint — left panel background */
+  --color-bg-tint: #AFFFFF;      /* pale cyan — confirm intended use with team lead */
+
+  /* Needed for labels/placeholders */
+  --color-text-muted: #5C6B7A;
+  --color-border: #E1ECEC;
+  --color-white: #FFFFFF;
+  --color-primary-text: #C1501B;
+}
+
