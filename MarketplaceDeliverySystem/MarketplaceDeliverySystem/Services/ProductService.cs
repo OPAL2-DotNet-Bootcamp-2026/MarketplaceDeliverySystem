@@ -64,6 +64,33 @@ namespace MarketplaceDeliverySystem.Services
             }).ToList();
         }
 
+        public List<FilterProductsOutputDto> GetProductsByBusiness(int businessId, int? categoryId = null)
+        {
+            // 1. Fetch products of the business from the repository
+            var products = _productRepository.GetProductsByBusinessId(businessId);
+
+            // 2. Perform Category filtration here in the Service layer
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                products = products.Where(p => p.CategoryId == categoryId.Value).ToList();
+            }
+
+            // 3. Map to DTO
+            return products.Select(p => new FilterProductsOutputDto
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                Description = p.Description,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity,
+                ImageUrl = p.ImageUrl,
+                IsAvailable = p.IsAvailable,
+                BusinessName = p.Business?.BusinessName ?? string.Empty,
+                CategoryName = p.Category?.CategoryName ?? string.Empty,
+                AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0.0
+            }).ToList();
+        }
+
         public string DeleteProduct(int productId)
         {
             // Search using ProductId
