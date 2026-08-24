@@ -18,5 +18,15 @@ registerForm.addEventListener('submit', function (event)
     address: address
   };
 
-  console.log(registrationData);
+
+  const response = await fetch('https://localhost:7299/api/Customer/Register', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(registrationData)
+  });
+
+  console.log(response);
+
 });
