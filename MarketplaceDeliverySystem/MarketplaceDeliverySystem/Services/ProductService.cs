@@ -64,10 +64,18 @@ namespace MarketplaceDeliverySystem.Services
             }).ToList();
         }
 
-        public List<FilterProductsOutputDto> GetAllProductsByBusinessId(int businessId)
+        public List<FilterProductsOutputDto> GetProductsByBusiness(int businessId, int? categoryId = null)
         {
-            var products = _productRepository.GetAllProductsByBusinessId(businessId);
+            // 1. Fetch products of the business from the repository
+            var products = _productRepository.GetProductsByBusinessId(businessId);
 
+            // 2. Perform Category filtration here in the Service layer
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                products = products.Where(p => p.CategoryId == categoryId.Value).ToList();
+            }
+
+            // 3. Map to DTO
             return products.Select(p => new FilterProductsOutputDto
             {
                 ProductId = p.ProductId,

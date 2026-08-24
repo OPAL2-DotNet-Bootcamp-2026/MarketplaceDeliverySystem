@@ -74,7 +74,7 @@ namespace MarketplaceDeliverySystem.Repos
             return products.ToList();
         }
 
-        public List<Product> GetAllProductsByBusinessId(int businessId)
+        public List<Product> GetProductsByBusinessId(int businessId)
         {
             return _context.Products
                 .Include(p => p.Business)
