@@ -10,5 +10,13 @@ registerForm.addEventListener('submit', function (event)
   const password = document.getElementById('password').value;
   const address = document.getElementById('address').value;
 
-  console.log(fullName, email, phoneNumber, password, address);
+  const registrationData = {
+    fullName : fullName,
+    email : email,
+    phoneNumber : phoneNumber,
+    password : password,
+    address: address
+  };
+
+  console.log(registrationData);
 });
