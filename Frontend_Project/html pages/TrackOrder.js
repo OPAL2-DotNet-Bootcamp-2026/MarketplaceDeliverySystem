@@ -10,9 +10,28 @@ const statusBadge = document.getElementById("status-badge");
 const statusTitle = document.getElementById("status-title");
 const statusDescription = document.getElementById("status-description");
 const currentStatusText = document.getElementById("current-status-text");
+const deliveryStatusText = document.getElementById("delivery-status-text");
 const driverButton = document.getElementById("driver-button");
 
-// orderStatuses stores information for every statusc
+// Dynamic order information
+const orderNumber =
+    document.getElementById("order-number");
+
+const orderDate =
+    document.getElementById("order-date");
+
+const orderNumberDetails =
+    document.getElementById("order-number-details");
+
+const orderItems =
+    document.getElementById("order-items");
+
+const orderTotal =
+    document.getElementById("order-total");
+
+const driverStatus =
+    document.getElementById("driver-status");
+// orderStatuses stores information for every status
 const orderStatuses = {
     //this is as a dictionary of order information.
     placed: {
@@ -71,6 +90,26 @@ const orderStatuses = {
     }
 
 };
+function convertStatus(status) {
+
+    switch (status.toLowerCase()) {
+
+        case "pending":
+            return "placed";
+
+        case "ready":
+            return "ready";
+
+        case "on the way":
+            return "onway";
+
+        case "delivered":
+            return "delivered";
+
+        default:
+            return null;
+    }
+}
 // Updates the page based on the given order status
 function updateOrderStatus(status) {
     //This tells JavaScript: The current step is step number?
@@ -188,9 +227,205 @@ function updateOrderStatus(status) {
     }
 
 }
-//In your current JavaScript, you are using the status names through:
-// Test the order status
-updateOrderStatus("placed");
-updateOrderStatus("ready");
-updateOrderStatus("onway");
-//updateOrderStatus("delivered");
+async function loadOrder() {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const orderId =
+        params.get("orderId");
+
+    if (!orderId) {
+
+        statusBadge.textContent =
+            "ERROR";
+
+        statusTitle.textContent =
+            "Order information is missing";
+
+        statusDescription.textContent =
+            "We could not find the order you are trying to track.";
+
+        return;
+    }
+
+    const token =
+        sessionStorage.getItem("token");
+
+    if (!token) {
+
+        statusBadge.textContent =
+            "LOGIN REQUIRED";
+
+        statusTitle.textContent =
+            "Please login first";
+
+        statusDescription.textContent =
+            "You need to login to view your order.";
+
+        driverButton.style.display =
+            "none";
+
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `https://localhost:7299/api/Order/GetOrderById/${orderId}`,
+            {
+                headers: {
+                    "Authorization":
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+
+            if (response.status === 401) {
+                throw new Error(
+                    "Please login to view this order."
+                );
+            }
+
+            if (response.status === 403) {
+                throw new Error(
+                    "You are not allowed to view this order."
+                );
+            }
+
+            if (response.status === 404) {
+                throw new Error(
+                    "Order not found."
+                );
+            }
+
+            throw new Error(
+                `Request failed with status ${response.status}`
+            );
+        }
+
+        const order =
+            await response.json();
+
+        console.log(
+            "Order received:",
+            order
+        );
+
+
+        // -------------------------
+        // Order information
+        // -------------------------
+
+        orderNumber.textContent =
+            `#ORD-${order.orderId}`;
+
+        orderNumberDetails.textContent =
+            `#ORD-${order.orderId}`;
+
+        orderDate.textContent =
+            formatDate(order.orderDate);
+
+        orderTotal.textContent =
+            `${Number(order.totalAmount).toFixed(3)} OMR`;
+
+
+        // -------------------------
+        // Items
+        // -------------------------
+
+        const products =
+            order.products || [];
+
+        orderItems.textContent =
+            `${products.length} Items`;
+
+
+        // -------------------------
+        // Driver status
+        // -------------------------
+
+        if (
+            order.orderStatus === "On the Way" ||
+            order.orderStatus === "Delivered"
+        ) {
+
+            driverStatus.textContent =
+                "Assigned";
+
+        } else {
+
+            driverStatus.textContent =
+                "Not Assigned";
+        }
+
+
+        // -------------------------
+        // Order progress
+        // -------------------------
+
+        const frontendStatus =
+            convertStatus(order.orderStatus);
+
+        if (!frontendStatus) {
+
+            throw new Error(
+                `Unknown order status: ${order.orderStatus}`
+            );
+        }
+
+
+        // Update delivery status text
+
+        deliveryStatusText.textContent =
+            order.orderStatus;
+
+
+        // Update progress UI
+
+        updateOrderStatus(
+            frontendStatus
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load order:",
+            error
+        );
+
+        statusBadge.textContent =
+            "ERROR";
+
+        statusTitle.textContent =
+            "Unable to load your order";
+
+        statusDescription.textContent =
+            error.message;
+
+        currentStatusText.textContent =
+            "Unavailable";
+
+        deliveryStatusText.textContent =
+            "Unavailable";
+
+        driverButton.style.display =
+            "none";
+    }
+}
+function formatDate(dateString) {
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }
+    );
+}
+loadOrder();
