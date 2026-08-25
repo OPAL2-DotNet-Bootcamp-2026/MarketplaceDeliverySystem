@@ -1,53 +1,6 @@
-console.log("Order History JS is working");
 
-// =====================================================
-// Get Customer ID from JWT Token
-// =====================================================
-
-function getCustomerIdFromToken(token) {
-
-    try {
-
-        // JWT format:
-        // Header.Payload.Signature
-
-        const payload = token.split(".")[1];
-
-        // Decode the Payload
-        const decodedPayload = JSON.parse(
-            atob(payload)
-        );
-
-        console.log("JWT Payload:", decodedPayload);
-
-
-        // Get Customer ID
-        const customerId =
-            decodedPayload.customerId ||
-            decodedPayload.userId ||
-            decodedPayload.sub ||
-            decodedPayload.nameid ||
-            decodedPayload[
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-            ];
-
-
-        return customerId;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Could not read Customer ID from JWT:",
-            error
-        );
-
-        return null;
-    }
-}
-
-
+console.log("THIS IS THE CORRECT ORDER HISTORY FILE");
+console.log("VERSION 3");
 
 // =====================================================
 // Load Order History
@@ -57,7 +10,14 @@ async function loadOrderHistory() {
 
 
     // -----------------------------------------
-    // 1. Get JWT Token
+    // 1. Customer ID for TEST
+    // -----------------------------------------
+
+    const customerId = 1;
+
+
+    // -----------------------------------------
+    // 2. Get JWT Token
     // -----------------------------------------
 
     const token =
@@ -78,30 +38,6 @@ async function loadOrderHistory() {
 
 
     // -----------------------------------------
-    // 2. Get Customer ID from JWT
-    // -----------------------------------------
-
-    const customerId =
-        getCustomerIdFromToken(token);
-
-
-    console.log(
-        "Current Customer ID:",
-        customerId
-    );
-
-
-    if (!customerId) {
-
-        console.error(
-            "Customer ID was not found in JWT."
-        );
-
-        return;
-    }
-
-
-    // -----------------------------------------
     // 3. API URL
     // -----------------------------------------
 
@@ -110,7 +46,12 @@ async function loadOrderHistory() {
 
 
     console.log(
-        "API URL:",
+        "TESTING CUSTOMER ID:",
+        customerId
+    );
+
+    console.log(
+        "TEST API URL:",
         url
     );
 
@@ -143,10 +84,18 @@ async function loadOrderHistory() {
 
         if (!response.ok) {
 
+            const errorText =
+                await response.text();
+
             console.error(
                 "API Error:",
                 response.status,
                 response.statusText
+            );
+
+            console.error(
+                "API Response:",
+                errorText
             );
 
             return;
@@ -227,8 +176,6 @@ async function loadOrderHistory() {
         orders.forEach(order => {
 
 
-            // Create <details>
-
             const orderElement =
                 document.createElement(
                     "details"
@@ -247,13 +194,11 @@ async function loadOrderHistory() {
 
                 <summary class="order-header">
 
-
                     <span>
 
                         <strong>
                             Order #${order.orderId}
                         </strong>
-
 
                         <small>
                             ${formatDate(order.orderDate)}
@@ -262,13 +207,11 @@ async function loadOrderHistory() {
                     </span>
 
 
-
                     <span>
 
                         <b>
                             ${order.orderStatus}
                         </b>
-
 
                         <strong>
                             ${Number(
@@ -278,18 +221,14 @@ async function loadOrderHistory() {
 
                     </span>
 
-
                 </summary>
-
 
 
                 <div class="order-details">
 
-
                     <h3>
                         Order Information
                     </h3>
-
 
 
                     <div class="status-container">
@@ -310,7 +249,6 @@ async function loadOrderHistory() {
                         </article>
 
 
-
                         <article>
 
                             <p>💳</p>
@@ -326,7 +264,6 @@ async function loadOrderHistory() {
                         </article>
 
 
-
                         <article>
 
                             <p>🚚</p>
@@ -340,7 +277,6 @@ async function loadOrderHistory() {
                             </p>
 
                         </article>
-
 
 
                         <article>
@@ -363,15 +299,12 @@ async function loadOrderHistory() {
                     </div>
 
 
-
                     <h3>
                         Products
                     </h3>
 
 
-
                     <table class="table">
-
 
                         <thead>
 
@@ -394,7 +327,6 @@ async function loadOrderHistory() {
                         </thead>
 
 
-
                         <tbody>
 
                             ${
@@ -405,12 +337,10 @@ async function loadOrderHistory() {
 
                         </tbody>
 
-
                     </table>
 
 
                 </div>
-
             `;
 
 
@@ -446,27 +376,19 @@ async function loadOrderHistory() {
 
 function createProductsHTML(products) {
 
-
     if (
         !products ||
         products.length === 0
     ) {
 
         return `
-
             <tr>
-
                 <td colspan="3">
-
                     No products found.
-
                 </td>
-
             </tr>
-
         `;
     }
-
 
 
     return products
@@ -480,11 +402,9 @@ function createProductsHTML(products) {
                         ${product.productName}
                     </td>
 
-
                     <td>
                         ${product.quantity}
                     </td>
-
 
                     <td>
                         ${Number(
@@ -512,11 +432,9 @@ function formatDate(dateString) {
     const date =
         new Date(dateString);
 
-
     return date.toLocaleDateString(
         "en-GB"
     );
-
 }
 
 
@@ -526,3 +444,4 @@ function formatDate(dateString) {
 // =====================================================
 
 loadOrderHistory();
+
