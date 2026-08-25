@@ -116,7 +116,7 @@ function renderCurrentPage() {
 
     pageItems.forEach(business => {
         const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
-        const logo = business.logoUrl || "/assets/img/UmShakir logo-01.jpg";
+        const logo = business.logoUrl || "/assets/img/LogoPlaceHolder.PNG";
 
         const cardHtml = `
             <div class="card business-horizontal-card shadow-sm">
