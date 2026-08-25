@@ -1,5 +1,3 @@
-const loginForm = document.getElementById('loginForm');
-
 loginForm.addEventListener('submit', async function (event) {
   event.preventDefault();
 
@@ -29,8 +27,14 @@ loginForm.addEventListener('submit', async function (event) {
   }
 
   if (response.ok) {
-    console.log('Login succeeded:', data);
-  } else {
-    console.log('Login failed:', data);
-  }
+  console.log('Login succeeded:', data);
+
+  localStorage.setItem('authToken', data.token);
+  localStorage.setItem('userRole', data.role);
+  localStorage.setItem('userFullName', data.fullName);
+
+  window.location.href = 'home.html';
+} else {
+  console.log('Login failed:', data);
+}
 });
