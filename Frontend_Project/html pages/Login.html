@@ -43,7 +43,7 @@
         <section class="auth-panel-right">
             <h1 class="auth-form-title">Login</h1>
 
-            <form class="auth-form" action="#" method="post">
+            <form class="auth-form" id="loginForm" action="#" method="post">
 
                 <div class="form-floating">
                     <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
@@ -65,13 +65,9 @@
                     <a href="#" class="auth-forgot-link">Forgot password?</a>
                 </div>
 
-                <!-- SHARED — button appearance -->
-                <div class="login-dual-actions">
-                    <button type="submit" class="btn btn-primary auth-submit" name="role" value="customer">Login as
-                        Customer</button>
-                    <button type="submit" class="btn btn-outline-primary auth-submit" name="role" value="driver">Login
-                        as Driver</button>
-                </div>
+                <div id="loginError" class="alert alert-danger" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary auth-submit">Login</button>
 
             </form>
 
@@ -83,6 +79,7 @@
     <!-- Load and run the JavaScript code from component.js -->
     <!-- <script> is an HTML element used to include or write JavaScript in an HTML page. -->
     <script src="../sharedComponents/component.js"></script>
+    <script src="../JavaScript/Login.js" defer></script>
 </body>
 
 </html>
