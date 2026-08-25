@@ -30,17 +30,23 @@ loginForm.addEventListener('submit', async function (event) {
     data = await response.text();
   }
 
-  if (response.ok) {
-    console.log('Login succeeded:', data);
+if (response.ok) {
+  console.log('Login succeeded:', data);
 
-    localStorage.setItem('authToken', data.token);
-    localStorage.setItem('userRole', data.role);
-    localStorage.setItem('userFullName', data.fullName);
+  localStorage.setItem('authToken', data.token);
+  localStorage.setItem('userRole', data.role);
+  localStorage.setItem('userFullName', data.fullName);
 
-    window.location.href = 'home.html';
+  console.log('role value is:', JSON.stringify(data.role));
+
+  if (data.role === 'Driver') {
+    window.location.href = 'DriverHome.html'; // TODO: confirm real filename with team leader
   } else {
-    console.log('Login failed:', data);
-    loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
-    loginError.style.display = 'block';
+    window.location.href = 'home.html';
   }
+} else {
+  console.log('Login failed:', data);
+  loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
+  loginError.style.display = 'block';
+}
 });
