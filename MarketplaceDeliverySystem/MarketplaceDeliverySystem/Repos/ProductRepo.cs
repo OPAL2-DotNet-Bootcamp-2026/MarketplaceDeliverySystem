@@ -97,6 +97,16 @@ namespace MarketplaceDeliverySystem.Repos
                 .Any(o => o.ProductId == productId);
         }
 
+        public Business? GetBusinessWithProductsAndCategories(int businessId)
+        {
+            return _context.Businesses
+                .Include(b => b.BusinessOwner)
+                    .ThenInclude(o => o.User)
+                .Include(b => b.Products)
+                    .ThenInclude(p => p.Category)
+                .FirstOrDefault(b => b.BusinessId == businessId);
+        }
+
         public void Delete(Product product)
         {
             _context.Products.Remove(product);
