@@ -16,5 +16,10 @@ namespace MarketplaceDeliverySystem.Repos
             return _context.Categories
                            .FirstOrDefault(c => c.CategoryId == categoryId);
         }
+
+        public List<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList();
+        }
     }
 }
