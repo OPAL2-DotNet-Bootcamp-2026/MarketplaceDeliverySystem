@@ -120,10 +120,8 @@ namespace MarketplaceDeliverySystem.Services
 
         public List<BusinessCardRespDTO> GetAllBusinesses(int? categoryId = null)
         {
-            // Reusing your existing repository method
             var businesses = _businessRepository.GetAllBusinessesWithProducts();
 
-            // If a category is selected, keep only businesses that sell products in that category
             if (categoryId.HasValue && categoryId.Value > 0)
             {
                 businesses = businesses
