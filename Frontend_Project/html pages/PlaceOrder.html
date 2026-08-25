@@ -191,31 +191,7 @@
     <div id="footer-container"></div>
 
     <script src="../sharedComponents/component.js"></script>
-    <script>
-        const placeOrderBtn = document.querySelector('.btn-place-order');
-        const modal = document.getElementById('orderSuccessModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
-        placeOrderBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
-            if (!selectedPayment) {
-                alert('Please select a payment method before placing your order.');
-                return;
-            }
-            modal.classList.add('active');
-        });
-
-        closeModalBtn.addEventListener('click', function () {
-            modal.classList.remove('active');
-        });
-
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-    </script>
+    <script src="../JavaScript/PlaceOrder.js"></script>
 </body>
 
 </html>
