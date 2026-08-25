@@ -13,7 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (placeOrderBtn) {
         placeOrderBtn.addEventListener("click", handlePlaceOrder);
     }
+
+    attachModalHandlers();
 });
+
+function attachModalHandlers() {
+    const modal = document.getElementById("orderSuccessModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    if (!modal) return;
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => modal.classList.remove("active"));
+    }
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+}
 
 const PAYMENT_METHOD_LABELS = {
     cod: "Cash On Delivery",
