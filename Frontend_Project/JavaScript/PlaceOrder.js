@@ -8,7 +8,103 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCartFromStorage();
     renderCartItems();
     updateOrderSummary();
+
+    const placeOrderBtn = document.querySelector(".btn-place-order");
+    if (placeOrderBtn) {
+        placeOrderBtn.addEventListener("click", handlePlaceOrder);
+    }
 });
+
+const PAYMENT_METHOD_LABELS = {
+    cod: "Cash On Delivery",
+    apple_pay: "Apple Pay",
+    card: "Credit/Debit Card"
+};
+
+async function handlePlaceOrder(e) {
+    e.preventDefault();
+
+    if (cartItems.length === 0) {
+        alert("Your cart is empty. Add some products before placing an order.");
+        return;
+    }
+
+    const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+    if (!selectedPayment) {
+        alert("Please select a payment method before placing your order.");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Please log in to place an order.");
+        window.location.href = "Login.html";
+        return;
+    }
+
+    // Customer id isn't returned from login yet, so this falls back to the
+    // same test account used across the app until that's wired up.
+    const customerId = Number(localStorage.getItem("customerId")) || 1;
+    const businessId = cartItems[0].businessId;
+    const paymentMethod = PAYMENT_METHOD_LABELS[selectedPayment.value] || selectedPayment.value;
+
+    const orderPayload = {
+        customerId: customerId,
+        businessId: businessId,
+        paymentMethod: paymentMethod,
+        orderItems: cartItems.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity
+        }))
+    };
+
+    const placeOrderBtn = document.querySelector(".btn-place-order");
+    const originalLabel = placeOrderBtn.textContent;
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.textContent = "Placing order...";
+
+    try {
+        const response = await fetch(CREATE_ORDER_API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error("CreateOrder failed:", response.status, errorBody);
+            alert("We couldn't place your order. Please review your cart and try again.");
+            placeOrderBtn.disabled = false;
+            placeOrderBtn.textContent = originalLabel;
+            return;
+        }
+
+        const result = await response.json();
+        onOrderPlaced(result, paymentMethod);
+
+    } catch (err) {
+        console.error("Network error while placing order:", err);
+        alert("Something went wrong while placing your order. Please check your connection and try again.");
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.textContent = originalLabel;
+    }
+}
+
+function onOrderPlaced(result, paymentMethod) {
+    localStorage.setItem("lastOrderId", result.orderId);
+    localStorage.setItem("lastPaymentMethod", paymentMethod);
+    localStorage.removeItem("orderCart");
+    cartItems = [];
+
+    const trackLink = document.querySelector(".btn-track-order");
+    if (trackLink) trackLink.href = `DriverInfo.html?orderId=${result.orderId}`;
+
+    const modal = document.getElementById("orderSuccessModal");
+    if (modal) modal.classList.add("active");
+}
 
 function loadCartFromStorage() {
     cartItems = JSON.parse(localStorage.getItem("orderCart") || "[]");
