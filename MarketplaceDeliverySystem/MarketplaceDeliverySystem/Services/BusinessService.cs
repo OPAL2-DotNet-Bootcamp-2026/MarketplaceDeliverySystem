@@ -118,9 +118,16 @@ namespace MarketplaceDeliverySystem.Services
         
     }
 
-        public List<BusinessCardRespDTO> GetAllBusinesses()
+        public List<BusinessCardRespDTO> GetAllBusinesses(int? categoryId = null)
         {
-            var businesses = _businessRepository.GetAllBusinesses();
+            var businesses = _businessRepository.GetAllBusinessesWithProducts();
+
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                businesses = businesses
+                    .Where(b => b.Products.Any(p => p.CategoryId == categoryId.Value))
+                    .ToList();
+            }
 
             return businesses.Select(b => new BusinessCardRespDTO
             {
@@ -133,5 +140,5 @@ namespace MarketplaceDeliverySystem.Services
             }).ToList();
         }
     }
-    }
+}
 

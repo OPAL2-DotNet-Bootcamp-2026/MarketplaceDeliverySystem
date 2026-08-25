@@ -1,5 +1,6 @@
 ﻿using MarketplaceDeliverySystem.Controllers;
 using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.DTOs.MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 
@@ -8,12 +9,13 @@ namespace MarketplaceDeliverySystem.Services
     public class ProductService
     {
         private readonly ProductRepo _productRepository;
+        private readonly BusinessRepo _businessRepository;
 
 
-        public ProductService(ProductRepo productRepository)
+        public ProductService(ProductRepo productRepository, BusinessRepo businessRepository)
         {
             _productRepository = productRepository;
-
+            _businessRepository = businessRepository;
         }
 
         public ProductUpdatedRespDTO UpdateProduct(int id, UpdateProductDTO dto)
@@ -91,6 +93,22 @@ namespace MarketplaceDeliverySystem.Services
             }).ToList();
         }
 
+        public BusinessHeaderDto? GetBusinessHeader(int businessId)
+        {
+            var business = _businessRepository.GetBusinessById(businessId);
+            if (business == null) return null;
+
+            return new BusinessHeaderDto
+            {
+                BusinessId = business.BusinessId,
+                BusinessName = business.BusinessName,
+                LogoUrl = business.LogoUrl,
+                PhoneNumber = business.BusinessOwner?.User?.PhoneNumber ?? "+968 9000 0000",
+                OpeningTime = business.OpeningTime,
+                ClosingTime = business.ClosingTime,
+                IsOpen = business.IsOpen
+            };
+        }
         public string DeleteProduct(int productId)
         {
             // Search using ProductId

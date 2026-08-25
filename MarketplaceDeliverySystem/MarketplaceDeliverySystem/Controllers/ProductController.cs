@@ -1,5 +1,6 @@
 ﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceDeliverySystem.Controllers
@@ -18,7 +19,7 @@ namespace MarketplaceDeliverySystem.Controllers
         [HttpPut("update/{id}")]
         public IActionResult UpdateProduct(int id, UpdateProductDTO dto)
         {
-            ProductUpdatedRespDTO updated = _productService.UpdateProduct(id,dto);
+            ProductUpdatedRespDTO updated = _productService.UpdateProduct(id, dto);
             if (updated == null)
             {
                 return NotFound("Product not found.");
@@ -52,6 +53,15 @@ namespace MarketplaceDeliverySystem.Controllers
         {
             List<FilterProductsOutputDto> result = _productService.GetProductsByBusiness(businessId, categoryId);
             return Ok(result);
+        }
+
+        [HttpGet("GetBusinessHeader/{businessId}")]
+        [AllowAnonymous]
+        public IActionResult GetBusinessHeader(int businessId)
+        {
+            var header = _productService.GetBusinessHeader(businessId);
+            if (header == null) return NotFound("Business not found");
+            return Ok(header);
         }
 
     }
