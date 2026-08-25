@@ -1088,3 +1088,371 @@ main {
     }
 
 }
+
+
+
+
+
+
+
+```css
+/* =====================================================
+   HOME PAGE - JAVASCRIPT DYNAMIC CONTENT
+   ===================================================== */
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.home-loading {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #627D98;
+
+    font-size: 13px;
+
+}
+
+
+.home-loading::before {
+
+    content: "";
+
+    display: block;
+
+    width: 28px;
+
+    height: 28px;
+
+    margin: 0 auto 10px;
+
+    border: 3px solid #E6F7F7;
+
+    border-top-color: #2FA6A6;
+
+    border-radius: 50%;
+
+    animation: homeLoading 0.8s linear infinite;
+
+}
+
+
+@keyframes homeLoading {
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.home-empty {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #627D98;
+
+}
+
+
+.home-empty i {
+
+    display: block;
+
+    font-size: 30px;
+
+    color: #2FA6A6;
+
+    margin-bottom: 10px;
+
+}
+
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.home-error {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 25px;
+
+    color: #627D98;
+
+}
+
+
+.home-error i {
+
+    display: block;
+
+    font-size: 28px;
+
+    color: #FF6B35;
+
+    margin-bottom: 8px;
+
+}
+
+
+.retry-btn {
+
+    border: none;
+
+    background-color: #FF6B35;
+
+    color: white;
+
+    padding: 8px 16px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+}
+
+
+.retry-btn:hover {
+
+    background-color: #E85B2A;
+
+    transform: translateY(-2px);
+
+}
+
+
+
+/* =====================================================
+   DYNAMIC PRODUCT ANIMATION
+   ===================================================== */
+
+.product-card {
+
+    cursor: pointer;
+
+    animation: productAppear 0.5s ease forwards;
+
+    opacity: 0;
+
+}
+
+
+@keyframes productAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(15px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   PRODUCT HEART BUTTON
+   ===================================================== */
+
+.product-heart {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    padding: 5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.product-heart i {
+
+    pointer-events: none;
+
+}
+
+
+.product-heart.favorite-active {
+
+    color: #FF6B35;
+
+}
+
+
+.product-heart.favorite-active i {
+
+    animation: heartAnimation 0.3s ease;
+
+}
+
+
+@keyframes heartAnimation {
+
+    0% {
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        transform: scale(1.4);
+
+    }
+
+    100% {
+
+        transform: scale(1);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CATEGORY CLICK
+   ===================================================== */
+
+.category-card {
+
+    cursor: pointer;
+
+}
+
+
+.category-card:active {
+
+    transform: scale(0.97);
+
+}
+
+
+
+/* =====================================================
+   HERO BUTTON
+   ===================================================== */
+
+.shop-btn,
+.track-btn {
+
+    cursor: pointer;
+
+}
+
+
+.shop-btn i,
+.track-btn i {
+
+    transition: transform 0.25s ease;
+
+}
+
+
+.shop-btn:hover i {
+
+    transform: translateX(3px);
+
+}
+
+
+.track-btn:hover i {
+
+    transform: translateX(3px);
+
+}
+
+
+
+/* =====================================================
+   DELIVERY BANNER
+   ===================================================== */
+
+.delivery-image i {
+
+    animation: truckMove 2s ease-in-out infinite;
+
+}
+
+
+@keyframes truckMove {
+
+    0% {
+
+        transform: translateX(0);
+
+    }
+
+    50% {
+
+        transform: translateX(6px);
+
+    }
+
+    100% {
+
+        transform: translateX(0);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   ACCESSIBILITY
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+    }
+
+}
