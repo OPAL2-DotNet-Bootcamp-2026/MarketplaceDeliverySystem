@@ -117,6 +117,21 @@ namespace MarketplaceDeliverySystem.Services
             return result;
         
     }
+
+        public List<BusinessCardRespDTO> GetAllBusinesses()
+        {
+            var businesses = _businessRepository.GetAllBusinesses();
+
+            return businesses.Select(b => new BusinessCardRespDTO
+            {
+                BusinessId = b.BusinessId,
+                BusinessName = b.BusinessName,
+                LogoUrl = b.LogoUrl,
+                OpeningTime = b.OpeningTime,
+                ClosingTime = b.ClosingTime,
+                IsOpen = b.IsOpen
+            }).ToList();
+        }
     }
     }
 

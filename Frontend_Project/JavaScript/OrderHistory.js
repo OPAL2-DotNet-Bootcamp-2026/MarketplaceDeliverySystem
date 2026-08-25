@@ -1,21 +1,38 @@
-console.log("Order History JS is working");
 
+console.log("THIS IS THE CORRECT ORDER HISTORY FILE");
+console.log("VERSION 3");
+
+// =====================================================
+// Load Order History
+// =====================================================
 
 async function loadOrderHistory() {
 
+
     // -----------------------------------------
-    // 1. Customer ID
+    // 1. Customer ID for TEST
     // -----------------------------------------
+
     const customerId = 1;
 
 
     // -----------------------------------------
     // 2. Get JWT Token
     // -----------------------------------------
-    const token = localStorage.getItem("token");
+
+    const token =
+        localStorage.getItem("token");
+
+
+    console.log("Token:", token);
+
 
     if (!token) {
-        console.error("JWT token was not found in localStorage.");
+
+        console.error(
+            "JWT token was not found in localStorage."
+        );
+
         return;
     }
 
@@ -23,22 +40,40 @@ async function loadOrderHistory() {
     // -----------------------------------------
     // 3. API URL
     // -----------------------------------------
+
     const url =
         `https://localhost:7299/api/Customer/ViewOrderHistory/${customerId}`;
 
 
+    console.log(
+        "TESTING CUSTOMER ID:",
+        customerId
+    );
+
+    console.log(
+        "TEST API URL:",
+        url
+    );
+
+
     try {
+
 
         // -----------------------------------------
         // 4. Call API
         // -----------------------------------------
+
         const response = await fetch(url, {
 
             method: "GET",
 
             headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+
+                "Authorization":
+                    `Bearer ${token}`,
+
+                "Content-Type":
+                    "application/json"
             }
         });
 
@@ -46,12 +81,21 @@ async function loadOrderHistory() {
         // -----------------------------------------
         // 5. Check response
         // -----------------------------------------
+
         if (!response.ok) {
+
+            const errorText =
+                await response.text();
 
             console.error(
                 "API Error:",
                 response.status,
                 response.statusText
+            );
+
+            console.error(
+                "API Response:",
+                errorText
             );
 
             return;
@@ -61,21 +105,30 @@ async function loadOrderHistory() {
         // -----------------------------------------
         // 6. Convert response to JavaScript
         // -----------------------------------------
-        const orders = await response.json();
+
+        const orders =
+            await response.json();
 
 
         // -----------------------------------------
         // 7. Show data in Console
         // -----------------------------------------
-        console.log("Orders received from API:");
+
+        console.log(
+            "Orders received from API:"
+        );
+
         console.log(orders);
 
 
         // -----------------------------------------
         // 8. Get HTML container
         // -----------------------------------------
+
         const ordersContainer =
-            document.getElementById("orders-container");
+            document.getElementById(
+                "orders-container"
+            );
 
 
         if (!ordersContainer) {
@@ -89,18 +142,27 @@ async function loadOrderHistory() {
 
 
         // Clear old HTML
+
         ordersContainer.innerHTML = "";
 
 
         // -----------------------------------------
         // 9. Check if there are no orders
         // -----------------------------------------
-        if (orders.length === 0) {
+
+        if (
+            !orders ||
+            orders.length === 0
+        ) {
 
             ordersContainer.innerHTML = `
+
                 <p class="no-orders">
+
                     You don't have any orders yet.
+
                 </p>
+
             `;
 
             return;
@@ -110,18 +172,24 @@ async function loadOrderHistory() {
         // -----------------------------------------
         // 10. Loop through Orders
         // -----------------------------------------
+
         orders.forEach(order => {
 
-            // Create <details>
-            const orderElement =
-                document.createElement("details");
 
-            orderElement.className = "order";
+            const orderElement =
+                document.createElement(
+                    "details"
+                );
+
+
+            orderElement.className =
+                "order";
 
 
             // -----------------------------------------
             // 11. Create Order HTML
             // -----------------------------------------
+
             orderElement.innerHTML = `
 
                 <summary class="order-header">
@@ -146,7 +214,9 @@ async function loadOrderHistory() {
                         </b>
 
                         <strong>
-                            ${Number(order.totalAmount).toFixed(3)} OMR
+                            ${Number(
+                                order.totalAmount
+                            ).toFixed(3)} OMR
                         </strong>
 
                     </span>
@@ -156,16 +226,21 @@ async function loadOrderHistory() {
 
                 <div class="order-details">
 
-                    <h3>Order Information</h3>
+                    <h3>
+                        Order Information
+                    </h3>
 
 
                     <div class="status-container">
+
 
                         <article>
 
                             <p>📦</p>
 
-                            <h4>Order Status</h4>
+                            <h4>
+                                Order Status
+                            </h4>
 
                             <p>
                                 ${order.orderStatus}
@@ -178,7 +253,9 @@ async function loadOrderHistory() {
 
                             <p>💳</p>
 
-                            <h4>Payment Status</h4>
+                            <h4>
+                                Payment Status
+                            </h4>
 
                             <p>
                                 ${order.paymentStatus}
@@ -191,7 +268,9 @@ async function loadOrderHistory() {
 
                             <p>🚚</p>
 
-                            <h4>Delivery Status</h4>
+                            <h4>
+                                Delivery Status
+                            </h4>
 
                             <p>
                                 ${order.deliveryStatus}
@@ -204,18 +283,25 @@ async function loadOrderHistory() {
 
                             <p>💰</p>
 
-                            <h4>Total Amount</h4>
+                            <h4>
+                                Total Amount
+                            </h4>
 
                             <p>
-                                ${Number(order.totalAmount).toFixed(3)} OMR
+                                ${Number(
+                                    order.totalAmount
+                                ).toFixed(3)} OMR
                             </p>
 
                         </article>
 
+
                     </div>
 
 
-                    <h3>Products</h3>
+                    <h3>
+                        Products
+                    </h3>
 
 
                     <table class="table">
@@ -244,12 +330,15 @@ async function loadOrderHistory() {
                         <tbody>
 
                             ${
-                                createProductsHTML(order.products)
+                                createProductsHTML(
+                                    order.products
+                                )
                             }
 
                         </tbody>
 
                     </table>
+
 
                 </div>
             `;
@@ -258,11 +347,15 @@ async function loadOrderHistory() {
             // -----------------------------------------
             // 12. Add Order to HTML
             // -----------------------------------------
-            ordersContainer.appendChild(orderElement);
+
+            ordersContainer.appendChild(
+                orderElement
+            );
 
         });
 
     }
+
 
     catch (error) {
 
@@ -272,6 +365,7 @@ async function loadOrderHistory() {
         );
 
     }
+
 }
 
 
@@ -282,7 +376,10 @@ async function loadOrderHistory() {
 
 function createProductsHTML(products) {
 
-    if (!products || products.length === 0) {
+    if (
+        !products ||
+        products.length === 0
+    ) {
 
         return `
             <tr>
@@ -294,29 +391,33 @@ function createProductsHTML(products) {
     }
 
 
-    return products.map(product => {
+    return products
+        .map(product => {
 
-        return `
+            return `
 
-            <tr>
+                <tr>
 
-                <td>
-                    ${product.productName}
-                </td>
+                    <td>
+                        ${product.productName}
+                    </td>
 
-                <td>
-                    ${product.quantity}
-                </td>
+                    <td>
+                        ${product.quantity}
+                    </td>
 
-                <td>
-                    ${Number(product.unitPrice).toFixed(3)} OMR
-                </td>
+                    <td>
+                        ${Number(
+                            product.unitPrice
+                        ).toFixed(3)} OMR
+                    </td>
 
-            </tr>
+                </tr>
 
-        `;
+            `;
 
-    }).join("");
+        })
+        .join("");
 
 }
 
@@ -328,10 +429,12 @@ function createProductsHTML(products) {
 
 function formatDate(dateString) {
 
-    const date = new Date(dateString);
+    const date =
+        new Date(dateString);
 
-    return date.toLocaleDateString("en-GB");
-
+    return date.toLocaleDateString(
+        "en-GB"
+    );
 }
 
 
@@ -341,3 +444,4 @@ function formatDate(dateString) {
 // =====================================================
 
 loadOrderHistory();
+
