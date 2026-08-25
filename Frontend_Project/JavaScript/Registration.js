@@ -1,5 +1,9 @@
+const registerForm = document.getElementById('registerForm');
+const registerError = document.getElementById('registerError');
+
 registerForm.addEventListener('submit', async function (event) {
   event.preventDefault();
+  registerError.style.display = 'none';
 
   const fullName = document.getElementById('fullName').value;
   const email = document.getElementById('email').value;
@@ -16,26 +20,28 @@ registerForm.addEventListener('submit', async function (event) {
   };
 
   const response = await fetch('https://localhost:7299/api/Customer/Register', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(registrationData)
-});
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(registrationData)
+  });
 
-const contentType = response.headers.get('content-type');
-let data;
+  const contentType = response.headers.get('content-type');
+  let data;
 
-if (contentType && contentType.includes('application/json')) {
-  data = await response.json();
-} else {
-  data = await response.text();
-}
+  if (contentType && contentType.includes('json')) {
+    data = await response.json();
+  } else {
+    data = await response.text();
+  }
 
-if (response.ok) {
-  console.log('Registration succeeded:', data);
-  window.location.href = 'Login.html';
-} else {
-  console.log('Registration failed:', data);
-}
+  if (response.ok) {
+    console.log('Registration succeeded:', data);
+    window.location.href = 'Login.html';
+  } else {
+    console.log('Registration failed:', data);
+    registerError.textContent = typeof data === 'string' ? data : (data.title || 'Something went wrong. Please try again.');
+    registerError.style.display = 'block';
+  }
 });

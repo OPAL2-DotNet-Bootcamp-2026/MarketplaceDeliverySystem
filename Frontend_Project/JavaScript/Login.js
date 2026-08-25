@@ -1,5 +1,9 @@
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+
 loginForm.addEventListener('submit', async function (event) {
   event.preventDefault();
+  loginError.style.display = 'none';
 
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -20,21 +24,23 @@ loginForm.addEventListener('submit', async function (event) {
   const contentType = response.headers.get('content-type');
   let data;
 
-  if (contentType && contentType.includes('application/json')) {
+  if (contentType && contentType.includes('json')) {
     data = await response.json();
   } else {
     data = await response.text();
   }
 
   if (response.ok) {
-  console.log('Login succeeded:', data);
+    console.log('Login succeeded:', data);
 
-  localStorage.setItem('authToken', data.token);
-  localStorage.setItem('userRole', data.role);
-  localStorage.setItem('userFullName', data.fullName);
+    localStorage.setItem('authToken', data.token);
+    localStorage.setItem('userRole', data.role);
+    localStorage.setItem('userFullName', data.fullName);
 
-  window.location.href = 'home.html';
-} else {
-  console.log('Login failed:', data);
-}
+    window.location.href = 'home.html';
+  } else {
+    console.log('Login failed:', data);
+    loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
+    loginError.style.display = 'block';
+  }
 });
