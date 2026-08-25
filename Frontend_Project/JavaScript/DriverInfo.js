@@ -25,11 +25,55 @@ async function loadOrderDetails(orderId) {
         }
 
         const order = await response.json();
-        console.log("Order details loaded:", order);
+        renderOrderItems(order);
+        renderTotal(order);
 
     } catch (err) {
         console.error("Failed to load order details:", err);
         showLoadError("We couldn't load this order right now. Please check your connection and try again.");
+    }
+}
+
+function renderOrderItems(order) {
+    const list = document.querySelector(".order-items .item-list");
+    if (!list) return;
+
+    const products = order.products || [];
+
+    if (products.length === 0) {
+        list.innerHTML = `<p style="color:#9ca3af; padding:12px 0;">No items found for this order.</p>`;
+        return;
+    }
+
+    list.innerHTML = products.map(product => `
+        <li class="item-row">
+            <div class="item-details">
+                <img src="../assets/img/ProductThumbnail.png" alt="${product.productName}" class="item-thumb">
+                <div class="item-text">
+                    <h4>${product.productName}</h4>
+                    <p class="category">Unit Price: ${Number(product.unitPrice).toFixed(3)} OMR</p>
+                </div>
+            </div>
+            <div class="item-price-info">
+                <span class="quantity-badge">${product.quantity}</span>
+                <span class="price">${Number(product.subTotal).toFixed(3)} OMR</span>
+            </div>
+        </li>
+    `).join("");
+}
+
+function renderTotal(order) {
+    const totalPriceEl = document.querySelector(".total-section .total-price");
+    if (totalPriceEl) {
+        totalPriceEl.textContent = `${Number(order.totalAmount).toFixed(3)} OMR`;
+    }
+
+    const paymentMethodEl = document.querySelector(".total-section .payment-method");
+    if (paymentMethodEl) {
+        const paymentMethod = localStorage.getItem("lastPaymentMethod");
+        paymentMethodEl.textContent = paymentMethod
+            ? `Paid With ${paymentMethod}`
+            : "Payment method on file";
     }
 }
 
