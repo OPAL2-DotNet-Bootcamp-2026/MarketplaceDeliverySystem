@@ -40,7 +40,7 @@ if (response.ok) {
   console.log('role value is:', JSON.stringify(data.role));
 
   if (data.role === 'Driver') {
-    window.location.href = 'DriverHome.html'; // TODO: confirm real filename with team leader
+    window.location.href = 'DeliveredStatus.html'; // TODO: confirm real filename with team leader
   } else {
     window.location.href = 'home.html';
   }
