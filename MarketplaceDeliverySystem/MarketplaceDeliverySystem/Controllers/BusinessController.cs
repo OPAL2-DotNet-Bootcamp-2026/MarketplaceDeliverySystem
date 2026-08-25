@@ -45,9 +45,9 @@ namespace MarketplaceDeliverySystem.Controllers
 
         [HttpGet("GetAllBusinesses")]
         [AllowAnonymous]
-        public IActionResult GetAllBusinesses()
+        public IActionResult GetAllBusinesses([FromQuery] int? categoryId = null)
         {
-            List<BusinessCardRespDTO> result = _businessService.GetAllBusinesses();
+            List<BusinessCardRespDTO> result = _businessService.GetAllBusinesses(categoryId);
             return Ok(result);
         }
     }
