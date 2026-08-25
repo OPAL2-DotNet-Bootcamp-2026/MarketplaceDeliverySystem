@@ -25,12 +25,37 @@ async function loadOrderDetails(orderId) {
         }
 
         const order = await response.json();
+        renderDeliveryStatus(order);
         renderOrderItems(order);
         renderTotal(order);
 
     } catch (err) {
         console.error("Failed to load order details:", err);
         showLoadError("We couldn't load this order right now. Please check your connection and try again.");
+    }
+}
+
+function renderDeliveryStatus(order) {
+    const infoBoxValues = document.querySelectorAll(".delivery-status .info-box .value");
+    const driverValueEl = infoBoxValues[0];
+    const phoneValueEl = infoBoxValues[1];
+
+    if (!driverValueEl || !phoneValueEl) return;
+
+    // The API doesn't hand a driver's name/phone to the customer yet, so
+    // this shows a status-based message instead of faking contact details.
+    switch (order.orderStatus) {
+        case "On the Way":
+            driverValueEl.textContent = "A driver is on the way";
+            phoneValueEl.textContent = "Contact details will show once available";
+            break;
+        case "Delivered":
+            driverValueEl.textContent = "Delivered";
+            phoneValueEl.textContent = "—";
+            break;
+        default:
+            driverValueEl.textContent = "Waiting for a driver to be assigned";
+            phoneValueEl.textContent = "—";
     }
 }
 
