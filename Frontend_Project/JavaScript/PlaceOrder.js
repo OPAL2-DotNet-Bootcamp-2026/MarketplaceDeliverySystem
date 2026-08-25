@@ -55,6 +55,35 @@ function renderCartItems() {
             </li>
         `;
     }).join("");
+
+    attachQuantityHandlers();
+}
+
+function attachQuantityHandlers() {
+    document.querySelectorAll(".order-items .qty-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const row = e.currentTarget.closest(".item-row");
+            const index = Number(row.getAttribute("data-index"));
+            const delta = e.currentTarget.getAttribute("data-action") === "inc" ? 1 : -1;
+            changeItemQuantity(index, delta);
+        });
+    });
+}
+
+function changeItemQuantity(index, delta) {
+    const item = cartItems[index];
+    if (!item) return;
+
+    item.quantity += delta;
+
+    // Dropping to zero removes the item instead of leaving a 0 qty row
+    if (item.quantity < 1) {
+        cartItems.splice(index, 1);
+    }
+
+    localStorage.setItem("orderCart", JSON.stringify(cartItems));
+    renderCartItems();
+    updateOrderSummary();
 }
 
 function updateOrderSummary() {
