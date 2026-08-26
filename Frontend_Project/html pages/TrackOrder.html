@@ -152,11 +152,9 @@
             </div>
 
 
-            <a href="DriverInfo.html" class="driver-button" id="driver-button">
-
+            <button type="button" class="driver-button" id="driver-button">
                 View Driver Information
-
-            </a>
+            </button>
 
 
             <small>
@@ -237,6 +235,40 @@
         </section>
 
     </main>
+        <!-- Driver Information Modal -->
+    <div id="driver-modal" class="driver-modal">
+
+        <div class="driver-modal-content">
+
+            <button
+                type="button"
+                id="close-driver-modal"
+                class="close-driver-modal">
+                &times;
+            </button>
+
+            <h2>Driver Information</h2>
+
+            <div class="driver-info-item">
+                <span>Driver Name</span>
+
+                <strong id="modal-driver-name">
+                    Loading...
+                </strong>
+            </div>
+
+            <div class="driver-info-item">
+                <span>Phone Number</span>
+
+                <strong id="modal-driver-phone">
+                    Loading...
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
     <script src="../sharedComponents/header.js"></script>
     <div id="footer-container"></div>
     <!-- Load and run the JavaScript code from component.js -->

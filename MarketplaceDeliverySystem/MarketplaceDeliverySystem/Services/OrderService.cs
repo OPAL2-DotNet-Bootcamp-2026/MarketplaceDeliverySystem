@@ -204,7 +204,7 @@ namespace MarketplaceDeliverySystem.Services
             order.Status = "Ready";
             _orderRepo.Update();
             // Automatically assign an available driver
-            _deliveryService.AssignAvailableDriver(order.Delivery.DeliveryId);
+            _deliveryService.AssignAvailableDriver(delivery.DeliveryId);
             return order;
         }
 
@@ -305,12 +305,23 @@ namespace MarketplaceDeliverySystem.Services
             return new OrderDetailsDTO
             {
                 OrderId = order.OrderId,
+
                 CustomerName = order.Customer.User.FullName,
+
                 BusinessName = order.Business.BusinessName,
+
                 OrderDate = order.OrderDate,
+
                 OrderStatus = order.Status,
+
                 TotalAmount = order.TotalAmount,
+
                 DeliveryAddress = order.Customer.Address,
+                //If there is no delivery/driver/user, don't crash — just return null
+                // Driver information
+                DriverName = order.Delivery?.Driver?.User?.FullName,
+
+                DriverPhone = order.Delivery?.Driver?.User?.PhoneNumber,
 
                 Products = order.OrderItems.Select(item => new OrderItemDTO
                 {
@@ -318,6 +329,7 @@ namespace MarketplaceDeliverySystem.Services
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice,
                     SubTotal = item.Quantity * item.UnitPrice
+
                 }).ToList()
             };
         }
