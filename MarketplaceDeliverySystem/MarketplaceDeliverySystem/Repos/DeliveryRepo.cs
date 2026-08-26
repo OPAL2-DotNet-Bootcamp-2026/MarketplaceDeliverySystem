@@ -30,19 +30,33 @@ namespace MarketplaceDeliverySystem.Repos
             return _context.Deliveries
                 .Include(d => d.Order)
                 .Include(d => d.Driver)
-                .FirstOrDefault(d =>
+                .Where(d =>
                     d.Driver != null &&
                     d.Driver.UserId == userId &&
-                    d.DeliveryStatus == "Assigned");
+                    d.DeliveryStatus == "Assigned" &&
+                    d.Order.Status == "On the Way")
+                .OrderByDescending(d => d.PickupTime)
+                .FirstOrDefault();
         }
         public void Update()
             {
                 _context.SaveChanges();
             }
+        public Delivery? GetNextReadyDelivery()
+        {
+            return _context.Deliveries
+                .Include(d => d.Order)
+                .Where(d =>
+                    d.Order.Status == "Ready" &&
+                    d.DriverId == null)
+                .OrderBy(d => d.Order.OrderDate)
+                .FirstOrDefault();
+        }
         public void AddDelivery(Delivery delivery)
         {
             _context.Deliveries.Add(delivery);
             _context.SaveChanges();
         }
+
     }
     }

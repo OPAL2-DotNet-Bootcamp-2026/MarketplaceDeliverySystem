@@ -30,17 +30,17 @@ namespace MarketplaceDeliverySystem.Models
         public string DeliveryStatus { get; set; } = string.Empty;
         //(Default = "Pending" or "Assigned")
 
-        [Required]
-        public DateTime PickupTime { get; set; }
+       
+        public DateTime? PickupTime { get; set; }
         //System Generated (Recorded when the driver picks up the order)
 
-        [Required]
-        public DateTime DeliveredTime { get; set; }
+        public DateTime? DeliveredTime { get; set; }
         //System Generated (Recorded when the order is delivered)
 
         [Range(1, 1440, ErrorMessage = "Delivery duration must be between 1 and 1440 minutes.")]
-        [Precision(5, 2)]
-        public decimal DeliveryDuration { get; set; }
-        //Calculated (DeliveredTime - PickupTime)
+        [Precision(6, 2)]
+        public decimal? DeliveryDuration { get; set; }
+
+
     }
 }

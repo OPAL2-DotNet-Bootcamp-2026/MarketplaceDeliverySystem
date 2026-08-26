@@ -78,12 +78,54 @@ namespace MarketplaceDeliverySystem.Services
                 PhoneNumber = driver.User.PhoneNumber
             };
         }
-  
-    public MessageOutputDTO UpdateDeliveryStatus(
-    int deliveryId,
-    UpdateOrderStatusDTO dto)
+        public DriverAssignToDeliveryOutputDTO?
+    AssignNextReadyDelivery()
         {
-            // Find the delivery with its Order and Driver.
+            // Find a Ready delivery without a driver
+            Delivery? delivery =
+                _deliveryRepo.GetNextReadyDelivery();
+
+            if (delivery == null)
+            {
+                return null;
+            }
+
+            // Find an available driver
+            Driver? driver =
+                _driverRepo.GetAvailableDriver();
+
+            if (driver == null)
+            {
+                return null;
+            }
+
+            // Assign driver to delivery
+            delivery.DriverId = driver.DriverId;
+            delivery.DeliveryStatus = "Assigned";
+
+            // Driver becomes busy
+            driver.AvailabilityStatus = "Busy";
+
+            // Order becomes On the Way
+            delivery.Order.Status = "On the Way";
+
+            // Record pickup/assignment time
+            delivery.PickupTime = DateTime.UtcNow;
+            // Save the assignment
+            _deliveryRepo.Update();
+
+            return new DriverAssignToDeliveryOutputDTO
+            {
+                OrderId = delivery.OrderId,
+                FullName = driver.User.FullName,
+                PhoneNumber = driver.User.PhoneNumber
+            };
+        }
+
+        public MessageOutputDTO UpdateDeliveryStatus(
+            int deliveryId,
+            UpdateOrderStatusDTO dto)
+        {
             Delivery? delivery =
                 _deliveryRepo.GetById(deliveryId);
 
@@ -96,44 +138,74 @@ namespace MarketplaceDeliverySystem.Services
                 };
             }
 
-            // Remove extra spaces from the entered status.
             string newStatus = dto.Status.Trim();
-
-            // =====================================================
-            // DRIVER COMPLETES THE DELIVERY
-            // =====================================================
 
             if (newStatus == "Delivered")
             {
-                // The delivery must be On The Way first.
                 if (delivery.DeliveryStatus != "Assigned")
                 {
                     return new MessageOutputDTO
                     {
                         Success = false,
                         Message =
-                           "The delivery must be Assigned before it can be Delivered."
+                            "The delivery must be Assigned before it can be Delivered."
                     };
                 }
 
-                // Update the order and delivery.
+                if (delivery.PickupTime == null)
+                {
+                    return new MessageOutputDTO
+                    {
+                        Success = false,
+                        Message =
+                            "Pickup time was not recorded for this delivery."
+                    };
+                }
+
+                // ==========================================
+                // COMPLETE CURRENT DELIVERY
+                // ==========================================
+
                 delivery.DeliveryStatus = "Delivered";
                 delivery.Order.Status = "Delivered";
 
-                // Record the delivery completion time.
                 delivery.DeliveredTime = DateTime.UtcNow;
 
-                // Calculate delivery duration in minutes.
                 delivery.DeliveryDuration =
                     (decimal)(
-                        delivery.DeliveredTime -
-                        delivery.PickupTime
+                        delivery.DeliveredTime.Value -
+                        delivery.PickupTime.Value
                     ).TotalMinutes;
 
-                // The driver can receive another delivery.
-                delivery.Driver.AvailabilityStatus = "Available";
+                // ==========================================
+                // DRIVER BECOMES AVAILABLE
+                // ==========================================
 
+                if (delivery.Driver != null)
+                {
+                    delivery.Driver.AvailabilityStatus = "Available";
+                }
+
+                // Save current delivery + available driver
                 _deliveryRepo.Update();
+
+                // ==========================================
+                // FIND NEXT READY ORDER
+                // ==========================================
+
+                DriverAssignToDeliveryOutputDTO? nextDelivery =
+                    AssignNextReadyDelivery();
+
+                if (nextDelivery != null)
+                {
+                    return new MessageOutputDTO
+                    {
+                        Success = true,
+                        Message =
+                            $"Order delivered successfully. " +
+                            $"Driver has been automatically assigned to Order {nextDelivery.OrderId}."
+                    };
+                }
 
                 return new MessageOutputDTO
                 {
@@ -143,12 +215,66 @@ namespace MarketplaceDeliverySystem.Services
                 };
             }
 
-            // Reject statuses outside this workflow.
             return new MessageOutputDTO
             {
                 Success = false,
-                Message =
-                    "Status must be 'Delivered'."
+                Message = "Status must be 'Delivered'."
+            };
+        }
+        public DriverAssignToDeliveryOutputDTO?
+    AssignAvailableDriver(int deliveryId)
+        {
+            // Find delivery
+            Delivery? delivery =
+                _deliveryRepo.GetById(deliveryId);
+
+            if (delivery == null)
+            {
+                return null;
+            }
+
+            // Order must be Ready
+            if (delivery.Order.Status != "Ready")
+            {
+                return null;
+            }
+
+            // Don't assign another driver
+            if (delivery.DriverId != null)
+            {
+                return null;
+            }
+
+            // Find an available driver
+            Driver? driver =
+                _driverRepo.GetAvailableDriver();
+
+            if (driver == null)
+            {
+                return null;
+            }
+
+            // Assign driver
+            delivery.DriverId = driver.DriverId;
+            delivery.DeliveryStatus = "Assigned";
+
+            // Driver becomes busy
+            driver.AvailabilityStatus = "Busy";
+
+            // Order is now on the way
+            delivery.Order.Status = "On the Way";
+
+            // Record pickup/assignment time
+            delivery.PickupTime = DateTime.UtcNow;
+
+            // Save
+            _deliveryRepo.Update();
+
+            return new DriverAssignToDeliveryOutputDTO
+            {
+                OrderId = delivery.OrderId,
+                FullName = driver.User.FullName,
+                PhoneNumber = driver.User.PhoneNumber
             };
         }
     }

@@ -4,6 +4,7 @@ using MarketplaceDeliverySystem;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketplaceDeliverySystem.Migrations
 {
     [DbContext(typeof(MarketplaceContext))]
-    partial class MarketplaceContextModelSnapshot : ModelSnapshot
+    [Migration("20260825070107_newUpdate")]
+    partial class newUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,12 +172,12 @@ namespace MarketplaceDeliverySystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryId"));
 
-                    b.Property<DateTime?>("DeliveredTime")
+                    b.Property<DateTime>("DeliveredTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("DeliveryDuration")
-                        .HasPrecision(6, 2)
-                        .HasColumnType("decimal(6,2)");
+                    b.Property<decimal>("DeliveryDuration")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<string>("DeliveryStatus")
                         .IsRequired()
@@ -186,7 +189,7 @@ namespace MarketplaceDeliverySystem.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PickupTime")
+                    b.Property<DateTime>("PickupTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("DeliveryId");

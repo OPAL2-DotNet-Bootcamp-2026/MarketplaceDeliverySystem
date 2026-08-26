@@ -17,7 +17,8 @@ namespace MarketplaceDeliverySystem.Services
         private readonly PaymentRepo _paymentRepo;
         private readonly DeliveryRepo _deliveryRepo;
         private readonly DriverRepo _driverRepo;
-       
+        private readonly DeliveryService _deliveryService;
+
 
         private readonly EmailService _emailService;
         public OrderService(
@@ -29,7 +30,8 @@ namespace MarketplaceDeliverySystem.Services
             PaymentRepo paymentRepo,
             DeliveryRepo deliveryRepo,
             DriverRepo driverRepo,
-             EmailService emailService)
+            DeliveryService deliveryService,
+            EmailService emailService)
         {
             _orderRepo = orderRepo;
             _orderItemRepo = orderItemRepo;
@@ -39,6 +41,7 @@ namespace MarketplaceDeliverySystem.Services
             _paymentRepo = paymentRepo;
             _deliveryRepo = deliveryRepo;
             _driverRepo = driverRepo;
+            _deliveryService = deliveryService;
             // Save the injected EmailService
             _emailService = emailService;
         }
@@ -200,6 +203,8 @@ namespace MarketplaceDeliverySystem.Services
             }
             order.Status = "Ready";
             _orderRepo.Update();
+            // Automatically assign an available driver
+            _deliveryService.AssignAvailableDriver(order.Delivery.DeliveryId);
             return order;
         }
 
