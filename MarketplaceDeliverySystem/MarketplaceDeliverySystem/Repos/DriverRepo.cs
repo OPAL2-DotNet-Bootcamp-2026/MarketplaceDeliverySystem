@@ -37,7 +37,13 @@ namespace MarketplaceDeliverySystem.Repos
                    .Include(d => d.User)
                 .FirstOrDefault(d => d.DriverId == driverId);
         }
-
+        public Driver? GetAvailableDriver()
+        {
+            return context.Drivers
+                .Include(d => d.User)
+                .FirstOrDefault(d =>
+                    d.AvailabilityStatus == "Available");
+        }
         public void Save()
             {
                 context.SaveChanges();
