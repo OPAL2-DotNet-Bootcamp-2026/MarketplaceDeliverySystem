@@ -14,45 +14,258 @@ namespace MarketplaceDeliverySystem.Services
             _userRepository = userRepository;
 
         }
-        public List<OrderHistoryDTO> ViewOrderHistory(int customerId)
+
+
+        //public List<OrderHistoryDTO> ViewOrderHistory(int customerId)
+        //{
+        //    Customer customer = _customerRepository.GetCustomerById(customerId);
+
+        //    if (customer == null)
+        //        return null;
+
+        //    List<Order> orders = _customerRepository.GetCustomerOrders(customerId);
+
+        //    //return the response
+        //    //.select= we need to convert each Order into an OrderHistoryDTO
+        //    //For every order (o), create a new OrderHistoryDTO
+        //    return orders.Select(o => new OrderHistoryDTO
+        //    {
+        //        OrderId = o.OrderId,
+
+        //        OrderDate = o.OrderDate,
+
+        //        OrderStatus = o.Status.ToString(),
+
+        //        TotalAmount = o.TotalAmount,
+
+        //        PaymentStatus = o.Payment.PaymentStatus.ToString(),
+
+        //        DeliveryStatus = o.Delivery.DeliveryStatus.ToString(),
+        //        //inner select = convert each OrderItem into an OrderItemHistoryDTO
+
+        //        Products = o.OrderItems.Select(item => new OrderItemHistoryDTO
+        //        {
+        //            ProductName = item.Product.ProductName,
+
+        //            Quantity = item.Quantity,
+
+        //            UnitPrice = item.UnitPrice
+
+        //        }).ToList()
+
+        //    }).ToList();
+        //}
+
+
+        //ADD BY SALWA
+
+        //public List<OrderHistoryDTO> ViewOrderHistory(int userId)
+        //{
+        //    Customer customer =
+        //        _customerRepository.GetCustomerByUserId(userId);
+
+        //    if (customer == null)
+        //        return null;
+
+        //    int customerId = customer.CustomerId;
+
+        //    List<Order> orders =
+        //        _customerRepository.GetCustomerOrders(customerId);
+
+        //    return orders.Select(o => new OrderHistoryDTO
+        //    {
+        //        OrderId = o.OrderId,
+
+        //        OrderDate = o.OrderDate,
+
+        //        OrderStatus = o.Status.ToString(),
+
+        //        TotalAmount = o.TotalAmount,
+
+        //        PaymentStatus =
+        //            o.Payment.PaymentStatus.ToString(),
+
+        //        DeliveryStatus =
+        //            o.Delivery.DeliveryStatus.ToString(),
+
+        //        Products = o.OrderItems.Select(item =>
+        //            new OrderItemHistoryDTO
+        //            {
+        //                ProductName =
+        //                    item.Product.ProductName,
+
+        //                Quantity =
+        //                    item.Quantity,
+
+        //                UnitPrice =
+        //                    item.UnitPrice
+
+        //            }).ToList()
+
+        //    }).ToList();
+        //}
+
+
+
+
+
+
+        //public List<OrderHistoryDTO> ViewOrderHistory(int userId)
+        //{
+        //    Customer customer =
+        //        _customerRepository.GetCustomerByUserId(userId);
+
+        //    if (customer == null)
+        //        return null;
+
+        //    int customerId = customer.CustomerId;
+
+        //    List<Order> orders =
+        //        _customerRepository.GetCustomerOrders(customerId);
+
+        //    // TEST
+        //    Console.WriteLine("Customer ID: " + customerId);
+        //    Console.WriteLine("Number of Orders: " + orders.Count);
+
+        //    foreach (var order in orders)
+        //    {
+        //        Console.WriteLine("Order ID: " + order.OrderId);
+
+        //        Console.WriteLine(
+        //            "Payment is null: " +
+        //            (order.Payment == null)
+        //        );
+
+        //        Console.WriteLine(
+        //            "Delivery is null: " +
+        //            (order.Delivery == null)
+        //        );
+
+        //        Console.WriteLine(
+        //            "OrderItems count: " +
+        //            order.OrderItems.Count
+        //        );
+
+        //        foreach (var item in order.OrderItems)
+        //        {
+        //            Console.WriteLine(
+        //                "Product is null: " +
+        //                (item.Product == null)
+        //            );
+        //        }
+        //    }
+
+        //    return orders.Select(o => new OrderHistoryDTO
+        //    {
+        //        OrderId = o.OrderId,
+
+        //        OrderDate = o.OrderDate,
+
+        //        OrderStatus = o.Status.ToString(),
+
+        //        TotalAmount = o.TotalAmount,
+
+        //        PaymentStatus =
+        //            o.Payment.PaymentStatus.ToString(),
+
+        //        DeliveryStatus =
+        //            o.Delivery.DeliveryStatus.ToString(),
+
+        //        Products = o.OrderItems.Select(item =>
+        //            new OrderItemHistoryDTO
+        //            {
+        //                ProductName =
+        //                    item.Product.ProductName,
+
+        //                Quantity =
+        //                    item.Quantity,
+
+        //                UnitPrice =
+        //                    item.UnitPrice
+
+        //            }).ToList()
+
+        //    }).ToList();
+        //}
+
+
+
+
+
+        public List<OrderHistoryDTO> ViewOrderHistory(int userId)
         {
-            Customer customer = _customerRepository.GetCustomerById(customerId);
+            Customer customer =
+                _customerRepository.GetCustomerByUserId(userId);
 
             if (customer == null)
                 return null;
 
-            List<Order> orders = _customerRepository.GetCustomerOrders(customerId);
+            int customerId = customer.CustomerId;
 
-            //return the response
-            //.select= we need to convert each Order into an OrderHistoryDTO
-            //For every order (o), create a new OrderHistoryDTO
+            List<Order> orders =
+                _customerRepository.GetCustomerOrders(customerId);
+
             return orders.Select(o => new OrderHistoryDTO
             {
                 OrderId = o.OrderId,
 
                 OrderDate = o.OrderDate,
 
-                OrderStatus = o.Status.ToString(),
+                OrderStatus =
+                    o.Status.ToString(),
 
-                TotalAmount = o.TotalAmount,
+                TotalAmount =
+                    o.TotalAmount,
 
-                PaymentStatus = o.Payment.PaymentStatus.ToString(),
+                PaymentStatus =
+                    o.Payment != null
+                        ? o.Payment.PaymentStatus.ToString()
+                        : "Not Available",
 
-                DeliveryStatus = o.Delivery.DeliveryStatus.ToString(),
-                //inner select = convert each OrderItem into an OrderItemHistoryDTO
+                DeliveryStatus =
+                    o.Delivery != null
+                        ? o.Delivery.DeliveryStatus.ToString()
+                        : "Not Available",
 
-                Products = o.OrderItems.Select(item => new OrderItemHistoryDTO
-                {
-                    ProductName = item.Product.ProductName,
+                Products =
+                    o.OrderItems.Select(item =>
+                        new OrderItemHistoryDTO
+                        {
+                            ProductName =
+                                item.Product != null
+                                    ? item.Product.ProductName
+                                    : "Unknown Product",
 
-                    Quantity = item.Quantity,
+                            Quantity =
+                                item.Quantity,
 
-                    UnitPrice = item.UnitPrice
+                            UnitPrice =
+                                item.UnitPrice
 
-                }).ToList()
+                        }).ToList()
 
             }).ToList();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //send the registeration info and receive back the reg comfirmation
         public UserResponseDTO Register(RegisterCustomerDTO dto)
         {

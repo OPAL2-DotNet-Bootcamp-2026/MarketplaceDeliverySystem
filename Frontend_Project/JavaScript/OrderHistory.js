@@ -1,91 +1,89 @@
-
-console.log("THIS IS THE CORRECT ORDER HISTORY FILE");
-console.log("VERSION 3");
-
-// =====================================================
-// Load Order History
-// =====================================================
-
 async function loadOrderHistory() {
 
+    // =========================================
+    // 1. Get JWT Token
+    // =========================================
 
-    // -----------------------------------------
-    // 1. Customer ID for TEST
-    // -----------------------------------------
-
-    const customerId = 1;
-
-
-    // -----------------------------------------
-    // 2. Get JWT Token
-    // -----------------------------------------
-
-    const token =
-        localStorage.getItem("token");
-
+    const token = localStorage.getItem("authToken");
 
     console.log("Token:", token);
 
 
     if (!token) {
-
-        console.error(
-            "JWT token was not found in localStorage."
-        );
-
+        console.error("JWT token was not found in localStorage.");
         return;
     }
 
 
-    // -----------------------------------------
-    // 3. API URL
-    // -----------------------------------------
+    // =========================================
+    // 2. Read JWT Payload
+    // =========================================
 
-    const url =
-        `https://localhost:7299/api/Customer/ViewOrderHistory/${customerId}`;
+   /* const payload = JSON.parse(
+        atob(token.split(".")[1])
+    );
 
+    console.log("JWT Payload:", payload);*/
+
+
+    // =========================================
+    // 3. Get Customer ID from JWT
+    // =========================================
+
+   /* const customerId =
+        payload[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ];
 
     console.log(
-        "TESTING CUSTOMER ID:",
+        "Logged-in Customer ID:",
         customerId
     );
 
-    console.log(
-        "TEST API URL:",
-        url
-    );
 
+    if (!customerId) {
+        console.error(
+            "Customer ID was not found in JWT."
+        );
+        return;
+    }
+
+*/
+    // =========================================
+    // 4. API URL
+    // =========================================
+
+    const url =
+        "https://localhost:7299/api/Customer/ViewOrderHistory/";
+
+    console.log("TEST API URL:", url);
+
+
+    // =========================================
+    // 5. Call API
+    // =========================================
 
     try {
-
-
-        // -----------------------------------------
-        // 4. Call API
-        // -----------------------------------------
 
         const response = await fetch(url, {
 
             method: "GET",
 
             headers: {
-
-                "Authorization":
-                    `Bearer ${token}`,
-
-                "Content-Type":
-                    "application/json"
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
+
         });
 
 
-        // -----------------------------------------
-        // 5. Check response
-        // -----------------------------------------
+        // =========================================
+        // 6. Check Response
+        // =========================================
 
         if (!response.ok) {
 
-            const errorText =
-                await response.text();
+            const errorText = await response.text();
 
             console.error(
                 "API Error:",
@@ -102,17 +100,11 @@ async function loadOrderHistory() {
         }
 
 
-        // -----------------------------------------
-        // 6. Convert response to JavaScript
-        // -----------------------------------------
+        // =========================================
+        // 7. Convert Response to JavaScript
+        // =========================================
 
-        const orders =
-            await response.json();
-
-
-        // -----------------------------------------
-        // 7. Show data in Console
-        // -----------------------------------------
+        const orders = await response.json();
 
         console.log(
             "Orders received from API:"
@@ -121,14 +113,12 @@ async function loadOrderHistory() {
         console.log(orders);
 
 
-        // -----------------------------------------
-        // 8. Get HTML container
-        // -----------------------------------------
+        // =========================================
+        // 8. Get HTML Container
+        // =========================================
 
         const ordersContainer =
-            document.getElementById(
-                "orders-container"
-            );
+            document.getElementById("orders-container");
 
 
         if (!ordersContainer) {
@@ -141,54 +131,36 @@ async function loadOrderHistory() {
         }
 
 
-        // Clear old HTML
-
         ordersContainer.innerHTML = "";
 
 
-        // -----------------------------------------
-        // 9. Check if there are no orders
-        // -----------------------------------------
+        // =========================================
+        // 9. Check if No Orders
+        // =========================================
 
-        if (
-            !orders ||
-            orders.length === 0
-        ) {
+        if (!orders || orders.length === 0) {
 
             ordersContainer.innerHTML = `
-
                 <p class="no-orders">
-
                     You don't have any orders yet.
-
                 </p>
-
             `;
 
             return;
         }
 
 
-        // -----------------------------------------
-        // 10. Loop through Orders
-        // -----------------------------------------
+        // =========================================
+        // 10. Display Orders
+        // =========================================
 
         orders.forEach(order => {
 
-
             const orderElement =
-                document.createElement(
-                    "details"
-                );
+                document.createElement("details");
 
+            orderElement.className = "order";
 
-            orderElement.className =
-                "order";
-
-
-            // -----------------------------------------
-            // 11. Create Order HTML
-            // -----------------------------------------
 
             orderElement.innerHTML = `
 
@@ -232,7 +204,6 @@ async function loadOrderHistory() {
 
 
                     <div class="status-container">
-
 
                         <article>
 
@@ -295,7 +266,6 @@ async function loadOrderHistory() {
 
                         </article>
 
-
                     </div>
 
 
@@ -329,24 +299,17 @@ async function loadOrderHistory() {
 
                         <tbody>
 
-                            ${
-                                createProductsHTML(
-                                    order.products
-                                )
-                            }
+                            ${createProductsHTML(
+                                order.products
+                            )}
 
                         </tbody>
 
                     </table>
 
-
                 </div>
             `;
 
-
-            // -----------------------------------------
-            // 12. Add Order to HTML
-            // -----------------------------------------
 
             ordersContainer.appendChild(
                 orderElement
@@ -355,7 +318,6 @@ async function loadOrderHistory() {
         });
 
     }
-
 
     catch (error) {
 
@@ -369,17 +331,13 @@ async function loadOrderHistory() {
 }
 
 
-
-// =====================================================
+// =========================================
 // Create Products HTML
-// =====================================================
+// =========================================
 
 function createProductsHTML(products) {
 
-    if (
-        !products ||
-        products.length === 0
-    ) {
+    if (!products || products.length === 0) {
 
         return `
             <tr>
@@ -418,30 +376,23 @@ function createProductsHTML(products) {
 
         })
         .join("");
-
 }
 
 
-
-// =====================================================
+// =========================================
 // Format Date
-// =====================================================
+// =========================================
 
 function formatDate(dateString) {
 
-    const date =
-        new Date(dateString);
+    const date = new Date(dateString);
 
-    return date.toLocaleDateString(
-        "en-GB"
-    );
+    return date.toLocaleDateString("en-GB");
 }
 
 
-
-// =====================================================
+// =========================================
 // Start
-// =====================================================
+// =========================================
 
 loadOrderHistory();
-

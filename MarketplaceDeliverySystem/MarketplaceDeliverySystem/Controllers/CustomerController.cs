@@ -2,12 +2,13 @@
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Security.Claims;
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
+
     public class CustomerController : ControllerBase
     {
         private readonly CustomerService _customerService;
@@ -16,16 +17,56 @@ namespace MarketplaceDeliverySystem.Controllers
         {
             _customerService = customerService;
         }
-        [HttpGet("ViewOrderHistory/{customerId}")]
-        public IActionResult ViewOrderHistory(int customerId)
+
+
+
+        //[HttpGet("ViewOrderHistory/{customerId}")]
+        //public IActionResult ViewOrderHistory(int customerId)
+        //{
+        //    List<OrderHistoryDTO> history = _customerService.ViewOrderHistory(customerId);
+
+        //    if (history == null)
+        //        return NotFound("Customer not found.");
+
+        //    return Ok(history);
+        //}
+
+
+
+
+        [HttpGet("ViewOrderHistory")]
+        public IActionResult ViewOrderHistory()
         {
-            List<OrderHistoryDTO> history = _customerService.ViewOrderHistory(customerId);
+            string? userIdValue =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdValue))
+                return Unauthorized();
+
+            int userId =
+                int.Parse(userIdValue);
+
+            List<OrderHistoryDTO> history =
+                _customerService.ViewOrderHistory(userId);
 
             if (history == null)
                 return NotFound("Customer not found.");
 
             return Ok(history);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [HttpPost("Register")]
         [AllowAnonymous]

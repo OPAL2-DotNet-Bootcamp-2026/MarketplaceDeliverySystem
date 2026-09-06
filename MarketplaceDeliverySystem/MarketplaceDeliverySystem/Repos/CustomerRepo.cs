@@ -20,6 +20,26 @@ namespace MarketplaceDeliverySystem.Repos
                     c.CustomerId == customerId);
         }
 
+
+
+        //ADD NEW MEOTHED SALWA
+
+
+        public Customer? GetCustomerByUserId(int userId)
+        {
+            return context.Customers
+                .Include(c => c.User)
+                .FirstOrDefault(c =>
+                    c.UserId == userId);
+        }
+
+
+
+
+
+
+
+
         public void AddCustomer(Customer customer)
         {
             context.Customers.Add(customer);
@@ -43,6 +63,20 @@ namespace MarketplaceDeliverySystem.Repos
 
                 .ToList();
         }
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
 
 
     }
