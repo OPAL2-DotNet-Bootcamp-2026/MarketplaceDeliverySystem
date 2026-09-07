@@ -92,11 +92,17 @@ async function loadCategories() {
                 getCategoryIcon(category.categoryName);
 
 
-            // Create category card
+            // ========================================
+            // Create clickable category card
+            // ========================================
 
             const categoryCard = `
 
-                <div class="category-card">
+                <div
+                    class="category-card"
+                    onclick="openCategory(${category.categoryId})"
+                    style="cursor: pointer;"
+                >
 
                     <i class="${icon}"></i>
 
@@ -134,6 +140,18 @@ async function loadCategories() {
         `;
 
     }
+
+}
+
+
+// ============================================
+// Open Category
+// ============================================
+
+function openCategory(categoryId) {
+
+    window.location.href =
+        `Products.html?businessId=${BUSINESS_ID}&categoryId=${categoryId}`;
 
 }
 
