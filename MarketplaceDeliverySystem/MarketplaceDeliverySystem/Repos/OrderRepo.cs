@@ -35,10 +35,19 @@ namespace MarketplaceDeliverySystem.Repos
             return _context.Orders
                 .Include(o => o.Customer)
                     .ThenInclude(c => c.User)
+
                 .Include(o => o.Business)
-                .Include(o => o.Customer)
+
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
+
+                // Get Delivery
+                .Include(o => o.Delivery)
+                    // Get Driver
+                    .ThenInclude(d => d.Driver)
+                        // Get driver's User
+                        .ThenInclude(d => d.User)
+
                 .FirstOrDefault(o => o.OrderId == orderId);
         }
     }

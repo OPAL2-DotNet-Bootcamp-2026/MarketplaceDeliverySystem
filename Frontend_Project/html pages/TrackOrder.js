@@ -31,6 +31,23 @@ const orderTotal =
 
 const driverStatus =
     document.getElementById("driver-status");
+
+// Driver modal
+const driverModal =
+    document.getElementById("driver-modal");
+
+const closeDriverModal =
+    document.getElementById("close-driver-modal");
+
+const modalDriverName =
+    document.getElementById("modal-driver-name");
+
+const modalDriverPhone =
+    document.getElementById("modal-driver-phone");
+
+// Store the current order
+let currentOrder = null;
+
 // orderStatuses stores information for every status
 const orderStatuses = {
     //this is as a dictionary of order information.
@@ -227,6 +244,69 @@ function updateOrderStatus(status) {
     }
 
 }
+// =========================
+// DRIVER INFORMATION MODAL
+// =========================
+
+function showDriverInformation(order) {
+
+    if (!order.driverName || !order.driverPhone) {
+
+        alert("No driver has been assigned to this order.");
+
+        return;
+    }
+
+    modalDriverName.textContent =
+        order.driverName;
+
+    modalDriverPhone.textContent =
+        order.driverPhone;
+
+    driverModal.classList.add("show");
+}
+
+
+// Close modal
+closeDriverModal.addEventListener(
+    "click",
+    function () {
+
+        driverModal.classList.remove("show");
+
+    }
+);
+
+
+// Close when clicking outside the modal
+driverModal.addEventListener(
+    "click",
+    function (event) {
+
+        if (event.target === driverModal) {
+
+            driverModal.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+// View Driver Information button
+driverButton.addEventListener(
+    "click",
+    function () {
+
+        if (currentOrder) {
+
+            showDriverInformation(currentOrder);
+
+        }
+
+    }
+);
+
 async function loadOrder() {
 
     const params =
@@ -314,7 +394,7 @@ async function loadOrder() {
             order
         );
 
-
+        currentOrder = order;
         // -------------------------
         // Order information
         // -------------------------

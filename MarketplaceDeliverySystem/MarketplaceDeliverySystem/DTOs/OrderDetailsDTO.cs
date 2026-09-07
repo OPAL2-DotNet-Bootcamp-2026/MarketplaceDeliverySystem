@@ -16,6 +16,11 @@
 
         public string DeliveryAddress { get; set; }
 
-        public List<OrderItemDTO> Products { get; set; } = new();
+        //The ? is important because an order can exist while no driver is assigned yet
+        public string? DriverName { get; set; }
+
+        public string? DriverPhone { get; set; }
+
+        public List<OrderItemDTO> Products { get; set; }
     }
 }
