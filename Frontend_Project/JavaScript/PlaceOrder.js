@@ -53,7 +53,7 @@ async function handlePlaceOrder(e) {
         return;
     }
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     if (!token) {
         alert("Please log in to place an order.");
         window.location.href = "Login.html";
