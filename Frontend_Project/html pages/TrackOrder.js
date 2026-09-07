@@ -329,8 +329,7 @@ async function loadOrder() {
         return;
     }
 
-    const token =
-        sessionStorage.getItem("token");
+  const token = localStorage.getItem("authToken");
 
     if (!token) {
 
