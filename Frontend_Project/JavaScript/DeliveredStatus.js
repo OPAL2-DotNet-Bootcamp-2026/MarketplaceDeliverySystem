@@ -13,6 +13,8 @@ const orderNumber =
 
 let deliveryId = null;
 
+const nextDeliveryButton =
+    document.querySelector("#next-delivery-button");
 
 // Get the driver's current delivery
 async function loadDelivery() {
@@ -21,7 +23,7 @@ async function loadDelivery() {
         alert("Please login first.");
         return;
     }
-    
+
 
     try {
 
@@ -149,5 +151,13 @@ confirmToggle.addEventListener(
         }
 
         await markAsDelivered();
+    }
+);
+
+// Move to next delivery
+nextDeliveryButton.addEventListener(
+    "click",
+    () => {
+        window.location.reload();
     }
 );
