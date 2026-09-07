@@ -1,6 +1,6 @@
 const API_URL = "https://localhost:7299";
 
-const token = sessionStorage.getItem("token");
+const token = localStorage.getItem("authToken");
 
 const confirmToggle =
     document.querySelector("#delivery-confirm-toggle");
