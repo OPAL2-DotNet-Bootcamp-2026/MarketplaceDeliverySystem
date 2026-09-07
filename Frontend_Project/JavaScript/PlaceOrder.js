@@ -118,7 +118,7 @@ function onOrderPlaced(result, paymentMethod) {
     cartItems = [];
 
     const trackLink = document.querySelector(".btn-track-order");
-    if (trackLink) trackLink.href = `DriverInfo.html?orderId=${result.orderId}`;
+    if (trackLink) trackLink.href = `TrackOrder.html?orderId=${result.orderId}`;
 
     const modal = document.getElementById("orderSuccessModal");
     if (modal) modal.classList.add("active");
