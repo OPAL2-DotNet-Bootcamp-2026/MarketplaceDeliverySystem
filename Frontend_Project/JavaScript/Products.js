@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 1. Read ?businessId=X from current URL
     const urlParams = new URLSearchParams(window.location.search);
     const businessId = urlParams.get("businessId");
+//add 
+const categoryId =
+    urlParams.get("categoryId");
+
 
     if (!businessId) {
         document.querySelector("#products-list-container").innerHTML = `
@@ -24,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 2. Load business details and products
     await loadBusinessHeader(businessId);
-    await loadProducts(businessId);
+    await loadProducts(businessId,categoryId);//add
 });
 
 // Fetches & renders the Top Business Header Card
@@ -74,12 +78,23 @@ async function loadBusinessHeader(businessId) {
 }
 
 // Fetches the product list
-async function loadProducts(businessId) {
+async function loadProducts(businessId,categoryId) {//add
     const listContainer = document.querySelector("#products-list-container");
 
     try {
-        const response = await fetch(`${BASE_PRODUCTS_API}/${businessId}`);
-        if (!response.ok) throw new Error("Failed to load products.");
+       // const response = await fetch(`${BASE_PRODUCTS_API}/${businessId}`);
+       // if (!response.ok) throw new Error("Failed to load products.");
+
+let url =
+    `${BASE_PRODUCTS_API}/${businessId}`;
+
+if (categoryId) {
+    url += `?categoryId=${categoryId}`;
+}
+
+const response =
+    await fetch(url);
+
 
         allProducts = await response.json();
 
