@@ -48,11 +48,11 @@ namespace MarketplaceDeliverySystem.Services
 
 
         // public Order? CreateOrder(OrderCreateDTO dto)
-        public async Task<Order?> CreateOrderAsync(OrderCreateDTO dto)
+        public async Task<Order?> CreateOrderAsync(OrderCreateDTO dto, int userId)
         {
             // Check if customer exists
             Customer? customer =
-                _customerRepo.GetCustomerById(dto.CustomerId);
+                _customerRepo.GetCustomerByUserId(userId);
 
             if (customer == null)
             {
@@ -123,7 +123,7 @@ namespace MarketplaceDeliverySystem.Services
             // Create order
             Order order = new Order
             {
-                CustomerId = dto.CustomerId,
+                CustomerId = customer.CustomerId,
                 BusinessId = dto.BusinessId,
                 OrderDate = DateTime.UtcNow,
                 Subtotal = subtotal,

@@ -60,21 +60,17 @@ async function handlePlaceOrder(e) {
         return;
     }
 
-    // Customer id isn't returned from login yet, so this falls back to the
-    // same test account used across the app until that's wired up.
-    const customerId = Number(localStorage.getItem("customerId")) || 1;
     const businessId = cartItems[0].businessId;
     const paymentMethod = PAYMENT_METHOD_LABELS[selectedPayment.value] || selectedPayment.value;
 
-    const orderPayload = {
-        customerId: customerId,
-        businessId: businessId,
-        paymentMethod: paymentMethod,
-        orderItems: cartItems.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity
-        }))
-    };
+  const orderPayload = {
+    businessId: businessId,
+    paymentMethod: paymentMethod,
+    orderItems: cartItems.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity
+    }))
+};
 
     const placeOrderBtn = document.querySelector(".btn-place-order");
     const originalLabel = placeOrderBtn.textContent;
