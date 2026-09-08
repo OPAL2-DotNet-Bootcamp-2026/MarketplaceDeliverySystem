@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 1. Read ?businessId=X from current URL
     const urlParams = new URLSearchParams(window.location.search);
     const businessId = urlParams.get("businessId");
-//add 
-const categoryId =
-    urlParams.get("categoryId");
+    //add 
+    const categoryId =
+        urlParams.get("categoryId");
 
 
     if (!businessId) {
@@ -28,7 +28,7 @@ const categoryId =
 
     // 2. Load business details and products
     await loadBusinessHeader(businessId);
-    await loadProducts(businessId,categoryId);//add
+    await loadProducts(businessId, categoryId);//add
 });
 
 // Fetches & renders the Top Business Header Card
@@ -78,22 +78,22 @@ async function loadBusinessHeader(businessId) {
 }
 
 // Fetches the product list
-async function loadProducts(businessId,categoryId) {//add
+async function loadProducts(businessId, categoryId) {//add
     const listContainer = document.querySelector("#products-list-container");
 
     try {
-       // const response = await fetch(`${BASE_PRODUCTS_API}/${businessId}`);
-       // if (!response.ok) throw new Error("Failed to load products.");
+        // const response = await fetch(`${BASE_PRODUCTS_API}/${businessId}`);
+        // if (!response.ok) throw new Error("Failed to load products.");
 
-let url =
-    `${BASE_PRODUCTS_API}/${businessId}`;
+        let url =
+            `${BASE_PRODUCTS_API}/${businessId}`;
 
-if (categoryId) {
-    url += `?categoryId=${categoryId}`;
-}
+        if (categoryId) {
+            url += `?categoryId=${categoryId}`;
+        }
 
-const response =
-    await fetch(url);
+        const response =
+            await fetch(url);
 
 
         allProducts = await response.json();
@@ -171,8 +171,8 @@ function renderFilteredProducts() {
     }
 
     filtered.forEach(product => {
-        if (!productQuantities[product.productId]) {
-            productQuantities[product.productId] = 1;
+        if (productQuantities[product.productId] === undefined) {
+            productQuantities[product.productId] = 0;
         }
 
         const qty = productQuantities[product.productId];
@@ -293,10 +293,10 @@ function renderFilteredProducts() {
 
 // Global Quantity handler (syncs both the card and modal counters)
 window.updateQuantity = function (productId, delta, maxStock, unitPrice) {
-    let current = productQuantities[productId] || 1;
+    let current = productQuantities[productId] ?? 0;
     current += delta;
 
-    if (current < 1) current = 1;
+    if (current < 0) current = 0;
     if (current > maxStock) current = maxStock;
 
     productQuantities[productId] = current;
@@ -320,8 +320,11 @@ window.addProductToOrder = function (productId, productName) {
     const product = allProducts.find(p => p.productId === productId);
     if (!product) return;
 
-    const qty = productQuantities[productId] || 1;
-
+    const qty = productQuantities[productId] ?? 0;
+    if (qty === 0) {
+        alert("Please select at least 1 item.");
+        return;
+    }
     let cart = JSON.parse(localStorage.getItem("orderCart") || "[]");
     const existingIndex = cart.findIndex(item => item.productId === productId);
 
