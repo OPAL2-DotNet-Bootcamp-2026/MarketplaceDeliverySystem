@@ -4,6 +4,7 @@ using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Security.Claims;
 namespace MarketplaceDeliverySystem.Controllers
 {
     [ApiController]
@@ -24,10 +25,19 @@ namespace MarketplaceDeliverySystem.Controllers
         [EnableRateLimiting("orderPolicy")]
         [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder(
-    [FromBody] OrderCreateDTO dto)
+            [FromBody] OrderCreateDTO dto)
         {
+            string? userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdValue))
+            {
+                return Unauthorized();
+            }
+
+            int userId = int.Parse(userIdValue);
+
             Order? order =
-                await _orderService.CreateOrderAsync(dto);
+                await _orderService.CreateOrderAsync(dto, userId);
 
             if (order == null)
             {
