@@ -37,6 +37,9 @@ function initializeSidebar() {
     const categories = document.querySelector(".categories");
 
 
+    const logoutButton = document.getElementById("logoutButton");
+
+
     // Open sidebar
     //classList allows JavaScript to manage css classes into html.
     //When the user clicks the Categories area, run this code.
@@ -72,6 +75,16 @@ function initializeSidebar() {
 
         overlay.classList.remove("open");
 
+    });
+
+    logoutButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userFullName');
+
+        window.location.href = '../html pages/home.html';
     });
 
 }
