@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCategories();
 
     loadProducts();
+    
+    const token = localStorage.getItem('authToken');
+
+    if (token) {
+        document.getElementById('authButton').style.display = 'none';
+    }
 
 });
 
