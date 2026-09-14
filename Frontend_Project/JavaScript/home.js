@@ -14,7 +14,6 @@ const PRODUCTS_API =
 // ============================================
 
 // The products in our database belong to BusinessId = 1
-
 const BUSINESS_ID = 1;
 
 
@@ -24,15 +23,17 @@ const BUSINESS_ID = 1;
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    // Load Categories
     loadCategories();
 
+    // Load Popular Products
     loadProducts();
 
 });
 
 
 // ============================================
-// Load Categories
+// LOAD CATEGORIES
 // ============================================
 
 async function loadCategories() {
@@ -41,61 +42,133 @@ async function loadCategories() {
         document.getElementById("categories-container");
 
 
+    // Make sure container exists
+    if (!container) {
+
+        console.error(
+            "categories-container was not found."
+        );
+
+        return;
+    }
+
+
     try {
 
+        // ========================================
         // Send GET request to Backend
+        // ========================================
 
         const response =
             await fetch(CATEGORIES_API);
 
 
-        // Check if request was successful
+        // ========================================
+        // Check response
+        // ========================================
 
         if (!response.ok) {
 
-            throw new Error("Failed to load categories");
+            throw new Error(
+                "Failed to load categories"
+            );
 
         }
 
 
+        // ========================================
         // Convert response to JavaScript data
+        // ========================================
 
         const categories =
             await response.json();
 
 
+        // ========================================
+        // Remove duplicate categories
+        // ========================================
+
+        const uniqueCategories = [];
+
+        const categoryNames = new Set();
+
+
+        categories.forEach(function (category) {
+
+            // Get category name
+            const name =
+                category.categoryName?.trim();
+
+
+            // Ignore empty names
+            if (!name) {
+                return;
+            }
+
+
+            // Convert to lowercase
+            // so Perfumes and perfumes
+            // are considered the same
+            const key =
+                name.toLowerCase();
+
+
+            // Add only if not already added
+            if (!categoryNames.has(key)) {
+
+                categoryNames.add(key);
+
+                uniqueCategories.push(category);
+
+            }
+
+        });
+
+
+        // ========================================
+        // Show ONLY first 3 categories
+        // ========================================
+
+        const displayedCategories =
+            uniqueCategories.slice(0, 3);
+
+
+        // ========================================
         // Clear container
+        // ========================================
 
         container.innerHTML = "";
 
 
+        // ========================================
         // Check if there are no categories
+        // ========================================
 
-        if (categories.length === 0) {
+        if (displayedCategories.length === 0) {
 
-            container.innerHTML =
-                "<p>No categories available.</p>";
+            container.innerHTML = `
+                <p>No categories available.</p>
+            `;
 
             return;
-
         }
 
 
-        // Loop through categories
+        // ========================================
+        // Create category cards
+        // ========================================
 
-        categories.forEach(function (category) {
+        displayedCategories.forEach(function (category) {
 
 
-            // Get icon for this category
-
+            // Get icon
             const icon =
-                getCategoryIcon(category.categoryName);
+                getCategoryIcon(
+                    category.categoryName
+                );
 
 
-            // ========================================
-            // Create clickable category card
-            // ========================================
-
+            // Create category card
             const categoryCard = `
 
                 <div
@@ -115,9 +188,11 @@ async function loadCategories() {
             `;
 
 
-            // Add card to page
-
-            container.innerHTML += categoryCard;
+            // Add card
+            container.insertAdjacentHTML(
+                "beforeend",
+                categoryCard
+            );
 
         });
 
@@ -145,7 +220,7 @@ async function loadCategories() {
 
 
 // ============================================
-// Open Category
+// OPEN CATEGORY
 // ============================================
 
 function openCategory(categoryId) {
@@ -157,7 +232,7 @@ function openCategory(categoryId) {
 
 
 // ============================================
-// Category Icons
+// CATEGORY ICONS
 // ============================================
 
 function getCategoryIcon(categoryName) {
@@ -166,6 +241,7 @@ function getCategoryIcon(categoryName) {
         categoryName.toLowerCase();
 
 
+    // Perfumes
     if (name.includes("perfume")) {
 
         return "bi bi-stars";
@@ -173,6 +249,7 @@ function getCategoryIcon(categoryName) {
     }
 
 
+    // Flowers
     if (name.includes("flower")) {
 
         return "bi bi-flower1";
@@ -180,6 +257,7 @@ function getCategoryIcon(categoryName) {
     }
 
 
+    // Chocolate
     if (name.includes("chocolate")) {
 
         return "bi bi-gift";
@@ -187,6 +265,7 @@ function getCategoryIcon(categoryName) {
     }
 
 
+    // Food
     if (name.includes("food")) {
 
         return "bi bi-egg-fried";
@@ -194,6 +273,7 @@ function getCategoryIcon(categoryName) {
     }
 
 
+    // Fashion
     if (name.includes("fashion")) {
 
         return "bi bi-handbag";
@@ -201,6 +281,7 @@ function getCategoryIcon(categoryName) {
     }
 
 
+    // Decor
     if (name.includes("decor")) {
 
         return "bi bi-palette";
@@ -208,15 +289,14 @@ function getCategoryIcon(categoryName) {
     }
 
 
-    // Default icon
-
+    // Default
     return "bi bi-grid";
 
 }
 
 
 // ============================================
-// Load Products
+// LOAD PRODUCTS
 // ============================================
 
 async function loadProducts() {
@@ -225,55 +305,124 @@ async function loadProducts() {
         document.getElementById("products-container");
 
 
+    // Make sure container exists
+    if (!container) {
+
+        console.error(
+            "products-container was not found."
+        );
+
+        return;
+    }
+
+
     try {
 
+        // ========================================
         // Build API URL
+        // ========================================
 
         const url =
             `${PRODUCTS_API}/${BUSINESS_ID}`;
 
 
+        // ========================================
         // Send GET request
+        // ========================================
 
         const response =
             await fetch(url);
 
 
+        // ========================================
         // Check response
+        // ========================================
 
         if (!response.ok) {
 
-            throw new Error("Failed to load products");
+            throw new Error(
+                "Failed to load products"
+            );
 
         }
 
 
+        // ========================================
         // Convert JSON to JavaScript
+        // ========================================
 
         const products =
             await response.json();
 
 
+        // ========================================
+        // Remove duplicate products
+        // ========================================
+
+        const uniqueProducts = [];
+
+        const productIds = new Set();
+
+
+        products.forEach(function (product) {
+
+            // Get product ID
+            const productId =
+                product.productId;
+
+
+            // Ignore products without ID
+            if (!productId) {
+                return;
+            }
+
+
+            // Add only unique products
+            if (!productIds.has(productId)) {
+
+                productIds.add(productId);
+
+                uniqueProducts.push(product);
+
+            }
+
+        });
+
+
+        // ========================================
+        // Show ONLY first 3 products
+        // ========================================
+
+        const displayedProducts =
+            uniqueProducts.slice(0, 3);
+
+
+        // ========================================
         // Clear container
+        // ========================================
 
         container.innerHTML = "";
 
 
+        // ========================================
         // Check if there are no products
+        // ========================================
 
-        if (products.length === 0) {
+        if (displayedProducts.length === 0) {
 
-            container.innerHTML =
-                "<p>No products available.</p>";
+            container.innerHTML = `
+                <p>No products available.</p>
+            `;
 
             return;
-
         }
 
 
-        // Loop through products
+        // ========================================
+        // Create product cards
+        // ========================================
 
-        products.forEach(function (product) {
+        displayedProducts.forEach(function (product) {
 
             createProductCard(
                 product,
@@ -306,7 +455,7 @@ async function loadProducts() {
 
 
 // ============================================
-// Create Product Card
+// CREATE PRODUCT CARD
 // ============================================
 
 function createProductCard(
@@ -326,7 +475,8 @@ function createProductCard(
     if (product.imageUrl) {
 
         imageUrl =
-            "../assets/img/" + product.imageUrl;
+            "../assets/img/" +
+            product.imageUrl;
 
     }
 
@@ -336,7 +486,9 @@ function createProductCard(
     // ========================================
 
     let rating =
-        Number(product.averageRating || 0);
+        Number(
+            product.averageRating || 0
+        );
 
 
     rating =
@@ -344,7 +496,17 @@ function createProductCard(
 
 
     // ========================================
-    // Create HTML
+    // Product Price
+    // ========================================
+
+    const price =
+        Number(
+            product.price || 0
+        ).toFixed(3);
+
+
+    // ========================================
+    // Create Product Card
     // ========================================
 
     const productCard = `
@@ -354,6 +516,10 @@ function createProductCard(
             data-product-id="${product.productId}"
         >
 
+
+            <!-- ================================= -->
+            <!-- Product Image -->
+            <!-- ================================= -->
 
             <div class="product-image">
 
@@ -365,6 +531,10 @@ function createProductCard(
             </div>
 
 
+            <!-- ================================= -->
+            <!-- Product Information -->
+            <!-- ================================= -->
+
             <div class="product-info">
 
                 <h3>
@@ -373,18 +543,20 @@ function createProductCard(
 
 
                 <strong>
-                    ${Number(product.price).toFixed(3)} OMR
+                    ${price} OMR
                 </strong>
 
 
                 <p>
-
                     ⭐ ${rating}
-
                 </p>
 
             </div>
 
+
+            <!-- ================================= -->
+            <!-- Favorite Button -->
+            <!-- ================================= -->
 
             <i
                 class="bi bi-heart product-heart"
@@ -397,33 +569,51 @@ function createProductCard(
     `;
 
 
-    // Add product to container
+    // ========================================
+    // Add card to container
+    // ========================================
 
-    container.innerHTML += productCard;
+    container.insertAdjacentHTML(
+        "beforeend",
+        productCard
+    );
 
 }
 
 
 // ============================================
-// Favorite Button
+// FAVORITE BUTTON
 // ============================================
 
 function toggleFavorite(heart) {
 
-    // Change empty heart to filled heart
+    // Empty heart → Filled heart
 
-    if (heart.classList.contains("bi-heart")) {
+    if (
+        heart.classList.contains("bi-heart")
+    ) {
 
-        heart.classList.remove("bi-heart");
+        heart.classList.remove(
+            "bi-heart"
+        );
 
-        heart.classList.add("bi-heart-fill");
+        heart.classList.add(
+            "bi-heart-fill"
+        );
 
     }
+
+    // Filled heart → Empty heart
+
     else {
 
-        heart.classList.remove("bi-heart-fill");
+        heart.classList.remove(
+            "bi-heart-fill"
+        );
 
-        heart.classList.add("bi-heart");
+        heart.classList.add(
+            "bi-heart"
+        );
 
     }
 

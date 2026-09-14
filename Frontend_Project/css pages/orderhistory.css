@@ -1,213 +1,1748 @@
-main{
+/* =====================================================
+   MARKETPLACE - ORDER HISTORY
+   ===================================================== */
 
-   margin:0;
-   padding: 100px 100PX; 
+
+/* =====================================================
+   COLOR PALETTE
+   ===================================================== */
+
+:root {
+
+    /* Main Brand Colors */
+
+    --navy: #0A1F44;
+
+    --orange: #F37D42;
+
+    --teal: #35B0A4;
+
+    --cyan: #AFFFFF;
+
+    --pale-teal: #D6F1F1;
+
+
+    /* Neutral Colors */
+
+    --white: #FFFFFF;
+
+    --background: #F8FBFC;
+
+    --light-gray: #F1F5F7;
+
+    --border: #E1EAEC;
+
+    --text: #24364B;
+
+    --muted: #6B7A8C;
+
+
+    /* Status Colors */
+
+    --pending-bg: #FFF1E8;
+
+    --pending-text: #D9652E;
+
+    --success-bg: #E4F6F3;
+
+    --success-text: #218C82;
+
+    --cancel-bg: #FDECEC;
+
+    --cancel-text: #C94B4B;
+
 }
 
 
-.order {
- 
-    border-radius: 10px;
-    margin-bottom: 12px;
-    padding: 15px;
-    background-color:#d8e1ef;;
+
+/* =====================================================
+   PAGE
+   ===================================================== */
+
+.order-page {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 60px 35px 100px;
+
+    box-sizing: border-box;
+
+    color: var(--navy);
 
 }
 
 
 
-.order-header {
+/* =====================================================
+   HERO
+   ===================================================== */
+
+.orders-hero {
+
+    position: relative;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
-    cursor: pointer;
-    list-style: none;
-}
 
+    min-height: 190px;
 
+    margin-bottom: 25px;
 
-.order-header small {
-    display: block;
-    color :black;
-    margin-top: 5px;
-}
+    padding: 35px 40px;
 
-.order-header b {
-    background-color: #FFF5F0;
-    color:black;
-    padding: 5px 12px;
-    border-radius: 20px;
-    margin-right: 15px;
-}
+    border-radius: 22px;
 
-.order-details {
-    margin-top: 25px;
-    border-top: 1px solid black;
-    padding-top: 20px;
-}
-
-.status-container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.status-container article {
-  
-    border-radius: 10px;
-    padding: 15px;
-    background-color: #fadaca;
-    width: 250px;;
-}
-
-.status-container article p {
-    margin: 5px 0;
-}
-
-.table {
-
-    width:70%;
-    margin-top: 10px;
-    border-radius: 10px;
     overflow: hidden;
 
+    background:
+        linear-gradient(
+            135deg,
+            var(--pale-teal),
+            #F8FBFC
+        );
+
+    border: 1px solid var(--border);
+
+    box-sizing: border-box;
+
 }
 
 
 
-.table thead th {
+/* Decorative Circle */
 
-    padding-top: 20px;
-   
-    background-color:#fadaca;
+.orders-hero::after {
 
-    color:black;
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+
+    height: 260px;
+
+    border-radius: 50%;
+
+    right: -100px;
+
+    top: -120px;
+
+    background:
+        rgba(53, 176, 164, 0.10);
 
 }
 
 
 
+/* Second Decorative Circle */
+
+.orders-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+
+    height: 120px;
+
+    border-radius: 50%;
+
+    right: 170px;
+
+    bottom: -70px;
+
+    background:
+        rgba(243, 125, 66, 0.10);
+
+}
 
 
 
+/* Hero Content */
 
-/* =========================
-   ORDER ANIMATIONS
-   ========================= */
+.hero-content {
 
-/* Orders appear when the page loads */
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+
+/* Hero Label */
+
+.hero-label {
+
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    color: var(--orange);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+}
+
+
+
+/* Hero Heading */
+
+.orders-hero h1 {
+
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: 40px;
+
+    font-weight: 750;
+
+    line-height: 1.2;
+
+}
+
+
+
+/* Hero Description */
+
+.orders-hero p {
+
+    margin: 10px 0 0;
+
+    color: var(--muted);
+
+    font-size: 15px;
+
+}
+
+
+
+/* =====================================================
+   TOTAL ORDERS BOX
+   ===================================================== */
+
+.hero-order-number {
+
+    position: relative;
+
+    z-index: 3;
+
+    min-width: 145px;
+
+    padding: 22px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.85);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.8);
+
+    box-shadow:
+        0 8px 25px
+        rgba(10, 31, 68, 0.06);
+
+    backdrop-filter: blur(5px);
+
+}
+
+
+
+.hero-order-number strong {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--teal);
+
+    font-size: 34px;
+
+    line-height: 1;
+
+}
+
+
+
+.hero-order-number span {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+}
+
+
+
+/* =====================================================
+   STATISTICS
+   ===================================================== */
+
+.order-statistics {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+
+}
+
+
+
+/* Statistic Card */
+
+.stat-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 90px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(10, 31, 68, 0.04);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+}
+
+
+
+.stat-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        var(--teal);
+
+    box-shadow:
+        0 10px 25px
+        rgba(53, 176, 164, 0.10);
+
+}
+
+
+
+/* Statistic Icon */
+
+.stat-icon {
+
+    flex-shrink: 0;
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background-color:
+        var(--pale-teal);
+
+    color: var(--teal);
+
+    font-size: 21px;
+
+}
+
+
+
+/* Statistic Text */
+
+.stat-content span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+}
+
+
+
+.stat-content strong {
+
+    color: var(--navy);
+
+    font-size: 25px;
+
+    line-height: 1;
+
+}
+
+
+
+/* =====================================================
+   TOOLBAR
+   ===================================================== */
+
+.orders-toolbar {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(200px, 1fr)
+        170px
+        170px;
+
+    gap: 12px;
+
+    margin-top: 5px;
+
+}
+
+
+
+/* Search */
+
+.search-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    height: 48px;
+
+    padding: 0 15px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+
+.search-box:focus-within {
+
+    border-color:
+        var(--teal);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(53, 176, 164, 0.12);
+
+}
+
+
+
+.search-icon {
+
+    font-size: 15px;
+
+}
+
+
+
+.search-box input {
+
+    width: 100%;
+
+    height: 100%;
+
+    padding: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--navy);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+}
+
+
+
+.search-box input::placeholder {
+
+    color: #94A3B8;
+
+}
+
+
+
+/* Selects */
+
+.orders-toolbar select {
+
+    height: 48px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+
+    color: var(--navy);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+
+.orders-toolbar select:focus {
+
+    border-color:
+        var(--teal);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(53, 176, 164, 0.12);
+
+}
+
+
+
+/* =====================================================
+   RESULTS INFO
+   ===================================================== */
+
+.results-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin:
+        20px 0 12px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+}
+
+
+
+/* =====================================================
+   ORDERS CONTAINER
+   ===================================================== */
+
+.orders-container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+
+/* =====================================================
+   ORDER CARD
+   ===================================================== */
+
 .order {
-    animation: orderAppear 0.7s ease forwards;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    overflow: hidden;
+
+    background-color: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-left: 4px solid var(--teal);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(10, 31, 68, 0.035);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-left-color 0.25s ease;
+
+    animation:
+        orderAppear 0.4s ease forwards;
+
 }
+
+
+
+.order:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-left-color:
+        var(--orange);
+
+    box-shadow:
+        0 10px 25px
+        rgba(10, 31, 68, 0.08);
+
+}
+
+
+
+/* =====================================================
+   ORDER HEADER
+   ===================================================== */
+
+.order-header {
+
+    display: grid;
+
+    grid-template-columns:
+        42px
+        minmax(180px, 1fr)
+        100px
+        110px
+        120px
+        90px;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 76px;
+
+    padding: 12px 18px;
+
+    box-sizing: border-box;
+
+    background-color: var(--white);
+
+    cursor: pointer;
+
+    list-style: none;
+
+}
+
+
+
+.order-header::-webkit-details-marker {
+
+    display: none;
+
+}
+
+
+
+/* =====================================================
+   ARROW
+   ===================================================== */
+
+.order-arrow {
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color:
+        var(--pale-teal);
+
+    color: var(--teal);
+
+    font-size: 10px;
+
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease,
+        color 0.3s ease;
+
+}
+
+
+
+.order[open] .order-arrow {
+
+    transform:
+        rotate(90deg);
+
+    background-color:
+        var(--orange);
+
+    color: var(--white);
+
+}
+
+
+
+/* =====================================================
+   ORDER MAIN INFO
+   ===================================================== */
+
+.order-main-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+
+.order-number {
+
+    color: var(--navy);
+
+    font-size: 15px;
+
+    font-weight: 750;
+
+}
+
+
+
+.order-date {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+}
+
+
+
+/* =====================================================
+   ITEMS COUNT
+   ===================================================== */
+
+.items-count {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+}
+
+
+
+/* =====================================================
+   STATUS BADGE
+   ===================================================== */
+
+.status-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: fit-content;
+
+    min-width: 82px;
+
+    padding: 7px 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 30px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+
+/* Pending */
+
+.status-pending {
+
+    background-color:
+        var(--pending-bg);
+
+    color:
+        var(--pending-text);
+
+}
+
+
+
+/* Confirmed / Shipped */
+
+.status-active {
+
+    background-color:
+        var(--pale-teal);
+
+    color:
+        var(--teal);
+
+}
+
+
+
+/* Delivered / Completed */
+
+.status-completed {
+
+    background-color:
+        var(--success-bg);
+
+    color:
+        var(--success-text);
+
+}
+
+
+
+/* Cancelled */
+
+.status-cancelled {
+
+    background-color:
+        var(--cancel-bg);
+
+    color:
+        var(--cancel-text);
+
+}
+
+
+
+/* Default */
+
+.status-default {
+
+    background-color:
+        var(--light-gray);
+
+    color:
+        var(--text);
+
+}
+
+
+
+/* =====================================================
+   ORDER TOTAL
+   ===================================================== */
+
+.order-total {
+
+    text-align: right;
+
+    color: var(--navy);
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+
+/* =====================================================
+   VIEW DETAILS
+   ===================================================== */
+
+.view-details {
+
+    color: var(--orange);
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    text-align: right;
+
+    white-space: nowrap;
+
+}
+
+
+
+/* =====================================================
+   ORDER DETAILS
+   ===================================================== */
+
+.order-details {
+
+    padding: 25px;
+
+    background-color:
+        #F3F9F9;
+
+    border-top:
+        1px solid var(--border);
+
+    animation:
+        detailsOpen 0.3s ease;
+
+}
+
+
+
+@keyframes detailsOpen {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-7px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   DETAILS TITLE
+   ===================================================== */
+
+.details-title {
+
+    margin:
+        0 0 16px;
+
+    color: var(--navy);
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+}
+
+
+
+.products-title {
+
+    margin-top: 28px;
+
+}
+
+
+
+/* =====================================================
+   STATUS CONTAINER
+   ===================================================== */
+
+.status-container {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px;
+
+}
+
+
+
+/* =====================================================
+   STATUS CARD
+   ===================================================== */
+
+.status-card {
+
+    min-height: 110px;
+
+    padding: 17px;
+
+    box-sizing: border-box;
+
+    background-color:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-top:
+        3px solid var(--teal);
+
+    border-radius: 13px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-top-color 0.2s ease;
+
+}
+
+
+
+.status-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-top-color:
+        var(--orange);
+
+    box-shadow:
+        0 8px 20px
+        rgba(10, 31, 68, 0.07);
+
+}
+
+
+
+/* Icon */
+
+.status-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+
+    background-color:
+        var(--pale-teal);
+
+    font-size: 17px;
+
+}
+
+
+
+/* Card Title */
+
+.status-card h4 {
+
+    margin:
+        0 0 5px;
+
+    color: var(--navy);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+
+/* Card Value */
+
+.status-card p {
+
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+}
+
+
+
+/* =====================================================
+   PRODUCTS
+   ===================================================== */
+
+.products-wrapper {
+
+    overflow-x: auto;
+
+    background-color:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+}
+
+
+
+.order-products {
+
+    width: 100%;
+
+    min-width: 500px;
+
+    border-collapse: collapse;
+
+}
+
+
+
+.order-products thead {
+
+    background-color:
+        var(--pale-teal);
+
+}
+
+
+
+.order-products th {
+
+    padding:
+        14px 16px;
+
+    color: var(--navy);
+
+    text-align: left;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+
+.order-products td {
+
+    padding:
+        14px 16px;
+
+    border-bottom:
+        1px solid #E8EEF0;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+}
+
+
+
+.order-products tbody tr {
+
+    transition:
+        background-color 0.2s ease;
+
+}
+
+
+
+.order-products tbody tr:hover {
+
+    background-color:
+        #F4FAFA;
+
+}
+
+
+
+.order-products tbody tr:last-child td {
+
+    border-bottom: none;
+
+}
+
+
+
+/* Product Name */
+
+.product-name {
+
+    color: var(--navy);
+
+    font-weight: 650;
+
+}
+
+
+
+/* Quantity */
+
+.product-quantity {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 30px;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    background-color:
+        var(--pale-teal);
+
+    color: var(--navy);
+
+    font-weight: 700;
+
+}
+
+
+
+/* Price */
+
+.product-price {
+
+    color: var(--navy);
+
+    font-weight: 650;
+
+}
+
+
+
+/* =====================================================
+   PAGINATION
+   ===================================================== */
+
+.pagination {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 30px;
+
+}
+
+
+
+.page-button {
+
+    width: 36px;
+
+    height: 36px;
+
+    padding: 0;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background-color:
+        var(--white);
+
+    color: var(--navy);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+
+.page-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    background-color:
+        var(--pale-teal);
+
+    color:
+        var(--teal);
+
+}
+
+
+
+.page-button.active {
+
+    background-color:
+        var(--navy);
+
+    color:
+        var(--white);
+
+    border-color:
+        var(--navy);
+
+}
+
+
+
+.page-button.arrow {
+
+    background-color:
+        var(--orange);
+
+    color:
+        var(--white);
+
+    border-color:
+        var(--orange);
+
+}
+
+
+
+/* =====================================================
+   NO ORDERS
+   ===================================================== */
+
+.no-orders {
+
+    padding: 60px 20px;
+
+    border-radius: 16px;
+
+    background-color:
+        var(--pale-teal);
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 15px;
+
+}
+
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.loading-orders {
+
+    padding: 50px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+}
+
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.orders-error {
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    background-color:
+        var(--pending-bg);
+
+    color:
+        var(--pending-text);
+
+    text-align: center;
+
+}
+
+
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
 
 @keyframes orderAppear {
+
     from {
+
         opacity: 0;
-        transform: translateY(20px);
+
+        transform:
+            translateY(10px);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0);
-    }
-}
 
+        transform:
+            translateY(0);
 
-/* Second order appears slightly later */
-.order:nth-of-type(2) {
-    animation-delay: 0.2s;
-}
-
-
-/* Hover animation */
-.order:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-}
-
-
-/* Arrow animation */
-.order-header::before {
-    content: "▶";
-    margin-right: 10px;
-    transition: transform 0.3s ease;
-}
-
-.order[open] .order-header::before {
-    transform: rotate(90deg);
-}
-
-
-/* Order details animation */
-.order[open] .order-details {
-    animation: detailsAppear 0.5s ease;
-}
-
-@keyframes detailsAppear {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 
-/* Status cards animation */
-.order[open] .status-container article {
-    animation: statusAppear 0.5s ease forwards;
-    opacity: 0;
-}
 
-@keyframes statusAppear {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
+/* =====================================================
+   TABLET
+   ===================================================== */
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+@media (max-width: 1000px) {
 
 
-/* Status cards appear one after another */
-.order[open] .status-container article:nth-child(1) {
-    animation-delay: 0.1s;
-}
+    .order-page {
 
-.order[open] .status-container article:nth-child(2) {
-    animation-delay: 0.2s;
-}
+        padding:
+            50px 25px 80px;
 
-.order[open] .status-container article:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-
-/* Table animation */
-.order[open] .table {
-    animation: tableAppear 0.6s ease 0.4s forwards;
-    opacity: 0;
-}
-
-@keyframes tableAppear {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .order-statistics {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
     }
+
+
+    .order-header {
+
+        grid-template-columns:
+            40px
+            minmax(150px, 1fr)
+            100px
+            110px;
+
+    }
+
+
+    .items-count {
+
+        display: none;
+
+    }
+
+
+    .view-details {
+
+        display: none;
+
+    }
+
+
+    .status-container {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
 }
 
 
 
+/* =====================================================
+   MOBILE
+   ===================================================== */
 
+@media (max-width: 650px) {
+
+
+    .order-page {
+
+        padding:
+            30px 15px 60px;
+
+    }
+
+
+    /* Hero */
+
+    .orders-hero {
+
+        min-height: auto;
+
+        padding: 25px;
+
+        gap: 20px;
+
+    }
+
+
+    .orders-hero h1 {
+
+        font-size: 30px;
+
+    }
+
+
+    .orders-hero p {
+
+        font-size: 13px;
+
+    }
+
+
+    .hero-order-number {
+
+        min-width: 90px;
+
+        padding: 14px 10px;
+
+    }
+
+
+    .hero-order-number strong {
+
+        font-size: 26px;
+
+    }
+
+
+
+    /* Statistics */
+
+    .order-statistics {
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+
+    }
+
+
+    .stat-card {
+
+        gap: 10px;
+
+        padding: 13px;
+
+    }
+
+
+    .stat-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 17px;
+
+    }
+
+
+    .stat-content strong {
+
+        font-size: 21px;
+
+    }
+
+
+
+    /* Toolbar */
+
+    .orders-toolbar {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+
+    /* Order */
+
+    .order-header {
+
+        grid-template-columns:
+            35px 1fr;
+
+        gap: 10px;
+
+        padding: 15px;
+
+    }
+
+
+    .status-badge {
+
+        grid-column: 2;
+
+        justify-self: start;
+
+    }
+
+
+    .order-total {
+
+        grid-column: 2;
+
+        text-align: left;
+
+    }
+
+
+
+    /* Details */
+
+    .order-details {
+
+        padding: 17px;
+
+    }
+
+
+    .details-title {
+
+        font-size: 18px;
+
+    }
+
+
+    /* Status Cards */
+
+    .status-container {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .status-card {
+
+        min-height: auto;
+
+    }
+
+
+}
+
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 400px) {
+
+
+    .orders-hero {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .hero-order-number {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+    }
+
+
+    .order-statistics {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}

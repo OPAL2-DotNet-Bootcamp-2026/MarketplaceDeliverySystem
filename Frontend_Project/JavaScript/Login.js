@@ -1,5 +1,12 @@
 const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
+const registerSuccessMessage = document.getElementById('registerSuccessMessage');
+
+const params = new URLSearchParams(window.location.search);
+
+if (params.get('registered') === 'true') {
+  registerSuccessMessage.style.display = 'block';
+}
 
 loginForm.addEventListener('submit', async function (event) {
   event.preventDefault();
@@ -30,23 +37,21 @@ loginForm.addEventListener('submit', async function (event) {
     data = await response.text();
   }
 
-if (response.ok) {
-  console.log('Login succeeded:', data);
+  if (response.ok) {
+    console.log('Login succeeded:', data);
 
-  localStorage.setItem('authToken', data.token);
-  localStorage.setItem('userRole', data.role);
-  localStorage.setItem('userFullName', data.fullName);
+    localStorage.setItem('authToken', data.token);
+    localStorage.setItem('userRole', data.role);
+    localStorage.setItem('userFullName', data.fullName);
 
-  console.log('role value is:', JSON.stringify(data.role));
-
-  if (data.role === 'Driver') {
-    window.location.href = 'DeliveredStatus.html'; // TODO: confirm real filename with team leader
+    if (data.role === 'Driver') {
+      window.location.href = 'DeliveredStatus.html';
+    } else {
+      window.location.href = 'home.html';
+    }
   } else {
-    window.location.href = 'home.html';
+    console.log('Login failed:', data);
+    loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
+    loginError.style.display = 'block';
   }
-} else {
-  console.log('Login failed:', data);
-  loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
-  loginError.style.display = 'block';
-}
 });
