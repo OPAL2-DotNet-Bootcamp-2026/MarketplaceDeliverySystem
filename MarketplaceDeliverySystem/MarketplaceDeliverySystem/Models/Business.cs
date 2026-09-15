@@ -15,6 +15,13 @@ namespace MarketplaceDeliverySystem.Models
         [ForeignKey(nameof(BusinessOwner))]
         public int OwnerId { get; set; }// From List (Selected BusinessOwner)
 
+        [Required]
+        [ForeignKey(nameof(businessCategory))]
+        public int BusinessCategoryId { get; set; } // User Input - ForeginKey
+
+
+        public BusinessCategory businessCategory { get; set; } //Navigation Property
+
         public BusinessOwner BusinessOwner { get; set; }//Navigation Property
 
         [Required(ErrorMessage = "Business name is required.")]

@@ -18,7 +18,7 @@ namespace MarketplaceDeliverySystem
         public DbSet<Category> Categories { get; set; }
         public DbSet<BusinessOwner> BusinessOwners { get; set; }
         public DbSet<Business> Businesses { get; set; }
-
+        public DbSet<BusinessCategory> BusinessCategories { get; set; }
         public MarketplaceContext(DbContextOptions<MarketplaceContext> options) : base(options)
         {
         }
