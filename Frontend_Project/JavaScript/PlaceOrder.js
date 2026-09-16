@@ -108,16 +108,36 @@ async function handlePlaceOrder(e) {
 }
 
 function onOrderPlaced(result, paymentMethod) {
-    localStorage.setItem("lastOrderId", result.orderId);
     localStorage.setItem("lastPaymentMethod", paymentMethod);
     localStorage.removeItem("orderCart");
     cartItems = [];
 
+    // Add the newly created order to the current tracking session
+    let trackedOrderIds =
+        JSON.parse(sessionStorage.getItem("trackedOrderIds") || "[]");
+
+    if (result.orderId &&
+        !trackedOrderIds.includes(result.orderId)) {
+
+        trackedOrderIds.push(result.orderId);
+    }
+
+    sessionStorage.setItem(
+        "trackedOrderIds",
+        JSON.stringify(trackedOrderIds)
+    );
+
     const trackLink = document.querySelector(".btn-track-order");
-    if (trackLink) trackLink.href = `TrackOrder.html?orderId=${result.orderId}`;
+
+    if (trackLink) {
+        trackLink.href = "TrackOrder.html";
+    }
 
     const modal = document.getElementById("orderSuccessModal");
-    if (modal) modal.classList.add("active");
+
+    if (modal) {
+        modal.classList.add("active");
+    }
 }
 
 function loadCartFromStorage() {

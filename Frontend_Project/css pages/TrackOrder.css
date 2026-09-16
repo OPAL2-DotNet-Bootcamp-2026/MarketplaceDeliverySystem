@@ -40,21 +40,25 @@
 }
 
 /* ========================= TRACKING CARD ========================= */
+.orders-container {
+    width: 100%;
+}
+
 .tracking-card {
     max-width: 1050px;
-    margin: 0 auto 28px;
-    padding: 45px 50px;
+    margin: 0 auto 35px;
+    padding: 40px 50px;
     background-color: white;
     border: 1px solid white;
     border-radius: 22px;
     box-shadow: 0 8px 25px rgba(10, 31, 68, 0.08);
 }
 
-/* Progress layout */
 .progress-container {
     display: flex;
     align-items: center;
     width: 100%;
+    margin-bottom: 40px;
 }
 
 /* Step */
@@ -153,13 +157,17 @@
 
 /* ========================= CURRENT STATUS ========================= */
 .current-status {
-    max-width: 1050px;
-    margin: 0 auto 28px;
-    padding: 40px;
+    padding: 30px 20px;
     text-align: center;
-    background: linear-gradient(135deg, white, white);
-    border-radius: 22px;
-    box-shadow: 0 8px 25px rgba(47, 111, 222, 0.08);
+    background: linear-gradient(135deg, white, #f8fbfb);
+    border-radius: 18px;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 25px;
+    margin-bottom: 25px;
 }
 
 /* Delivery icon */
@@ -256,37 +264,79 @@
 }
 
 /* ========================= DRIVER BUTTON ========================= */
-.driver-button {
-    display: inline-block;
+.view-driver-btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
     padding: 13px 25px;
+    border: none;
     border-radius: 10px;
     background-color: #F37D42;
     color: white;
-    text-decoration: none;
     font-size: 14px;
     font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.driver-button:hover {
+.view-driver-btn:hover {
     background-color: #0A1F44;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(10, 31, 68, 0.2);
 }
 
-.current-status small {
-    display: block;
-    margin-top: 15px;
-    color: #7b8491;
+.no-orders {
+    text-align: center;
+    padding: 40px;
+    color: #667085;
+    font-size: 16px;
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(10, 31, 68, 0.08);
 }
 
 /* ========================= INFORMATION CARDS ========================= */
 .track-info {
-    max-width: 1050px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px;
+    background-color: #f8fbfb;
+    border-radius: 12px;
+}
+
+.track-info span {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.track-info strong {
+    color: #0A1F44;
+    font-size: 14px;
+}
+
+.order-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    background-color: #D6F1F1;
+    border-radius: 12px;
+}
+
+.order-status span {
+    color: #536274;
+    font-size: 13px;
+}
+
+.order-status strong {
+    color: #35B0A4;
+    font-size: 14px;
 }
 
 .info-card {
@@ -356,7 +406,27 @@
 .teal-text {
     color: #35B0A4 !important;
 }
+/* ========================= ORDER CARD HEADER ========================= */
 
+.order-card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 35px;
+    font-size: 15px;
+    color: #536274;
+}
+
+.order-card-header strong {
+    color: #F37D42;
+    font-weight: 600;
+}
+
+.order-separator {
+    color: #7b8491;
+    margin: 0 5px;
+}
 /* ========================= RESPONSIVE ========================= */
 @media (max-width: 800px) {
     .track-page {
@@ -372,8 +442,12 @@
         min-width: 650px;
     }
 
-    .track-info {
+    .order-details {
         grid-template-columns: 1fr;
+    }
+
+    .current-status {
+        padding: 25px 15px;
     }
 
     .delivery-time {

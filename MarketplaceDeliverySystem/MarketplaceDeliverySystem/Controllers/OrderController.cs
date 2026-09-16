@@ -81,5 +81,24 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(order);
         }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("GetMyActiveOrders")]
+        public IActionResult GetMyActiveOrders()
+        {
+            //The controller gets ClaimTypes.NameIdentifier which is your UserId
+            string? userIdValue =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdValue, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            List<OrderDetailsDTO> orders =
+                _orderService.GetMyActiveOrders(userId);
+
+            return Ok(orders);
+        }
     }
 }
