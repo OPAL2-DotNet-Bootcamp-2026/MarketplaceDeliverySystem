@@ -56,6 +56,13 @@ if (!registerForm || !registerError) {
       data = await response.text();
     }
 
-    
+    if (response.ok) {
+      console.log('Registration succeeded:', data);
+      window.location.href = 'Login.html?registered=true';
+    } else {
+      console.log('Registration failed:', data);
+      registerError.textContent = typeof data === 'string' ? data : (data.title || 'Something went wrong. Please try again.');
+      registerError.style.display = 'block';
+    }
   });
 }
