@@ -6,13 +6,17 @@ interface RegistrationData {
   address: string;
 }
 
+interface ApiErrorResponse {
+  title: string;
+}
+
 const registerForm = document.querySelector<HTMLFormElement>('#registerForm');
 const registerError = document.querySelector<HTMLElement>('#registerError');
 
 if (!registerForm || !registerError) {
   console.error('Registration form or error element not found in the DOM.');
 } else {
-  registerForm.addEventListener('submit', async function (event) {
+  registerForm.addEventListener('submit', async function (event): Promise<void> {
     event.preventDefault();
     registerError.style.display = 'none';
 
@@ -27,7 +31,7 @@ if (!registerForm || !registerError) {
       return;
     }
 
-  const registrationData: RegistrationData = {
+    const registrationData: RegistrationData = {
       fullName: fullNameInput.value,
       email: emailInput.value,
       phoneNumber: phoneInput.value,
@@ -43,5 +47,15 @@ if (!registerForm || !registerError) {
       body: JSON.stringify(registrationData)
     });
 
+    const contentType = response.headers.get('content-type');
+    let data: string | ApiErrorResponse;
+
+    if (contentType && contentType.includes('json')) {
+      data = await response.json();
+    } else {
+      data = await response.text();
+    }
+
+    
   });
 }
