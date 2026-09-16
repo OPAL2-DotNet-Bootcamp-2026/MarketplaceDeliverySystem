@@ -1,4 +1,5 @@
-﻿using MarketplaceDeliverySystem.Repos;
+﻿using MarketplaceDeliverySystem.Models;
+using MarketplaceDeliverySystem.Repos;
 
 namespace MarketplaceDeliverySystem.Services
 {
@@ -9,6 +10,11 @@ namespace MarketplaceDeliverySystem.Services
         public BusinessCategoryService(BusinessCategoryRepo businesscategoryRepo)
         {
             _businesscategoryRepo = businesscategoryRepo;
+        }
+
+        public List<BusinessCategory> GetAllCategories()
+        {
+            return _businesscategoryRepo.GetAll();
         }
     }
 }
