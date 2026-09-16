@@ -14,8 +14,7 @@ namespace MarketplaceDeliverySystem.Migrations
                 name: "BusinessCategoryId",
                 table: "Businesses",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "BusinessCategories",
@@ -47,8 +46,7 @@ namespace MarketplaceDeliverySystem.Migrations
                 table: "Businesses",
                 column: "BusinessCategoryId",
                 principalTable: "BusinessCategories",
-                principalColumn: "BusinessCategoryId",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "BusinessCategoryId");
         }
 
         /// <inheritdoc />
