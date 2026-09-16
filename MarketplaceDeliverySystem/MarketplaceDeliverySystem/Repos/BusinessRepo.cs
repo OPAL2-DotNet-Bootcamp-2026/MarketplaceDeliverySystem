@@ -21,7 +21,9 @@ namespace MarketplaceDeliverySystem.Repos
         }
         public List<Business> GetAllBusinesses()
         {
-            return _context.Businesses.ToList();
+            return _context.Businesses
+                .Include(b => b.businessCategory)
+                .ToList();
         }
 
         public bool EmailExists(string email)

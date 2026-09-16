@@ -1,4 +1,5 @@
-﻿using MarketplaceDeliverySystem.Models;
+﻿using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 
 namespace MarketplaceDeliverySystem.Services
@@ -12,14 +13,15 @@ namespace MarketplaceDeliverySystem.Services
             _businesscategoryRepo = businesscategoryRepo;
         }
 
-        public List<BusinessCategory> GetAllCategories()
+        public List<CategorySidebarDTO> GetSidebarCategories()
         {
-            return _businesscategoryRepo.GetAll();
-        }
+            var categories = _businesscategoryRepo.GetAll();
 
-        public BusinessCategory? GetCategoryById(int id)
-        {
-            return _businesscategoryRepo.GetById(id);
+            return categories.Select(c => new CategorySidebarDTO
+            {
+                CategoryId = c.BusinessCategoryId,
+                CategoryName = c.BusinessCategoryName
+            }).ToList();
         }
     }
 }

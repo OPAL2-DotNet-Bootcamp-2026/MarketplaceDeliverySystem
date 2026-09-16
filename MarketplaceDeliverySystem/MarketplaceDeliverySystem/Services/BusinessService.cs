@@ -120,21 +120,19 @@ namespace MarketplaceDeliverySystem.Services
         
     }
 
+        // BusinessService.cs
         public List<BusinessCardRespDTO> GetAllBusinesses(int? categoryId = null)
         {
-            var businesses = _businessRepository.GetAllBusinessesWithProducts();
-
-            if (categoryId.HasValue && categoryId.Value > 0)
-            {
-                businesses = businesses
-                    .Where(b => b.Products.Any(p => p.CategoryId == categoryId.Value))
-                    .ToList();
-            }
+            var businesses = (categoryId.HasValue && categoryId.Value > 0)
+                ? _businessRepository.GetBusinessesByCategoryId(categoryId.Value)
+                : _businessRepository.GetAllBusinesses();
 
             return businesses.Select(b => new BusinessCardRespDTO
             {
                 BusinessId = b.BusinessId,
                 BusinessName = b.BusinessName,
+                BusinessCategoryId = b.BusinessCategoryId,
+                BusinessCategoryName = b.businessCategory?.BusinessCategoryName,
                 LogoUrl = b.LogoUrl,
                 OpeningTime = b.OpeningTime,
                 ClosingTime = b.ClosingTime,
