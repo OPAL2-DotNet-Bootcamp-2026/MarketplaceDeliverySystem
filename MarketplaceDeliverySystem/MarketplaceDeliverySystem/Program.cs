@@ -41,6 +41,7 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<PaymentRepo>();
             builder.Services.AddScoped<ReviewRepo>();
             builder.Services.AddScoped<AdminRepo>();
+            builder.Services.AddScoped<BusinessCategoryRepo>();
 
             // =====================================================
             // 3. REGISTER SERVICES
@@ -59,6 +60,7 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<PaymentService>();
             builder.Services.AddScoped<ReviewService>();
             builder.Services.AddScoped<AdminService>();
+            builder.Services.AddScoped<BusinessCategoryService>();
             // Email sending service
             builder.Services.AddScoped<EmailService>();
             // AuthService generates JWT tokens.

@@ -53,5 +53,12 @@ namespace MarketplaceDeliverySystem.Repos
                 .Include(b => b.Products)
                 .ToList();//converts the result into a C# list = List<Business>
         }
+
+        public List<Business> GetBusinessesByCategoryId(int categoryId)
+        {
+            return _context.Businesses
+                .Where(b => b.BusinessCategoryId == categoryId)
+                .ToList();
+        }
     }
 }

@@ -8,11 +8,13 @@ namespace MarketplaceDeliverySystem.Services
     {
         private readonly BusinessRepo _businessRepository;
         private readonly BusinessOwnerRepo _ownerRepository;
+        private readonly BusinessCategoryRepo _businessCategoryRepo;
 
-        public BusinessService(BusinessRepo businessRepository, BusinessOwnerRepo ownerRepository)
+        public BusinessService(BusinessRepo businessRepository, BusinessOwnerRepo ownerRepository, BusinessCategoryRepo businessCategoryRepo)
         {
             _businessRepository = businessRepository;
             _ownerRepository = ownerRepository;
+            _businessCategoryRepo = businessCategoryRepo;
         }
 
         public void RegisterBusiness(BusinessRegInputDTO dto)
