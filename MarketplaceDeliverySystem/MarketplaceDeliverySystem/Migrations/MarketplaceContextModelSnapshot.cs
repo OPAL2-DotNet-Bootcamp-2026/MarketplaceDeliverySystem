@@ -35,7 +35,7 @@ namespace MarketplaceDeliverySystem.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("BusinessCategoryId")
+                    b.Property<int?>("BusinessCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("BusinessName")
@@ -519,9 +519,7 @@ namespace MarketplaceDeliverySystem.Migrations
                 {
                     b.HasOne("MarketplaceDeliverySystem.Models.BusinessCategory", "businessCategory")
                         .WithMany("businesses")
-                        .HasForeignKey("BusinessCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BusinessCategoryId");
 
                     b.HasOne("MarketplaceDeliverySystem.Models.BusinessOwner", "BusinessOwner")
                         .WithMany()
