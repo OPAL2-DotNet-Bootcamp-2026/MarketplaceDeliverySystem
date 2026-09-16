@@ -16,5 +16,10 @@ namespace MarketplaceDeliverySystem.Services
         {
             return _businesscategoryRepo.GetAll();
         }
+
+        public BusinessCategory? GetCategoryById(int id)
+        {
+            return _businesscategoryRepo.GetById(id);
+        }
     }
 }
