@@ -1,6 +1,14 @@
-﻿namespace MarketplaceDeliverySystem.Services
+﻿using MarketplaceDeliverySystem.Repos;
+
+namespace MarketplaceDeliverySystem.Services
 {
     public class BusinessCategoryService
     {
+        private readonly BusinessCategoryRepo _businesscategoryRepo;
+
+        public BusinessCategoryService(BusinessCategoryRepo businesscategoryRepo)
+        {
+            _businesscategoryRepo = businesscategoryRepo;
+        }
     }
 }
