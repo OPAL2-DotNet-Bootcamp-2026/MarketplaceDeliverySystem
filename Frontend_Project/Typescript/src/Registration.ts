@@ -16,7 +16,16 @@ if (!registerForm || !registerError) {
     event.preventDefault();
     registerError.style.display = 'none';
 
+    const fullNameInput = document.querySelector<HTMLInputElement>('#fullName');
+    const emailInput = document.querySelector<HTMLInputElement>('#email');
+    const phoneInput = document.querySelector<HTMLInputElement>('#phone');
+    const passwordInput = document.querySelector<HTMLInputElement>('#password');
+    const addressInput = document.querySelector<HTMLInputElement>('#address');
 
+    if (!fullNameInput || !emailInput || !phoneInput || !passwordInput || !addressInput) {
+      console.error('One or more registration form fields were not found in the DOM.');
+      return;
+    }
 
   });
 }
