@@ -27,5 +27,21 @@ if (!registerForm || !registerError) {
       return;
     }
 
+  const registrationData: RegistrationData = {
+      fullName: fullNameInput.value,
+      email: emailInput.value,
+      phoneNumber: phoneInput.value,
+      password: passwordInput.value,
+      address: addressInput.value
+    };
+
+    const response = await fetch('https://localhost:7299/api/Customer/Register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(registrationData)
+    });
+
   });
 }
