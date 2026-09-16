@@ -320,8 +320,7 @@ main {
 
 /* ================= CATEGORIES ================= */
 
-.categories {
-
+.category-grid {
     display: grid;
 
     grid-template-columns: repeat(8, 1fr);
@@ -627,10 +626,9 @@ main {
         padding: 20px;
     }
 
-    .categories {
-
-        grid-template-columns: repeat(4, 1fr);
-    }
+.category-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
 
     .products {
 
@@ -686,10 +684,9 @@ main {
     }
 
 
-    .categories {
-
-        grid-template-columns: repeat(2, 1fr);
-    }
+.category-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
 
 
     .products {

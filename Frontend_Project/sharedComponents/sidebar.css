@@ -13,6 +13,10 @@
 
     padding: 30px 26px;
 
+    display: flex;
+
+    flex-direction: column;
+
     box-sizing: border-box;
 
     background-color: #fffaf7;
@@ -449,7 +453,7 @@ Now the sidebar moves into the screen and Overlay appears behind it*/
    ========================= */
 
 .logout-section {
-    margin-top: 28px;
+     margin-top: auto;
 
     padding-top: 28px;
 
