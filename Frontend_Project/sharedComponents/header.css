@@ -323,25 +323,47 @@ moves into its normal position */
    ========================= */
 
 .categories {
+    width: 44px;
+    height: 44px;
+
     display: flex;
     align-items: center;
+    justify-content: center;
 
-    gap: 20px;
+    padding: 0;
+    margin: 0;
 
-    min-width: 220px;
+    border: none;
+    background: transparent;
 
-    font-size: 16px;
-    font-weight: 600;
+    cursor: pointer;
 
-    color: var(--navy);
+    flex-shrink: 0;
+
+    position: relative;
+    z-index: 10;
+
+    border-radius: 8px;
 }
 
 .menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 25px;
+    height: 25px;
+
     font-size: 25px;
+    line-height: 1;
+
     color: var(--teal);
 }
 
-
+.categories:hover {
+    background-color: rgba(53, 176, 164, 0.12);
+    border-radius: 8px;
+}
 /* =========================
    NAVIGATION
    ========================= */
