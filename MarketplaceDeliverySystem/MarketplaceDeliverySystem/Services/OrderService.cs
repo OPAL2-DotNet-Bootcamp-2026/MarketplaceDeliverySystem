@@ -333,6 +333,43 @@ namespace MarketplaceDeliverySystem.Services
                 }).ToList()
             };
         }
+        // converts from List<Order> to List<OrderDetailsDTO>
+        public List<OrderDetailsDTO> GetMyActiveOrders(int userId)
+        {
+            List<Order> orders =
+                _orderRepo.GetActiveOrdersByUserId(userId);
+
+            return orders.Select(order => new OrderDetailsDTO
+            {
+                OrderId = order.OrderId,
+
+                CustomerName = order.Customer.User.FullName,
+
+                BusinessName = order.Business.BusinessName,
+
+                OrderDate = order.OrderDate,
+
+                OrderStatus = order.Status,
+
+                TotalAmount = order.TotalAmount,
+
+                DeliveryAddress = order.Customer.Address,
+
+                DriverName = order.Delivery?.Driver?.User?.FullName,
+
+                DriverPhone = order.Delivery?.Driver?.User?.PhoneNumber,
+
+                Products = order.OrderItems.Select(item => new OrderItemDTO
+                {
+                    ProductName = item.Product.ProductName,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    SubTotal = item.Quantity * item.UnitPrice
+
+                }).ToList()
+
+            }).ToList();
+        }
     }
     }
 

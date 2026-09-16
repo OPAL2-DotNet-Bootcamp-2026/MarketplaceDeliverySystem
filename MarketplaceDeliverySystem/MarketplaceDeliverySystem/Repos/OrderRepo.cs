@@ -50,5 +50,38 @@ namespace MarketplaceDeliverySystem.Repos
 
                 .FirstOrDefault(o => o.OrderId == orderId);
         }
+        // Only return active orders belonging to the logged-in customer
+        public List<Order> GetActiveOrdersByUserId(int userId)
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                    .ThenInclude(c => c.User)
+
+                .Include(o => o.Business)
+
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+
+                .Include(o => o.Delivery)
+                    .ThenInclude(d => d.Driver)
+                        .ThenInclude(d => d.User)
+
+                .Where(o =>
+                       o.Customer.UserId == userId &&
+                       (
+                        o.Status == "Pending" ||
+                        o.Status == "Ready" ||
+                        o.Status == "On the Way" ||
+                       (
+                        o.Status == "Delivered" &&
+                        o.Delivery != null &&
+                        o.Delivery.DeliveredTime >= DateTime.UtcNow.AddHours(-24)
+                        )
+                        ))
+
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+        }
+        
     }
 }

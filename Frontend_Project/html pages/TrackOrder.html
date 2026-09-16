@@ -23,227 +23,29 @@
 
             <span class="track-label">ORDER TRACKING</span>
 
-            <h1>Track Your Order</h1>
+            <h1>Track Your Orders</h1>
 
             <p>
-                Order <span id="order-number">#ORD-</span>
-                <span>•</span>
-                Placed <span id="order-date">Loading...</span>
+               View your current orders and recent deliveries below.
             </p>
 
         </section>
 
 
-        <!-- Order Progress -->
-        <section class="tracking-card">
+        <!-- Active Orders -->
+        <section id="orders-container" class="orders-container">
 
-            <div class="progress-container">
-
-                <!-- Order Placed -->
-                <!-- class="progress-step" This is used for styling and JavaScript. -->
-                <!-- data-status="placed": This step represents the "placed" status. -->
-                <div class="progress-step" data-status="placed">
-
-                    <div class="step-circle">
-                        1
-                    </div>
-
-                    <span>Order Placed</span>
-
-                </div>
-
-                <!-- Progress lines Between each step you have: Step 1 ───────── Step 2 -->
-                <div class="progress-line"></div>
-
-
-                <!-- Order Ready -->
-                <div class="progress-step" data-status="ready">
-
-                    <div class="step-circle">
-                        2
-                    </div>
-
-                    <span>Order Ready</span>
-
-                </div>
-
-
-                <div class="progress-line"></div>
-
-
-                <!-- On The Way -->
-                <div class="progress-step" data-status="onway">
-
-                    <div class="step-circle">
-                        3
-                    </div>
-
-                    <span>On the Way</span>
-
-                </div>
-
-
-                <div class="progress-line"></div>
-
-
-                <!-- Delivered -->
-                <div class="progress-step" data-status="delivered">
-
-                    <div class="step-circle">
-                        4
-                    </div>
-
-                    <span>Delivered</span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- Current Status -->
-        <section class="current-status">
-
-            <div class="delivery-icon">
-                <svg viewBox="0 0 24 24">
-
-                    <path d="M3 6h11v11H3z"></path>
-
-                    <path d="M14 10h4l3 3v4h-7z"></path>
-
-                    <circle cx="7" cy="19" r="2"></circle>
-
-                    <circle cx="18" cy="19" r="2"></circle>
-
-                </svg>
-            </div>
-
-            <!-- Then JavaScript can change its text -->
-            <span class="status-badge" id="status-badge">
-                LOADING...
-            </span>
-
-            <h2 id="status-title">
-                Loading your order...
-            </h2>
-
-            <p id="status-description">
-                Please wait while we retrieve your order information.
-            </p>
-
-
-            <div class="delivery-time">
-
-                <div>
-                    <span>ESTIMATED ARRIVAL</span>
-                    <strong>2:30 PM</strong>
-                </div>
-
-                <div>
-                    <span>STATUS</span>
-
-                    <strong id="current-status-text">
-                        Loading...
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <button type="button" class="driver-button" id="driver-button">
-                View Driver Information
-            </button>
-
-
-            <small>
-                Updated just now
-            </small>
-
-        </section>
-
-
-        <!-- Information Cards -->
-        <section class="track-info">
-
-
-            <!-- Order Details -->
-            <div class="info-card">
-
-                <div class="info-card-header">
-
-                    <div class="info-icon orange-icon">
-                        🛍
-                    </div>
-
-                    <h3>Order Details</h3>
-
-                </div>
-
-                <div class="info-row">
-                    <span>Order Number</span>
-                    <strong id="order-number-details">Loading...</strong>
-                </div>
-
-                <div class="info-row">
-                    <span>Items</span>
-                    <strong id="order-items">Loading...</strong>
-                </div>
-
-                <div class="info-row">
-                    <span>Total</span>
-                    <strong id="order-total">Loading...</strong>
-                </div>
-
-            </div>
-
-
-            <!-- Delivery Information -->
-            <div class="info-card">
-
-                <div class="info-card-header">
-
-                    <div class="info-icon teal-icon">
-                        🚚
-                    </div>
-
-                    <h3>Delivery Information</h3>
-
-                </div>
-
-                <div class="info-row">
-                    <span>Delivery Status</span>
-
-                    <strong class="teal-text" id="delivery-status-text">
-                        Loading...
-                    </strong>
-                </div>
-
-                <div class="info-row">
-                    <span>Estimated Arrival</span>
-                    <strong>2:30 PM</strong>
-                </div>
-
-                <div class="info-row">
-                    <span>Driver</span>
-                    <strong id="driver-status">Loading...</strong>
-                </div>
-
-            </div>
+            <!-- JavaScript will add the active order cards here -->
 
         </section>
 
     </main>
-        <!-- Driver Information Modal -->
+    <!-- Driver Information Modal -->
     <div id="driver-modal" class="driver-modal">
 
         <div class="driver-modal-content">
 
-            <button
-                type="button"
-                id="close-driver-modal"
-                class="close-driver-modal">
+            <button type="button" id="close-driver-modal" class="close-driver-modal">
                 &times;
             </button>
 

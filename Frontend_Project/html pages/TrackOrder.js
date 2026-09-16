@@ -1,36 +1,4 @@
 // JS-->Changes the status, colors, messages, and progress
-// Find ALL elements with the class progress-step(contains all 4 steps).
-// Step 1 → Order Placed | Step 2 → Order Ready | Step 3 → On the Way | Step 4 → Delivered
-const steps = document.querySelectorAll(".progress-step");
-// Find all the progress lines between the steps.
-const lines = document.querySelectorAll(".progress-line");
-// in html we have id="status-badge" JavaScript finds it by .getElementById
-const statusBadge = document.getElementById("status-badge");
-//need these elements to change them later.
-const statusTitle = document.getElementById("status-title");
-const statusDescription = document.getElementById("status-description");
-const currentStatusText = document.getElementById("current-status-text");
-const deliveryStatusText = document.getElementById("delivery-status-text");
-const driverButton = document.getElementById("driver-button");
-
-// Dynamic order information
-const orderNumber =
-    document.getElementById("order-number");
-
-const orderDate =
-    document.getElementById("order-date");
-
-const orderNumberDetails =
-    document.getElementById("order-number-details");
-
-const orderItems =
-    document.getElementById("order-items");
-
-const orderTotal =
-    document.getElementById("order-total");
-
-const driverStatus =
-    document.getElementById("driver-status");
 
 // Driver modal
 const driverModal =
@@ -45,8 +13,7 @@ const modalDriverName =
 const modalDriverPhone =
     document.getElementById("modal-driver-phone");
 
-// Store the current order
-let currentOrder = null;
+let currentOrders = [];
 
 // orderStatuses stores information for every status
 const orderStatuses = {
@@ -127,123 +94,6 @@ function convertStatus(status) {
             return null;
     }
 }
-// Updates the page based on the given order status
-function updateOrderStatus(status) {
-    //This tells JavaScript: The current step is step number?
-    const statusIndex = {
-        placed: 0,
-        ready: 1,
-        onway: 2,
-        delivered: 3
-    };
-
-    const currentIndex = statusIndex[status];
-
-
-    // Update all the steps = Go through every step one by one.
-    steps.forEach((step, index) => {
-        // Finding the circle inside each step
-        const circle = step.querySelector(".step-circle");
-
-
-        // Before adding the new status, remove the old status styles
-        // It removes CSS classes from an HTML element to can determine the current class
-        step.classList.remove(
-            "completed",
-            "current"
-        );
-
-
-        // Completed steps
-        //If this step comes before the current step, mark it as completed
-        if (index < currentIndex) {
-            //JavaScript adds: class="completed"
-            step.classList.add("completed");
-
-            circle.textContent = "✓";
-            //Then the CSS will change it to green(the completed circle becomes teal)
-        }
-
-
-        // Current step
-        else if (index === currentIndex) {
-            //JavaScript adds: class="current"
-            step.classList.add("current");
-            //to write the number inside the circle
-            circle.textContent = index + 1;
-
-        }
-
-
-        // Future steps
-        //If the step is after the current step, it is still in the future
-        else {
-
-            circle.textContent = index + 1;
-        }
-
-    });
-
-
-    // Update lines
-    //JavaScript goes through each line
-    lines.forEach((line, index) => {
-        //It removes any old line styles
-        line.classList.remove(
-            "completed-line",
-            "active-line"
-        );
-
-
-        // Line before current step(completed line)
-        if (index < currentIndex) {
-
-            line.classList.add(
-                "completed-line"
-            );
-
-        }
-
-        // Line leading to current step
-        else if (index === currentIndex) {
-
-            line.classList.add(
-                "active-line"
-            );
-
-        }
-
-    });
-
-
-    // Update message
-    const data = orderStatuses[status];
-    //change its text JavaScript can change: ON THE WAY to DELIVERED without manually changing the HTML
-    statusBadge.textContent = data.badge;
-
-    statusTitle.textContent = data.title;
-
-    statusDescription.textContent =
-        data.description;
-
-    currentStatusText.textContent =
-        data.statusText;
-
-
-    // Driver button
-    if (data.showDriverButton) {
-
-        driverButton.style.display =
-            "inline-block";
-
-    } else {
-
-        driverButton.style.display =
-            "none";
-
-    }
-
-}
 // =========================
 // DRIVER INFORMATION MODAL
 // =========================
@@ -292,208 +142,47 @@ driverModal.addEventListener(
     }
 );
 
-
-// View Driver Information button
-driverButton.addEventListener(
-    "click",
-    function () {
-
-        if (currentOrder) {
-
-            showDriverInformation(currentOrder);
-
-        }
-
-    }
-);
-
-async function loadOrder() {
-
-    const params =
-        new URLSearchParams(window.location.search);
-
-    const orderId =
-        params.get("orderId");
-
-    if (!orderId) {
-
-        statusBadge.textContent =
-            "ERROR";
-
-        statusTitle.textContent =
-            "Order information is missing";
-
-        statusDescription.textContent =
-            "We could not find the order you are trying to track.";
-
-        return;
-    }
-
-  const token = localStorage.getItem("authToken");
+async function loadOrders() {
+    const token = localStorage.getItem("authToken");
 
     if (!token) {
-
-        statusBadge.textContent =
-            "LOGIN REQUIRED";
-
-        statusTitle.textContent =
-            "Please login first";
-
-        statusDescription.textContent =
-            "You need to login to view your order.";
-
-        driverButton.style.display =
-            "none";
-
         return;
     }
 
     try {
-
-        const response = await fetch(
-            `https://localhost:7299/api/Order/GetOrderById/${orderId}`,
+        // Get currently active orders
+        const activeResponse = await fetch(
+            "https://localhost:7299/api/Order/GetMyActiveOrders",
             {
                 headers: {
-                    "Authorization":
-                        `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 }
             }
         );
 
-        if (!response.ok) {
-
-            if (response.status === 401) {
-                throw new Error(
-                    "Please login to view this order."
-                );
-            }
-
-            if (response.status === 403) {
-                throw new Error(
-                    "You are not allowed to view this order."
-                );
-            }
-
-            if (response.status === 404) {
-                throw new Error(
-                    "Order not found."
-                );
-            }
-
+        if (!activeResponse.ok) {
             throw new Error(
-                `Request failed with status ${response.status}`
+                `Request failed with status ${activeResponse.status}`
             );
         }
 
-        const order =
-            await response.json();
+        const activeOrders =
+            await activeResponse.json();
 
-        console.log(
-            "Order received:",
-            order
-        );
+        currentOrders = activeOrders;
 
-        currentOrder = order;
-        // -------------------------
-        // Order information
-        // -------------------------
-
-        orderNumber.textContent =
-            `#ORD-${order.orderId}`;
-
-        orderNumberDetails.textContent =
-            `#ORD-${order.orderId}`;
-
-        orderDate.textContent =
-            formatDate(order.orderDate);
-
-        orderTotal.textContent =
-            `${Number(order.totalAmount).toFixed(3)} OMR`;
-
-
-        // -------------------------
-        // Items
-        // -------------------------
-
-        const products =
-            order.products || [];
-
-        orderItems.textContent =
-            `${products.length} Items`;
-
-
-        // -------------------------
-        // Driver status
-        // -------------------------
-
-        if (
-            order.orderStatus === "On the Way" ||
-            order.orderStatus === "Delivered"
-        ) {
-
-            driverStatus.textContent =
-                "Assigned";
-
-        } else {
-
-            driverStatus.textContent =
-                "Not Assigned";
-        }
-
-
-        // -------------------------
-        // Order progress
-        // -------------------------
-
-        const frontendStatus =
-            convertStatus(order.orderStatus);
-
-        if (!frontendStatus) {
-
-            throw new Error(
-                `Unknown order status: ${order.orderStatus}`
-            );
-        }
-
-
-        // Update delivery status text
-
-        deliveryStatusText.textContent =
-            order.orderStatus;
-
-
-        // Update progress UI
-
-        updateOrderStatus(
-            frontendStatus
-        );
-
+        renderOrders(activeOrders);
     } catch (error) {
 
         console.error(
-            "Failed to load order:",
+            "Failed to load orders:",
             error
         );
 
-        statusBadge.textContent =
-            "ERROR";
-
-        statusTitle.textContent =
-            "Unable to load your order";
-
-        statusDescription.textContent =
-            error.message;
-
-        currentStatusText.textContent =
-            "Unavailable";
-
-        deliveryStatusText.textContent =
-            "Unavailable";
-
-        driverButton.style.display =
-            "none";
     }
 }
+
+
 function formatDate(dateString) {
 
     const date = new Date(dateString);
@@ -507,4 +196,314 @@ function formatDate(dateString) {
         }
     );
 }
-loadOrder();
+function renderOrders(orders) {
+
+    const ordersContainer =
+        document.getElementById("orders-container");
+
+    ordersContainer.innerHTML = "";
+
+    if (orders.length === 0) {
+
+        ordersContainer.innerHTML = `
+            <p class="no-orders">
+                You have no active or recent orders.
+            </p>
+        `;
+
+        return;
+    }
+
+    orders.forEach(order => {
+
+        const statusKey =
+            convertStatus(order.orderStatus);
+
+        if (!statusKey) {
+            return;
+        }
+
+        const status =
+            orderStatuses[statusKey];
+
+        // Determine which progress step is current
+        let currentStep = 1;
+
+        if (statusKey === "ready") {
+            currentStep = 2;
+        }
+
+        if (statusKey === "onway") {
+            currentStep = 3;
+        }
+
+        if (statusKey === "delivered") {
+            currentStep = 4;
+        }
+
+
+        // Progress step classes
+        const step1Class =
+            currentStep > 1
+                ? "completed"
+                : currentStep === 1
+                    ? "current"
+                    : "";
+
+        const step2Class =
+            currentStep > 2
+                ? "completed"
+                : currentStep === 2
+                    ? "current"
+                    : "";
+
+        const step3Class =
+            currentStep > 3
+                ? "completed"
+                : currentStep === 3
+                    ? "current"
+                    : "";
+
+        const step4Class =
+            currentStep === 4
+                ? "current"
+                : "";
+
+
+        // Progress line classes
+        const line1Class =
+            currentStep > 1
+                ? "completed-line"
+                : "";
+
+        const line2Class =
+            currentStep > 2
+                ? "completed-line"
+                : "";
+
+        const line3Class =
+            currentStep > 3
+                ? "completed-line"
+                : currentStep === 3
+                    ? "active-line"
+                    : "";
+
+
+        // Driver button
+        const driverButton =
+            status.showDriverButton
+                ? `
+                    <button
+                        class="view-driver-btn"
+                        data-order-id="${order.orderId}">
+                        View Driver Information
+                    </button>
+                  `
+                : "";
+
+
+        const orderCard =
+            document.createElement("div");
+
+        orderCard.className =
+            "tracking-card";
+
+
+        orderCard.innerHTML = `
+
+            <!-- Order Header -->
+            <div class="order-card-header">
+
+                <span>Order</span>
+
+                <strong>#${order.orderId}</strong>
+
+                <span class="order-separator">•</span>
+
+                <span>Placed</span>
+
+                <strong>
+                    ${formatDate(order.orderDate)}
+                </strong>
+
+            </div>
+
+
+            <!-- Progress -->
+            <div class="progress-container">
+
+                <div class="progress-step ${step1Class}">
+
+                    <div class="step-circle">
+                        ${currentStep > 1 ? "✓" : "1"}
+                    </div>
+
+                    <span>Order Placed</span>
+
+                </div>
+
+
+                <div class="progress-line ${line1Class}"></div>
+
+
+                <div class="progress-step ${step2Class}">
+
+                    <div class="step-circle">
+                        ${currentStep > 2 ? "✓" : "2"}
+                    </div>
+
+                    <span>Order Ready</span>
+
+                </div>
+
+
+                <div class="progress-line ${line2Class}"></div>
+
+
+                <div class="progress-step ${step3Class}">
+
+                    <div class="step-circle">
+                        ${currentStep > 3 ? "✓" : "3"}
+                    </div>
+
+                    <span>On the Way</span>
+
+                </div>
+
+
+                <div class="progress-line ${line3Class}"></div>
+
+
+                <div class="progress-step ${step4Class}">
+
+                    <div class="step-circle">
+                        4
+                    </div>
+
+                    <span>Delivered</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Current Status -->
+            <div class="current-status">
+
+                <div class="delivery-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <path
+                            d="M3 7h11v10H3z">
+                        </path>
+
+                        <path
+                            d="M14 10h4l3 3v4h-7z">
+                        </path>
+
+                        <circle
+                            cx="7"
+                            cy="19"
+                            r="1.5">
+                        </circle>
+
+                        <circle
+                            cx="18"
+                            cy="19"
+                            r="1.5">
+                        </circle>
+
+                    </svg>
+
+                </div>
+
+
+                <span class="status-badge">
+                    ${status.badge}
+                </span>
+
+
+                <h2>
+                    ${status.title}
+                </h2>
+
+
+                <p>
+                    ${status.description}
+                </p>
+
+
+                <!-- Order Status Information -->
+                <div class="delivery-time">
+
+                    <div>
+
+                        <span>
+                            BUSINESS
+                        </span>
+
+                        <strong>
+                            ${order.businessName}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <strong>
+                            ${status.statusText}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                ${driverButton}
+
+            </div>
+
+        `;
+
+
+        ordersContainer.appendChild(orderCard);
+
+    });
+
+
+    attachDriverButtons();
+}
+function attachDriverButtons() {
+    const driverButtons =
+        document.querySelectorAll(".view-driver-btn");
+
+    driverButtons.forEach(button => {
+
+        const orderId =
+            Number(button.dataset.orderId);
+
+        button.addEventListener("click", function () {
+
+            const order = currentOrders.find(
+                order => order.orderId === orderId
+            );
+
+            if (order) {
+                showDriverInformation(order);
+            }
+
+        });
+
+    });
+}
+
+
+loadOrders();
