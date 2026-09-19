@@ -1,37 +1,16 @@
+"use strict";
 // =====================================================
 // TRACK ORDER
 // TypeScript version of TrackOrder.js
 // =====================================================
-
-interface Order {
-    orderId: number;
-    orderDate: string;
-    orderStatus: string;
-    businessName: string;
-    driverName?: string | null;
-    driverPhone?: string | null;
-}
-
-interface OrderStatusInfo {
-    badge: string;
-    title: string;
-    description: string;
-    statusText: string;
-    showDriverButton: boolean;
-}
-
-type OrderStatusKey = "placed" | "ready" | "onway" | "delivered";
-
 // Driver modal
 const driverModal = document.getElementById("driver-modal");
 const closeDriverModal = document.getElementById("close-driver-modal");
 const modalDriverName = document.getElementById("modal-driver-name");
 const modalDriverPhone = document.getElementById("modal-driver-phone");
-
-let currentOrders: Order[] = [];
-
+let currentOrders = [];
 // orderStatuses stores information for every status
-const orderStatuses: Record<OrderStatusKey, OrderStatusInfo> = {
+const orderStatuses = {
     placed: {
         badge: "ORDER RECEIVED",
         title: "Your order has been received",
@@ -61,8 +40,7 @@ const orderStatuses: Record<OrderStatusKey, OrderStatusInfo> = {
         showDriverButton: false
     }
 };
-
-function convertStatus(status: string): OrderStatusKey | null {
+function convertStatus(status) {
     switch (status.toLowerCase()) {
         case "pending":
             return "placed";
@@ -77,90 +55,71 @@ function convertStatus(status: string): OrderStatusKey | null {
     }
 }
 // Driver information modal
-function showDriverInformation(order: Order): void {
+function showDriverInformation(order) {
     if (!order.driverName || !order.driverPhone) {
         alert("No driver has been assigned to this order.");
         return;
     }
-
     if (!modalDriverName || !modalDriverPhone || !driverModal) {
         console.error("Driver modal elements were not found.");
         return;
     }
-
     modalDriverName.textContent = order.driverName;
     modalDriverPhone.textContent = order.driverPhone;
     driverModal.classList.add("show");
 }
-
 // Close modal
 if (closeDriverModal && driverModal) {
     closeDriverModal.addEventListener("click", function () {
         driverModal.classList.remove("show");
     });
 }
-
 // Close when clicking outside the modal
 if (driverModal) {
-    driverModal.addEventListener("click", function (event: MouseEvent) {
+    driverModal.addEventListener("click", function (event) {
         if (event.target === driverModal) {
             driverModal.classList.remove("show");
         }
     });
 }
-
-async function loadOrders(): Promise<void> {
+async function loadOrders() {
     const token = localStorage.getItem("authToken");
-
     if (!token) {
         return;
     }
     try {
         // Get currently active orders
-        const activeResponse = await fetch(
-            "https://localhost:7299/api/Order/GetMyActiveOrders",
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+        const activeResponse = await fetch("https://localhost:7299/api/Order/GetMyActiveOrders", {
+            headers: {
+                "Authorization": `Bearer ${token}`
             }
-        );
-
+        });
         if (!activeResponse.ok) {
-            throw new Error(
-                `Request failed with status ${activeResponse.status}`
-            );
+            throw new Error(`Request failed with status ${activeResponse.status}`);
         }
-
-        const activeOrders = await activeResponse.json() as Order[];
-
+        const activeOrders = await activeResponse.json();
         currentOrders = activeOrders;
         renderOrders(activeOrders);
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Failed to load orders:", error);
     }
 }
-
-function formatDate(dateString: string): string {
+function formatDate(dateString) {
     const date = new Date(dateString);
-
     return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric"
     });
 }
-
-function renderOrders(orders: Order[]): void {
+function renderOrders(orders) {
     const ordersContainer = document.getElementById("orders-container");
-
     if (!ordersContainer) {
         console.error("orders-container was not found.");
         return;
     }
-
     ordersContainer.innerHTML = "";
-
     if (orders.length === 0) {
         ordersContainer.innerHTML = `
             <p class="no-orders">
@@ -169,27 +128,20 @@ function renderOrders(orders: Order[]): void {
         `;
         return;
     }
-
-    orders.forEach((order: Order) => {
+    orders.forEach((order) => {
         const statusKey = convertStatus(order.orderStatus);
-
         if (!statusKey) {
             return;
         }
-
         const status = orderStatuses[statusKey];
-
         // Determine which progress step is current
         let currentStep = 1;
-
         if (statusKey === "ready") {
             currentStep = 2;
         }
-
         if (statusKey === "onway") {
             currentStep = 3;
         }
-
         if (statusKey === "delivered") {
             currentStep = 4;
         }
@@ -199,38 +151,31 @@ function renderOrders(orders: Order[]): void {
             : currentStep === 1
                 ? "current"
                 : "";
-
         const step2Class = currentStep > 2
             ? "completed"
             : currentStep === 2
                 ? "current"
                 : "";
-
         const step3Class = currentStep > 3
             ? "completed"
             : currentStep === 3
                 ? "current"
                 : "";
-
         const step4Class = currentStep === 4
             ? "current"
             : "";
-
         // Progress line classes
         const line1Class = currentStep > 1
             ? "completed-line"
             : "";
-
         const line2Class = currentStep > 2
             ? "completed-line"
             : "";
-
         const line3Class = currentStep > 3
             ? "completed-line"
             : currentStep === 3
                 ? "active-line"
                 : "";
-
         // Driver button
         const driverButton = status.showDriverButton
             ? `
@@ -241,10 +186,8 @@ function renderOrders(orders: Order[]): void {
                 </button>
             `
             : "";
-
         const orderCard = document.createElement("div");
         orderCard.className = "tracking-card";
-
         orderCard.innerHTML = `
             <!-- Order Header -->
             <div class="order-card-header">
@@ -341,31 +284,21 @@ function renderOrders(orders: Order[]): void {
                 ${driverButton}
             </div>
         `;
-
         ordersContainer.appendChild(orderCard);
     });
-
     attachDriverButtons();
 }
-function attachDriverButtons(): void {
+function attachDriverButtons() {
     const driverButtons = document.querySelectorAll(".view-driver-btn");
-
-    driverButtons.forEach((button: Element) => {
-        const orderId = Number(
-            (button as HTMLElement).dataset.orderId
-        );
-
+    driverButtons.forEach((button) => {
+        const orderId = Number(button.dataset.orderId);
         button.addEventListener("click", function () {
-            const order = currentOrders.find(
-                (order: Order) => order.orderId === orderId
-            );
-
+            const order = currentOrders.find((order) => order.orderId === orderId);
             if (order) {
                 showDriverInformation(order);
             }
         });
     });
 }
-
 // Start
 loadOrders();
