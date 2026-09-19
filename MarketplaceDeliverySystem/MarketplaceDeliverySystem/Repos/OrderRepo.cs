@@ -82,6 +82,22 @@ namespace MarketplaceDeliverySystem.Repos
                 .OrderByDescending(o => o.OrderDate)
                 .ToList();
         }
-        
+
+        //It gets all orders belonging to the logged-in customer
+        public List<Order> GetOrderHistoryByUserId(int userId)
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                    .ThenInclude(c => c.User)
+                .Include(o => o.Business)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Include(o => o.Payment)
+                .Include(o => o.Delivery)
+                .Where(o => o.Customer.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+        }
+
     }
 }

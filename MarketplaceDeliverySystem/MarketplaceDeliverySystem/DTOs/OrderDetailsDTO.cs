@@ -22,5 +22,8 @@
         public string? DriverPhone { get; set; }
 
         public List<OrderItemDTO> Products { get; set; }
+        public string? PaymentStatus { get; set; }
+
+        public string? DeliveryStatus { get; set; }
     }
 }

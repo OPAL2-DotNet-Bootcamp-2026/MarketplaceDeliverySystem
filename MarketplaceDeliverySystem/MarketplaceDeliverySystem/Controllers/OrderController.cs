@@ -100,5 +100,23 @@ namespace MarketplaceDeliverySystem.Controllers
 
             return Ok(orders);
         }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("GetMyOrderHistory")]
+        public IActionResult GetMyOrderHistory()
+        {
+            string? userIdValue =
+                User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdValue, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            List<OrderDetailsDTO> orders =
+                _orderService.GetMyOrderHistory(userId);
+
+            return Ok(orders);
+        }
     }
 }

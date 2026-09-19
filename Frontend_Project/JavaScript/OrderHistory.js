@@ -50,8 +50,7 @@ async function loadOrderHistory() {
     // API URL
     // =========================================
 
-    const url =
-        "https://localhost:7299/api/Customer/ViewOrderHistory/";
+    const url = "https://localhost:7299/api/Order/GetMyOrderHistory";
 
 
     // =========================================
@@ -471,8 +470,8 @@ function createOrderElement(order) {
                 <span class="order-date">
 
                     ${formatDate(
-                        order.orderDate
-                    )}
+        order.orderDate
+    )}
 
                 </span>
 
@@ -495,8 +494,8 @@ function createOrderElement(order) {
             <span class="status-badge">
 
                 ${safeValue(
-                    order.orderStatus
-                )}
+        order.orderStatus
+    )}
 
             </span>
 
@@ -507,8 +506,8 @@ function createOrderElement(order) {
             <span class="order-total">
 
                 ${formatAmount(
-                    order.totalAmount
-                )}
+        order.totalAmount
+    )}
                 OMR
 
             </span>
@@ -560,8 +559,8 @@ function createOrderElement(order) {
 
                     <p>
                         ${safeValue(
-                            order.orderStatus
-                        )}
+        order.orderStatus
+    )}
                     </p>
 
                 </article>
@@ -580,8 +579,8 @@ function createOrderElement(order) {
 
                     <p>
                         ${safeValue(
-                            order.paymentStatus
-                        )}
+        order.paymentStatus
+    )}
                     </p>
 
                 </article>
@@ -600,8 +599,8 @@ function createOrderElement(order) {
 
                     <p>
                         ${safeValue(
-                            order.deliveryStatus
-                        )}
+        order.deliveryStatus
+    )}
                     </p>
 
                 </article>
@@ -621,8 +620,8 @@ function createOrderElement(order) {
                     <p>
 
                         ${formatAmount(
-                            order.totalAmount
-                        )}
+        order.totalAmount
+    )}
                         OMR
 
                     </p>
@@ -675,8 +674,8 @@ function createOrderElement(order) {
                     <tbody>
 
                         ${createProductsHTML(
-                            order.products
-                        )}
+        order.products
+    )}
 
                     </tbody>
 
@@ -738,8 +737,8 @@ function createProductsHTML(products) {
                     <td class="product-name">
 
                         ${safeValue(
-                            product.productName
-                        )}
+                product.productName
+            )}
 
                     </td>
 
@@ -758,8 +757,8 @@ function createProductsHTML(products) {
                     <td class="product-price">
 
                         ${formatAmount(
-                            product.unitPrice
-                        )}
+                product.unitPrice
+            )}
 
                         OMR
 
@@ -813,8 +812,8 @@ document
                                     String(
                                         product.productName
                                     )
-                                    .toLowerCase()
-                                    .includes(search)
+                                        .toLowerCase()
+                                        .includes(search)
                             );
 
 
@@ -909,10 +908,10 @@ document
                         return new Date(
                             b.orderDate
                         )
-                        -
-                        new Date(
-                            a.orderDate
-                        );
+                            -
+                            new Date(
+                                a.orderDate
+                            );
 
                     }
 
@@ -924,10 +923,10 @@ document
                         return new Date(
                             a.orderDate
                         )
-                        -
-                        new Date(
-                            b.orderDate
-                        );
+                            -
+                            new Date(
+                                b.orderDate
+                            );
 
                     }
 
@@ -939,10 +938,10 @@ document
                         return Number(
                             b.totalAmount
                         )
-                        -
-                        Number(
-                            a.totalAmount
-                        );
+                            -
+                            Number(
+                                a.totalAmount
+                            );
 
                     }
 
@@ -954,10 +953,10 @@ document
                         return Number(
                             a.totalAmount
                         )
-                        -
-                        Number(
-                            b.totalAmount
-                        );
+                            -
+                            Number(
+                                b.totalAmount
+                            );
 
                     }
 

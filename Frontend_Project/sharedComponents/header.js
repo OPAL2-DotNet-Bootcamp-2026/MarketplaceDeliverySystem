@@ -1,5 +1,5 @@
 // Check if the customer is logged in
-const currentPage = window.location.pathname.toLowerCase();
+const currentPagePath = window.location.pathname.toLowerCase();
 
 const customerPages = [
     "businesses.html",
@@ -10,7 +10,7 @@ const customerPages = [
 ];
 
 const requiresLogin = customerPages.some(page =>
-    currentPage.includes(page)
+    currentPagePath.includes(page)
 );
 
 const authToken = localStorage.getItem("authToken");
@@ -35,7 +35,7 @@ fetch("../sharedComponents/header.html")
 
         document.getElementById("header-container").innerHTML = data;
 
-        if (currentPage.includes("deliveredstatus.html")) {
+       if (currentPagePath.includes("deliveredstatus.html")) {
 
             const navigation = document.querySelector(".navigation");
 
@@ -53,7 +53,7 @@ fetch("../sharedComponents/sidebar.html")
 
         document.getElementById("sidebar-container").innerHTML = data;
 
-        if (currentPage.includes("deliveredstatus.html")) {
+        if (currentPagePath.includes("deliveredstatus.html")) {
 
             // Change Shopper information to Driver
             const userTitle = document.querySelector(".user-info h3");
