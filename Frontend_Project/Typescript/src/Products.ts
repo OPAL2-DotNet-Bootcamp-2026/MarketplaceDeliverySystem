@@ -17,6 +17,7 @@ interface BusinessHeaderDTO {
   closingTime: string | null;
   logoUrl?: string | null;
   phoneNumber?: string | null;
+  businessCategoryName?: string | null;
 }
 
 interface ProductDTO {
@@ -110,6 +111,11 @@ async function loadBusinessHeader(businessId: string): Promise<void> {
         </div>
       </div>
     `;
+
+    const parentCatSpan = document.querySelector<HTMLElement>("#parent-category-title");
+    if (parentCatSpan) {
+      parentCatSpan.textContent = b.businessCategoryName || "General";
+    }
   } catch (err) {
     console.error("Header load error:", err);
     container.innerHTML = `
@@ -140,11 +146,6 @@ async function loadProducts(businessId: string, categoryId: string | null): Prom
     if (allProducts.length === 0) {
       listContainer.innerHTML = `<p class="text-muted p-3">No products available for this business.</p>`;
       return;
-    }
-
-    const parentCatSpan = document.querySelector<HTMLElement>("#parent-category-title");
-    if (parentCatSpan && allProducts[0]?.categoryName) {
-      parentCatSpan.textContent = allProducts[0].categoryName;
     }
 
     buildCategoryPills();

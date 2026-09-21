@@ -1,4 +1,4 @@
-﻿using MarketplaceDeliverySystem.Controllers;
+using MarketplaceDeliverySystem.Controllers;
 using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.DTOs.MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
@@ -106,7 +106,8 @@ namespace MarketplaceDeliverySystem.Services
                 PhoneNumber = business.BusinessOwner?.User?.PhoneNumber ?? "+968 9000 0000",
                 OpeningTime = business.OpeningTime,
                 ClosingTime = business.ClosingTime,
-                IsOpen = business.IsOpen
+                IsOpen = business.IsOpen,
+                BusinessCategoryName = business.businessCategory?.BusinessCategoryName ?? "General"
             };
         }
         public string DeleteProduct(int productId)

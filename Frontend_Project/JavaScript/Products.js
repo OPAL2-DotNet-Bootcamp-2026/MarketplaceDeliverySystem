@@ -69,6 +69,11 @@ async function loadBusinessHeader(businessId) {
                 </div>
             </div>
         `;
+
+        const parentCatSpan = document.querySelector("#parent-category-title");
+        if (parentCatSpan) {
+            parentCatSpan.textContent = b.businessCategoryName || "General";
+        }
     } catch (err) {
         console.error("Header load error:", err);
         container.innerHTML = `
@@ -105,12 +110,6 @@ async function loadProducts(businessId, categoryId) {//add
         if (allProducts.length === 0) {
             listContainer.innerHTML = `<p class="text-muted p-3">No products available for this business.</p>`;
             return;
-        }
-
-        // Set parent category text from first available product's category
-        const parentCatSpan = document.querySelector("#parent-category-title");
-        if (parentCatSpan && allProducts[0].categoryName) {
-            parentCatSpan.textContent = allProducts[0].categoryName;
         }
 
         // Build pills and render cards

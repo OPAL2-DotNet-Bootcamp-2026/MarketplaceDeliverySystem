@@ -1,4 +1,4 @@
-﻿namespace MarketplaceDeliverySystem.DTOs
+namespace MarketplaceDeliverySystem.DTOs
 {
     namespace MarketplaceDeliverySystem.DTOs
     {
@@ -11,6 +11,7 @@
             public TimeOnly OpeningTime { get; set; }
             public TimeOnly ClosingTime { get; set; }
             public bool IsOpen { get; set; }
+            public string? BusinessCategoryName { get; set; }
         }
     }
 }
