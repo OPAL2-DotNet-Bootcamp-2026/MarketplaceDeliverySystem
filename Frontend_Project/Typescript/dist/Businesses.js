@@ -11,21 +11,31 @@
         await loadBusinesses();
     });
     function getCategoryEmoji(categoryName) {
-        if (!categoryName) return "🛍️";
+        if (!categoryName)
+            return "🛍️";
         const name = categoryName.toLowerCase();
-
-        if (name.includes("restaurant")) return "🍽️";
-        if (name.includes("traditional") || name.includes("home kitchen") || name.includes("kitchen")) return "🥘";
-        if (name.includes("bakery") && name.includes("sweet")) return "🧁";
-        if (name.includes("bakery") || name.includes("dessert") || name.includes("bread")) return "🥐";
-        if (name.includes("sweet") || name.includes("cake")) return "🍰";
-        if (name.includes("perfume") || name.includes("scent") || name.includes("oud") || name.includes("fragrance")) return "🪔";
-        if (name.includes("floral") || name.includes("flower")) return "💐";
-        if (name.includes("gift")) return "🎁";
-        if (name.includes("gourmet") || name.includes("roaster") || name.includes("treat") || name.includes("nut")) return "🌰";
-        if (name.includes("coffee") || name.includes("tea")) return "☕";
-        if (name.includes("chocolate")) return "🍫";
-
+        if (name.includes("restaurant"))
+            return "🍽️";
+        if (name.includes("traditional") || name.includes("home kitchen") || name.includes("kitchen"))
+            return "🥘";
+        if (name.includes("bakery") && name.includes("sweet"))
+            return "🧁";
+        if (name.includes("bakery") || name.includes("dessert") || name.includes("bread"))
+            return "🥐";
+        if (name.includes("sweet") || name.includes("cake"))
+            return "🍰";
+        if (name.includes("perfume") || name.includes("scent") || name.includes("oud") || name.includes("fragrance"))
+            return "🪔";
+        if (name.includes("floral") || name.includes("flower"))
+            return "💐";
+        if (name.includes("gift"))
+            return "🎁";
+        if (name.includes("gourmet") || name.includes("roaster") || name.includes("treat") || name.includes("nut"))
+            return "🌰";
+        if (name.includes("coffee") || name.includes("tea"))
+            return "☕";
+        if (name.includes("chocolate"))
+            return "🍫";
         return "🛍️";
     }
     async function loadCategories() {
