@@ -1,4 +1,4 @@
-﻿using MarketplaceDeliverySystem.DTOs;
+using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
@@ -35,6 +35,9 @@ namespace MarketplaceDeliverySystem.Repos
         public Business? GetBusinessById(int businessId)
         {
             return _context.Businesses
+                .Include(b => b.businessCategory)
+                .Include(b => b.BusinessOwner)
+                    .ThenInclude(bo => bo.User)
                 .FirstOrDefault(b => b.BusinessId == businessId);
         }
 

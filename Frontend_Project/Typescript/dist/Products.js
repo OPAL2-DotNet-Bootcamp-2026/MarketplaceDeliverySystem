@@ -63,6 +63,10 @@ async function loadBusinessHeader(businessId) {
         </div>
       </div>
     `;
+        const parentCatSpan = document.querySelector("#parent-category-title");
+        if (parentCatSpan) {
+            parentCatSpan.textContent = b.businessCategoryName || "General";
+        }
     }
     catch (err) {
         console.error("Header load error:", err);
@@ -91,10 +95,6 @@ async function loadProducts(businessId, categoryId) {
         if (allProducts.length === 0) {
             listContainer.innerHTML = `<p class="text-muted p-3">No products available for this business.</p>`;
             return;
-        }
-        const parentCatSpan = document.querySelector("#parent-category-title");
-        if (parentCatSpan && allProducts[0]?.categoryName) {
-            parentCatSpan.textContent = allProducts[0].categoryName;
         }
         buildCategoryPills();
         renderFilteredProducts();

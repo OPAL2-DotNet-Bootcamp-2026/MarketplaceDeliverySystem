@@ -26,6 +26,25 @@ interface Business {
     await loadBusinesses();
   });
 
+  function getCategoryEmoji(categoryName: string): string {
+    if (!categoryName) return "🛍️";
+    const name = categoryName.toLowerCase();
+
+    if (name.includes("restaurant")) return "🍽️";
+    if (name.includes("traditional") || name.includes("home kitchen") || name.includes("kitchen")) return "🥘";
+    if (name.includes("bakery") && name.includes("sweet")) return "🧁";
+    if (name.includes("bakery") || name.includes("dessert") || name.includes("bread")) return "🥐";
+    if (name.includes("sweet") || name.includes("cake")) return "🍰";
+    if (name.includes("perfume") || name.includes("scent") || name.includes("oud") || name.includes("fragrance")) return "🪔";
+    if (name.includes("floral") || name.includes("flower")) return "💐";
+    if (name.includes("gift")) return "🎁";
+    if (name.includes("gourmet") || name.includes("roaster") || name.includes("treat") || name.includes("nut")) return "🌰";
+    if (name.includes("coffee") || name.includes("tea")) return "☕";
+    if (name.includes("chocolate")) return "🍫";
+
+    return "🛍️";
+  }
+
   async function loadCategories(): Promise<void> {
     const categoryContainer = document.querySelector<HTMLElement>("#category-filter-list");
     if (!categoryContainer) return;
@@ -39,15 +58,18 @@ interface Business {
       let html = `
         <a href="#" data-category-id=""
            class="list-group-item list-group-item-action category-item brand-active d-flex align-items-center">
-           <span><span class="me-2">🏪</span> All Businesses</span>
+           <span class="category-emoji">🏪</span>
+           <span class="category-name">All Businesses</span>
         </a>
       `;
 
       categories.forEach((cat) => {
+        const emoji = getCategoryEmoji(cat.categoryName);
         html += `
           <a href="#" data-category-id="${cat.categoryId}"
              class="list-group-item list-group-item-action category-item d-flex align-items-center">
-             <span><span class="me-2">📦</span> ${cat.categoryName}</span>
+             <span class="category-emoji">${emoji}</span>
+             <span class="category-name">${cat.categoryName}</span>
           </a>
         `;
       });
