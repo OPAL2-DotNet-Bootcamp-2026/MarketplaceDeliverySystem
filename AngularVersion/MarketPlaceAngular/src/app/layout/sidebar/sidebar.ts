@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,8 +14,15 @@ export class Sidebar {
 
   @Output() closeSidebar = new EventEmitter<void>();
 
+  constructor(private router: Router) {}
+
   close(): void {
     this.closeSidebar.emit();
+  }
+
+  goToTrackOrder(): void {
+    this.close();
+    this.router.navigate(['/track-order']);
   }
 
   logout(): void {
@@ -22,7 +30,6 @@ export class Sidebar {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userFullName');
 
-    // We will replace this with Angular Router later.
     window.location.href = '/';
   }
 }

@@ -1,18 +1,18 @@
-<app-header
-    (menuToggle)="openSidebar()"
-/>
-
-<div class="layout">
-
-    <app-sidebar
-        [isOpen]="isSidebarOpen"
-        (closeSidebar)="closeSidebar()"
-    />
-
-    <main class="content">
+<app-header 
+    (menuToggle)="openSidebar()" 
+/> 
+ 
+<div class="layout"> 
+ 
+    <app-sidebar 
+        [isOpen]="isSidebarOpen" 
+        (closeSidebar)="closeSidebar()" 
+    /> 
+ 
+    <main class="content"> 
         <router-outlet />
-    </main>
-
-</div>
-
+    </main> 
+ 
+</div> 
+ 
 <app-footer />

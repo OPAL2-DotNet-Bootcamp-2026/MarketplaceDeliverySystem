@@ -1,0 +1,345 @@
+<main class="track-page">
+
+    <!-- Page Header -->
+    <section class="track-header">
+
+        <span class="track-label">
+            ORDER TRACKING
+        </span>
+
+        <h1>
+            Track Your Orders
+        </h1>
+
+        <p>
+            View your current orders and recent deliveries below.
+        </p>
+
+    </section>
+
+
+    <!-- Active Orders -->
+    <section class="orders-container">
+
+        @if (currentOrders.length === 0) {
+
+            <p class="no-orders">
+                You have no active or recent orders.
+            </p>
+
+        }
+
+
+        @for (order of currentOrders; track order.orderId) {
+
+            @if (convertStatus(order.orderStatus); as statusKey) {
+
+                <div class="tracking-card">
+
+                    <!-- Order Header -->
+                    <div class="order-card-header">
+
+                        <span>Order</span>
+
+                        <strong>
+                            #{{ order.orderId }}
+                        </strong>
+
+                        <span class="order-separator">
+                            •
+                        </span>
+
+                        <span>
+                            Placed
+                        </span>
+
+                        <strong>
+                            {{ formatDate(order.orderDate) }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Progress -->
+                    <div class="progress-container">
+
+
+                        <!-- STEP 1 -->
+                        <div
+                            class="progress-step"
+                            [class.completed]="getCurrentStep(statusKey) > 1"
+                            [class.current]="getCurrentStep(statusKey) === 1"
+                        >
+
+                            <div class="step-circle">
+
+                                @if (getCurrentStep(statusKey) > 1) {
+                                    ✓
+                                } @else {
+                                    1
+                                }
+
+                            </div>
+
+                            <span>
+                                Order Placed
+                            </span>
+
+                        </div>
+
+
+                        <!-- LINE 1 -->
+                        <div
+                            class="progress-line"
+                            [class.completed-line]="getCurrentStep(statusKey) > 1"
+                        ></div>
+
+
+                        <!-- STEP 2 -->
+                        <div
+                            class="progress-step"
+                            [class.completed]="getCurrentStep(statusKey) > 2"
+                            [class.current]="getCurrentStep(statusKey) === 2"
+                        >
+
+                            <div class="step-circle">
+
+                                @if (getCurrentStep(statusKey) > 2) {
+                                    ✓
+                                } @else {
+                                    2
+                                }
+
+                            </div>
+
+                            <span>
+                                Order Ready
+                            </span>
+
+                        </div>
+
+
+                        <!-- LINE 2 -->
+                        <div
+                            class="progress-line"
+                            [class.completed-line]="getCurrentStep(statusKey) > 2"
+                        ></div>
+
+
+                        <!-- STEP 3 -->
+                        <div
+                            class="progress-step"
+                            [class.completed]="getCurrentStep(statusKey) > 3"
+                            [class.current]="getCurrentStep(statusKey) === 3"
+                        >
+
+                            <div class="step-circle">
+
+                                @if (getCurrentStep(statusKey) > 3) {
+                                    ✓
+                                } @else {
+                                    3
+                                }
+
+                            </div>
+
+                            <span>
+                                On the Way
+                            </span>
+
+                        </div>
+
+
+                        <!-- LINE 3 -->
+                        <div
+                            class="progress-line"
+                            [class.completed-line]="getCurrentStep(statusKey) > 3"
+                            [class.active-line]="getCurrentStep(statusKey) === 3"
+                        ></div>
+
+
+                        <!-- STEP 4 -->
+                        <div
+                            class="progress-step"
+                            [class.current]="getCurrentStep(statusKey) === 4"
+                        >
+
+                            <div class="step-circle">
+                                4
+                            </div>
+
+                            <span>
+                                Delivered
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Current Status -->
+                    <div class="current-status">
+
+                        <!-- Delivery icon -->
+                        <div class="delivery-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path d="M3 7h11v10H3z"></path>
+
+                                <path d="M14 10h4l3 3v4h-7z"></path>
+
+                                <circle
+                                    cx="7"
+                                    cy="19"
+                                    r="1.5"
+                                ></circle>
+
+                                <circle
+                                    cx="18"
+                                    cy="19"
+                                    r="1.5"
+                                ></circle>
+
+                            </svg>
+
+                        </div>
+
+
+                        <!-- Status badge -->
+                        <span class="status-badge">
+                            {{ orderStatuses[statusKey].badge }}
+                        </span>
+
+
+                        <!-- Status title -->
+                        <h2>
+                            {{ orderStatuses[statusKey].title }}
+                        </h2>
+
+
+                        <!-- Status description -->
+                        <p>
+                            {{ orderStatuses[statusKey].description }}
+                        </p>
+
+
+                        <!-- Business + Status -->
+                        <div class="delivery-time">
+
+                            <div>
+
+                                <span>
+                                    BUSINESS
+                                </span>
+
+                                <strong>
+                                    {{ order.businessName }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    STATUS
+                                </span>
+
+                                <strong>
+                                    {{ orderStatuses[statusKey].statusText }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Driver Button -->
+                        @if (orderStatuses[statusKey].showDriverButton) {
+
+                            <button
+                                type="button"
+                                class="view-driver-btn"
+                                (click)="showDriverInformation(order)"
+                            >
+                                View Driver Information
+                            </button>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            }
+
+        }
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     DRIVER INFORMATION MODAL
+     ========================= -->
+
+@if (selectedDriver) {
+
+    <div
+        class="driver-modal show"
+        (click)="closeDriverModal()"
+    >
+
+        <div
+            class="driver-modal-content"
+            (click)="$event.stopPropagation()"
+        >
+
+            <button
+                type="button"
+                class="close-driver-modal"
+                (click)="closeDriverModal()"
+            >
+                &times;
+            </button>
+
+
+            <h2>
+                Driver Information
+            </h2>
+
+
+            <div class="driver-info-item">
+
+                <span>
+                    Driver Name
+                </span>
+
+                <strong>
+                    {{ selectedDriver.driverName }}
+                </strong>
+
+            </div>
+
+
+            <div class="driver-info-item">
+
+                <span>
+                    Phone Number
+                </span>
+
+                <strong>
+                    {{ selectedDriver.driverPhone }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
