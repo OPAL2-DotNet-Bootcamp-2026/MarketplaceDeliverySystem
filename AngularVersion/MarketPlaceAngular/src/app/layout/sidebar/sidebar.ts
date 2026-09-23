@@ -14,6 +14,9 @@ export class Sidebar {
 
   @Output() closeSidebar = new EventEmitter<void>();
 
+  isDriver =
+    (localStorage.getItem('userRole') ?? '').toLowerCase() === 'driver';
+
   constructor(private router: Router) {}
 
   close(): void {
@@ -23,6 +26,11 @@ export class Sidebar {
   goToTrackOrder(): void {
     this.close();
     this.router.navigate(['/track-order']);
+  }
+
+  goToDeliveredStatus(): void {
+    this.close();
+    this.router.navigate(['/delivered-status']);
   }
 
   logout(): void {

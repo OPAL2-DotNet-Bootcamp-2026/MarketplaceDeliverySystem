@@ -1,15 +1,11 @@
-<header class="header">
+<header class="header" [class.driver-header]="isDriver">
 
     <!-- Top section -->
     <div class="header-top">
 
         <div class="logo-area">
 
-            <img
-                src="/assets/logo.png"
-                alt="Marketplace Logo"
-                class="marketplace-logo"
-            >
+            <img src="/assets/logo.png" alt="Marketplace Logo" class="marketplace-logo">
 
             <div class="logo-text">
 
@@ -56,15 +52,12 @@
     <!-- Navigation section -->
     <div class="header-bottom">
 
-        <button
-            class="categories"
-            type="button"
-            aria-label="Open menu"
-            (click)="openMenu()"
-        >
+        <button class="categories" type="button" aria-label="Open menu" (click)="openMenu()">
             <span class="menu-icon">☰</span>
         </button>
 
+        <!-- Customer Navigation -->
+        @if (!isDriver) {
 
         <nav class="navigation">
 
@@ -72,55 +65,38 @@
 
             <a href="#">Businesses</a>
 
-            <a  routerLink="/track-order">Track Order</a>
+            <a routerLink="/track-order">
+                Track Order
+            </a>
 
             <a href="#">Orders</a>
 
-            <a href="#">Your Driver</a>
+            <a href="#">
+                Your Driver
+            </a>
 
         </nav>
+        }
 
-
+        <!-- Driver has no customer navigation links -->
         <div class="header-icons">
 
             <!-- Profile -->
-            <span
-                class="header-icon"
-                title="Profile"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="4"
-                    ></circle>
+            <span class="header-icon" title="Profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4"></circle>
 
-                    <path
-                        d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                    ></path>
+                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
                 </svg>
             </span>
 
 
             <!-- Notifications -->
-            <span
-                class="header-icon"
-                title="Notifications"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path
-                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                    ></path>
+            <span class="header-icon" title="Notifications">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
 
-                    <path
-                        d="M10 21h4"
-                    ></path>
+                    <path d="M10 21h4"></path>
                 </svg>
             </span>
 

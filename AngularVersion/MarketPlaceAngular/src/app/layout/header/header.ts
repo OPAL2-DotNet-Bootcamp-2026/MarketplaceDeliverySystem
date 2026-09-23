@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 export class Header {
     // is called when the button is clicked.
     @Output() menuToggle = new EventEmitter<void>();
-
+    isDriver = (localStorage.getItem('userRole') ?? '').toLowerCase() === 'driver';
     openMenu(): void {
         this.menuToggle.emit();
     }
