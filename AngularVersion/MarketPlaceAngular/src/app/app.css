@@ -1,11 +1,21 @@
-/* arranged vertically and ensures it takes at least the full browser height*/
 :host {
-    display: flex;
-    flex-direction: column;
+    display: block;
+
     min-height: 100vh;
 }
-/* Let the content area take up the available space */
-.content {
-    flex: 1;
+
+
+/* Header is fixed, so leave space for it */
+
+.layout {
+    min-height: 100vh;
+
+    padding-top: 160px;
+
+    box-sizing: border-box;
 }
 
+
+.content {
+    min-height: calc(100vh - 160px);
+}
