@@ -10,7 +10,7 @@
 .layout {
     min-height: 100vh;
 
-    padding-top: 160px;
+    padding-top: 0px;
 
     box-sizing: border-box;
 }

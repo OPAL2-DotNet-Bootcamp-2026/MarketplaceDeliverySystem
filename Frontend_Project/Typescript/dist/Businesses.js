@@ -10,76 +10,125 @@
         await loadCategories();
         await loadBusinesses();
     });
-    function getCategoryEmoji(categoryName) {
-        if (!categoryName)
-            return "🛍️";
-        const name = categoryName.toLowerCase();
-        if (name.includes("restaurant"))
-            return "🍽️";
-        if (name.includes("traditional") || name.includes("home kitchen") || name.includes("kitchen"))
-            return "🥘";
-        if (name.includes("bakery") && name.includes("sweet"))
-            return "🧁";
-        if (name.includes("bakery") || name.includes("dessert") || name.includes("bread"))
-            return "🥐";
-        if (name.includes("sweet") || name.includes("cake"))
-            return "🍰";
-        if (name.includes("perfume") || name.includes("scent") || name.includes("oud") || name.includes("fragrance"))
-            return "🪔";
-        if (name.includes("floral") || name.includes("flower"))
-            return "💐";
-        if (name.includes("gift"))
-            return "🎁";
-        if (name.includes("gourmet") || name.includes("roaster") || name.includes("treat") || name.includes("nut"))
-            return "🌰";
-        if (name.includes("coffee") || name.includes("tea"))
-            return "☕";
-        if (name.includes("chocolate"))
-            return "🍫";
-        return "🛍️";
-    }
     async function loadCategories() {
         const categoryContainer = document.querySelector("#category-filter-list");
         if (!categoryContainer)
             return;
+        function getCategoryEmoji(categoryName) {
+            if (!categoryName)
+                return "🛍️";
+            const name = categoryName.toLowerCase();
+            if (name.includes("restaurant"))
+                return "🍽️";
+            if (name.includes("traditional") ||
+                name.includes("home kitchen") ||
+                name.includes("kitchen")) {
+                return "🥘";
+            }
+            if (name.includes("bakery") &&
+                name.includes("sweet")) {
+                return "🧁";
+            }
+            if (name.includes("bakery") ||
+                name.includes("dessert") ||
+                name.includes("bread")) {
+                return "🥐";
+            }
+            if (name.includes("sweet") ||
+                name.includes("cake")) {
+                return "🍰";
+            }
+            if (name.includes("perfume") ||
+                name.includes("scent") ||
+                name.includes("oud") ||
+                name.includes("fragrance")) {
+                return "🪔";
+            }
+            if (name.includes("floral") ||
+                name.includes("flower")) {
+                return "💐";
+            }
+            if (name.includes("gift"))
+                return "🎁";
+            if (name.includes("gourmet") ||
+                name.includes("roaster") ||
+                name.includes("treat") ||
+                name.includes("nut")) {
+                return "🌰";
+            }
+            if (name.includes("coffee") ||
+                name.includes("tea")) {
+                return "☕";
+            }
+            if (name.includes("chocolate"))
+                return "🍫";
+            return "🛍️";
+        }
         try {
             const response = await fetch(CATEGORIES_API_URL);
-            if (!response.ok)
+            if (!response.ok) {
                 throw new Error("Failed to load categories");
+            }
             const categories = await response.json();
+            // All Businesses
             let html = `
-        <a href="#" data-category-id=""
-           class="list-group-item list-group-item-action category-item brand-active d-flex align-items-center">
-           <span class="category-emoji">🏪</span>
-           <span class="category-name">All Businesses</span>
-        </a>
-      `;
+                <a href="#"
+                    data-category-id=""
+                    class="list-group-item list-group-item-action category-item brand-active d-flex align-items-center">
+
+                    <span class="category-emoji">🏪</span>
+
+                    <span class="category-name">
+                        All Businesses
+                    </span>
+
+                </a>
+            `;
+            // Dynamic Categories
             categories.forEach((cat) => {
                 const emoji = getCategoryEmoji(cat.categoryName);
                 html += `
-          <a href="#" data-category-id="${cat.categoryId}"
-             class="list-group-item list-group-item-action category-item d-flex align-items-center">
-             <span class="category-emoji">${emoji}</span>
-             <span class="category-name">${cat.categoryName}</span>
-          </a>
-        `;
+                        <a href="#"
+                            data-category-id="${cat.categoryId}"
+                            class="list-group-item list-group-item-action category-item d-flex align-items-center">
+
+                            <span class="category-emoji">
+                                ${emoji}
+                            </span>
+
+                            <span class="category-name">
+                                ${cat.categoryName}
+                            </span>
+
+                        </a>
+                    `;
             });
             categoryContainer.innerHTML = html;
+            // Attach category click events
             const categoryLinks = categoryContainer.querySelectorAll(".category-item");
             categoryLinks.forEach((link) => {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
-                    categoryLinks.forEach((l) => l.classList.remove("brand-active"));
+                    categoryLinks.forEach((l) => {
+                        l.classList.remove("brand-active");
+                    });
                     link.classList.add("brand-active");
                     const catId = link.getAttribute("data-category-id");
-                    selectedCategoryId = catId ? parseInt(catId, 10) : null;
+                    selectedCategoryId =
+                        catId
+                            ? parseInt(catId, 10)
+                            : null;
                     loadBusinesses(selectedCategoryId);
                 });
             });
         }
         catch (err) {
             console.error("Error loading categories:", err);
-            categoryContainer.innerHTML = `<p class="text-danger small p-2">Failed to load categories.</p>`;
+            categoryContainer.innerHTML = `
+                <p class="text-danger small p-2">
+                    Failed to load categories.
+                </p>
+            `;
         }
     }
     async function loadBusinesses(categoryId = null) {
@@ -88,25 +137,35 @@
         if (!listContainer)
             return;
         listContainer.innerHTML = `
-      <div class="text-center py-4 text-muted">
-        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-        Loading businesses...
-      </div>
-    `;
+            <div class="text-center py-4 text-muted">
+                <div
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status">
+                </div>
+
+                Loading businesses...
+            </div>
+        `;
         try {
             let url = BASE_API_URL;
-            if (categoryId !== null) {
-                url += `?categoryId=${encodeURIComponent(categoryId)}`;
+            if (categoryId) {
+                url += `?categoryId=${categoryId}`;
             }
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            allBusinesses = await response.json();
+            allBusinesses =
+                await response.json();
             if (allBusinesses.length === 0) {
-                listContainer.innerHTML = `<p class="text-muted p-3">No registered businesses found in this category.</p>`;
-                if (paginationList)
+                listContainer.innerHTML = `
+                    <p class="text-muted p-3">
+                        No registered businesses found in this category.
+                    </p>
+                `;
+                if (paginationList) {
                     paginationList.innerHTML = "";
+                }
                 return;
             }
             currentPage = 1;
@@ -115,12 +174,18 @@
         catch (error) {
             console.error("Error loading businesses:", error);
             listContainer.innerHTML = `
-        <div class="alert alert-danger" role="alert">
-          Unable to load businesses at this time. Please check your connection or server.
-        </div>
-      `;
-            if (paginationList)
+                <div
+                    class="alert alert-danger"
+                    role="alert">
+
+                    Unable to load businesses at this time.
+                    Please check your connection or server.
+
+                </div>
+            `;
+            if (paginationList) {
                 paginationList.innerHTML = "";
+            }
         }
     }
     function renderCurrentPage() {
@@ -133,31 +198,56 @@
         const pageItems = allBusinesses.slice(startIndex, endIndex);
         pageItems.forEach((business) => {
             const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
-            const logo = business.logoUrl || "/assets/img/LogoPlaceHolder.PNG";
+            const logo = business.logoUrl ||
+                "/assets/img/LogoPlaceHolder.PNG";
             const cardHtml = `
-        <div class="card business-horizontal-card shadow-sm">
-          <div class="card-body p-3">
-            <div class="d-flex align-items-center gap-3">
-              <img src="${logo}" 
-                   class="business-card-img flex-shrink-0" 
-                   alt="${business.businessName} Logo">
-              <div class="d-flex flex-column justify-content-center">
-                <h5 class="card-title mb-1">
-                  <a href="/html pages/Products.html?businessId=${business.businessId}" 
-                     class="text-decoration-none stretched-link">
-                     ${business.businessName}
-                  </a>
-                </h5>
-                <div class="d-flex align-items-center mt-1">
-                  <span class="badge ${business.isOpen ? "badge-status-open" : "badge-status-closed"} small">
-                    🕒 ${formattedHours}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+                    <div class="card business-horizontal-card shadow-sm">
+
+                        <div class="card-body p-3">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <img
+                                    src="${logo}"
+                                    class="business-card-img flex-shrink-0"
+                                    alt="${business.businessName} Logo"
+                                >
+
+                                <div class="d-flex flex-column justify-content-center">
+
+                                    <h5 class="card-title mb-1">
+
+<a
+    href="Products.html?businessId=${business.businessId}"
+    class="text-decoration-none stretched-link">
+
+                                            ${business.businessName}
+
+                                        </a>
+
+                                    </h5>
+
+                                    <div class="d-flex align-items-center mt-1">
+
+                                        <span
+                                            class="badge ${business.isOpen
+                ? "badge-status-open"
+                : "badge-status-closed"} small">
+
+                                            🕒 ${formattedHours}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
             listContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
         renderPaginationControls();
@@ -173,8 +263,10 @@
         // Previous Button
         const isPrevDisabled = currentPage === 1;
         const prevLi = document.createElement("li");
-        prevLi.className = `page-item ${isPrevDisabled ? "disabled" : ""}`;
-        prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+        prevLi.className =
+            `page-item ${isPrevDisabled ? "disabled" : ""}`;
+        prevLi.innerHTML =
+            `<a class="page-link" href="#">Previous</a>`;
         if (!isPrevDisabled) {
             prevLi.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -187,8 +279,10 @@
         for (let i = 1; i <= totalPages; i++) {
             const pageLi = document.createElement("li");
             const isActive = i === currentPage;
-            pageLi.className = `page-item ${isActive ? "active" : ""}`;
-            pageLi.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            pageLi.className =
+                `page-item ${isActive ? "active" : ""}`;
+            pageLi.innerHTML =
+                `<a class="page-link" href="#">${i}</a>`;
             pageLi.addEventListener("click", (e) => {
                 e.preventDefault();
                 if (currentPage !== i) {
@@ -201,8 +295,10 @@
         // Next Button
         const isNextDisabled = currentPage === totalPages;
         const nextLi = document.createElement("li");
-        nextLi.className = `page-item ${isNextDisabled ? "disabled" : ""}`;
-        nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        nextLi.className =
+            `page-item ${isNextDisabled ? "disabled" : ""}`;
+        nextLi.innerHTML =
+            `<a class="page-link" href="#">Next</a>`;
         if (!isNextDisabled) {
             nextLi.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -213,8 +309,9 @@
         paginationList.appendChild(nextLi);
     }
     function formatTimeOnlyRange(openingStr, closingStr) {
-        if (!openingStr || !closingStr)
+        if (!openingStr || !closingStr) {
             return "Closed";
+        }
         const formatSingleTime = (timeStr) => {
             const parts = timeStr.split(":");
             let hours = parseInt(parts[0], 10);
