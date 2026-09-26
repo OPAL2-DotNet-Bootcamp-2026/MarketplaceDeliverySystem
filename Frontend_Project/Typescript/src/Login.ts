@@ -20,3 +20,13 @@ if (params.get('registered') === 'true' && registerSuccessMessage) {
   registerSuccessMessage.style.display = 'block';
 }
 
+if (!loginForm || !loginError) {
+  console.error('Login form or error element not found in the DOM.');
+} else {
+  loginForm.addEventListener('submit', async function (event): Promise<void> {
+    event.preventDefault();
+    loginError.style.display = 'none';
+
+    
+  });
+}
