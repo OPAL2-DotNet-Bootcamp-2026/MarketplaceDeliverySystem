@@ -10,3 +10,7 @@ interface LoginResponse {
   title?: string;
 }
 
+const loginForm = document.querySelector<HTMLFormElement>('#loginForm');
+const loginError = document.querySelector<HTMLElement>('#loginError');
+const registerSuccessMessage = document.querySelector<HTMLElement>('#registerSuccessMessage');
+
