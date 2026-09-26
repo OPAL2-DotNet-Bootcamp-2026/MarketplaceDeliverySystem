@@ -51,6 +51,12 @@ if (!loginForm || !loginError) {
     const contentType = response.headers.get('content-type');
     let data: string | LoginResponse;
 
+    if (contentType && contentType.includes('json')) {
+      data = await response.json();
+    } else {
+      data = await response.text();
+    }
+
     
   });
 }
