@@ -27,6 +27,30 @@ if (!loginForm || !loginError) {
     event.preventDefault();
     loginError.style.display = 'none';
 
+    const emailInput = document.querySelector<HTMLInputElement>('#email');
+    const passwordInput = document.querySelector<HTMLInputElement>('#password');
+
+    if (!emailInput || !passwordInput) {
+      console.error('One or more login form fields were not found in the DOM.');
+      return;
+    }
+
+    const loginData: LoginData = {
+      email: emailInput.value,
+      password: passwordInput.value
+    };
+
+    const response = await fetch('https://localhost:7299/api/User/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(loginData)
+    });
+
+    const contentType = response.headers.get('content-type');
+    let data: string | LoginResponse;
+
     
   });
 }
