@@ -14,3 +14,9 @@ const loginForm = document.querySelector<HTMLFormElement>('#loginForm');
 const loginError = document.querySelector<HTMLElement>('#loginError');
 const registerSuccessMessage = document.querySelector<HTMLElement>('#registerSuccessMessage');
 
+const params = new URLSearchParams(window.location.search);
+
+if (params.get('registered') === 'true' && registerSuccessMessage) {
+  registerSuccessMessage.style.display = 'block';
+}
+
