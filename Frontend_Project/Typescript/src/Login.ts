@@ -57,6 +57,29 @@ if (!loginForm || !loginError) {
       data = await response.text();
     }
 
-    
+    if (response.ok) {
+      console.log('Login succeeded:', data);
+
+      if (typeof data === 'string' || !data.token || !data.role || !data.fullName) {
+        console.error('Login response did not contain the expected user data.');
+        loginError.textContent = 'Something went wrong. Please try again.';
+        loginError.style.display = 'block';
+        return;
+      }
+
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('userRole', data.role);
+      localStorage.setItem('userFullName', data.fullName);
+
+      if (data.role === 'Driver') {
+        window.location.href = 'DeliveredStatus.html';
+      } else {
+        window.location.href = 'home.html';
+      }
+    } else {
+      console.log('Login failed:', data);
+      loginError.textContent = typeof data === 'string' ? data : (data.title || 'Invalid email or password.');
+      loginError.style.display = 'block';
+    }
   });
 }
