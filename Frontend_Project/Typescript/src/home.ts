@@ -57,9 +57,42 @@ document.addEventListener(
         // Load Popular Products
         loadProducts();
 
+        // Hide Login / Sign Up when logged in
+        hideAuthButtonIfLoggedIn();
+
     }
 );
 
+// ============================================
+// HIDE LOGIN BUTTON WHEN LOGGED IN
+// ============================================
+
+function hideAuthButtonIfLoggedIn(): void {
+
+    const authButton:
+        HTMLElement | null =
+        document.getElementById(
+            "authButton"
+        );
+
+
+    const token:
+        string | null =
+        localStorage.getItem(
+            "authToken"
+        );
+
+
+    // ========================================
+    // Hide only if the button exists
+    // and the customer is logged in
+    // ========================================
+
+    if (authButton && token) {
+
+        authButton.style.display = "none";
+    }
+}
 
 // ============================================
 // LOAD CATEGORIES
