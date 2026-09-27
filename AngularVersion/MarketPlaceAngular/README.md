@@ -1,59 +1,38 @@
-# MarketPlaceAngular
+# Marketplace Angular frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Angular 22 refactor of the marketplace frontend. The original native HTML, CSS, JavaScript, and TypeScript implementation remains in `../../Frontend_Project` for reference.
 
-## Development server
+## Structure
 
-To start a local development server, run:
+The application follows the same feature structure as the supplied Angular reference:
 
-```bash
-ng serve
+```text
+src/app/
+├── components/   Reusable UI components
+├── layout/       Header, sidebar, and footer
+├── models/       API and application types
+├── pages/        Routed page components
+└── services/     HTTP, authentication, cart, and order state
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The migrated routes cover home, businesses, products, checkout, order history, tracking, driver information, delivery updates, login, and registration.
 
-## Code scaffolding
+## Run locally
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The frontend expects the existing ASP.NET Core API at `https://localhost:7299`.
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Open `http://localhost:4200` after both the API and Angular development server are running. The start command uses `proxy.conf.json` to forward `/api` and `/delivery` to the API, so the backend does not need a CORS change for local development. If the API address changes, update the proxy target.
 
-To build the project run:
+For a production deployment where Angular and the API use different origins, the backend CORS allowlist must include the Angular origin. That backend change is intentionally not included here.
+
+## Verify
 
 ```bash
-ng build
+npm run build
+npm test -- --watch=false
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
