@@ -20,7 +20,9 @@ export class AuthService {
   readonly role = this.roleSignal.asReadonly();
   readonly fullName = this.fullNameSignal.asReadonly();
   readonly isAuthenticated = computed(() => Boolean(this.tokenSignal()));
-  readonly isDriver = computed(() => this.roleSignal()?.toLowerCase() === 'driver');
+  readonly normalizedRole = computed(() => this.roleSignal()?.trim().toLowerCase() ?? '');
+  readonly isCustomer = computed(() => this.normalizedRole() === 'customer');
+  readonly isDriver = computed(() => this.normalizedRole() === 'driver');
 
   login(credentials: LoginRequest) {
     return this.http
