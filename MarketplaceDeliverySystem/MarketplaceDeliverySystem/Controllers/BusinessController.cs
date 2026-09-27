@@ -50,5 +50,13 @@ namespace MarketplaceDeliverySystem.Controllers
             List<BusinessCardRespDTO> result = _businessService.GetAllBusinesses(categoryId);
             return Ok(result);
         }
+
+        [HttpGet("GetPopularBusinesses")]
+        [AllowAnonymous]
+        public IActionResult GetPopularBusinesses([FromQuery] int limit = 4)
+        {
+            List<PopularBusinessDTO> result = _businessService.GetPopularBusinesses(limit);
+            return Ok(result);
+        }
     }
 }
