@@ -72,7 +72,7 @@ async function loadBusinessHeader(businessId) {
         // BUSINESS INFORMATION
         // ====================================================
         const logo = business.logoUrl ||
-            "/assets/img/LogoPlaceHolder.PNG";
+            "../assets/img/ProductPlaceholder.PNG";
         const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
         const phone = business.phoneNumber ||
             "+968 9000 0000";
@@ -361,7 +361,7 @@ function renderFilteredProducts() {
         // PRODUCT IMAGE
         // ==================================================
         const image = product.imageUrl ||
-            "/assets/img/ProductPlaceHolder.PNG";
+            "../assets/img/ProductPlaceholder.PNG";
         // ==================================================
         // PRICE
         // ==================================================
@@ -971,7 +971,7 @@ function addProductToOrder(productId, productName) {
             price: product.price,
             quantity: quantity,
             imageUrl: product.imageUrl ||
-                "/assets/img/ProductPlaceHolder.PNG",
+                "../assets/img/ProductPlaceholder.PNG",
             businessId: currentBusinessId
         });
     }

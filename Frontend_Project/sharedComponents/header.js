@@ -1,5 +1,13 @@
-// Check if the customer is logged in
+// ============================================
+// CURRENT PAGE
+// ============================================
+
 const currentPagePath = window.location.pathname.toLowerCase();
+
+
+// ============================================
+// LOGIN CHECK
+// ============================================
 
 const customerPages = [
     "businesses.html",
@@ -23,120 +31,163 @@ if (requiresLogin && !authToken) {
 }
 
 
-// Load the header
-// JavaScript goes to header.html
-// It reads all the HTML inside that file
-// It finds: <div id="header-container"></div>
-// It puts the contents of header.html inside it.
-// this hides the navigation visually on the Delivered Status page
-fetch("../sharedComponents/header.html")
-    .then(response => response.text())
-    .then(data => {
+// ============================================
+// LOAD HEADER AND SIDEBAR
+// ============================================
 
-        document.getElementById("header-container").innerHTML = data;
+Promise.all([
 
-       if (currentPagePath.includes("deliveredstatus.html")) {
+    fetch("../sharedComponents/header.html")
+        .then(response => response.text()),
 
-            const navigation = document.querySelector(".navigation");
+    fetch("../sharedComponents/sidebar.html")
+        .then(response => response.text())
 
-            if (navigation) {
-                navigation.style.display = "none";
-            }
-        }
-    });
+])
+.then(([headerData, sidebarData]) => {
+
+    // Load header
+    const headerContainer =
+        document.getElementById("header-container");
+
+    if (headerContainer) {
+        headerContainer.innerHTML = headerData;
+    }
 
 
-// Load the sidebar
-fetch("../sharedComponents/sidebar.html")
-    .then(response => response.text())
-    .then(data => {
+    // Load sidebar
+    const sidebarContainer =
+        document.getElementById("sidebar-container");
 
-        document.getElementById("sidebar-container").innerHTML = data;
+    if (sidebarContainer) {
+        sidebarContainer.innerHTML = sidebarData;
+    }
 
-        if (currentPagePath.includes("deliveredstatus.html")) {
 
-            // Change Shopper information to Driver
-            const userTitle = document.querySelector(".user-info h3");
-            const userRole = document.querySelector(".user-info span");
+    // ========================================
+    // DELIVERED STATUS PAGE
+    // ========================================
 
-            if (userTitle) {
-                userTitle.textContent = "Hi, Driver!";
-            }
+    if (currentPagePath.includes("deliveredstatus.html")) {
 
-            if (userRole) {
-                userRole.textContent = "DRIVER";
-            }
+        // Hide customer navigation
+        const navigation =
+            document.querySelector(".navigation");
 
-            // Remove customer-only menu items
-            const sidebarItems =
-                document.querySelectorAll(".sidebar-item");
-
-            sidebarItems.forEach(item => {
-
-                const text = item.textContent.trim();
-
-                if (
-                    text.includes("Home") ||
-                    text.includes("Browse Products") ||
-                    text.includes("My Orders") ||
-                    text.includes("Track Delivery") ||
-                    text.includes("Favorites")
-                ) {
-                    item.remove();
-                }
-
-            });
-
-            // Remove customer promotional card
-            const promoCard =
-                document.querySelector(".sidebar-promo");
-
-            if (promoCard) {
-                promoCard.remove();
-            }
+        if (navigation) {
+            navigation.style.display = "none";
         }
 
-        initializeSidebar();
-    });
+
+        // Change Shopper information to Driver
+        const userTitle =
+            document.querySelector(".user-info h3");
+
+        const userRole =
+            document.querySelector(".user-info span");
+
+        if (userTitle) {
+            userTitle.textContent = "Hi, Driver!";
+        }
+
+        if (userRole) {
+            userRole.textContent = "DRIVER";
+        }
 
 
-// Sidebar functionality
+        // Remove customer-only menu items
+        const sidebarItems =
+            document.querySelectorAll(".sidebar-item");
+
+        sidebarItems.forEach(item => {
+
+            const text =
+                item.textContent.trim();
+
+            if (
+                text.includes("Home") ||
+                text.includes("Browse Products") ||
+                text.includes("My Orders") ||
+                text.includes("Track Delivery") ||
+                text.includes("Favorites")
+            ) {
+                item.remove();
+            }
+
+        });
+
+
+        // Remove customer promotional card
+        const promoCard =
+            document.querySelector(".sidebar-promo");
+
+        if (promoCard) {
+            promoCard.remove();
+        }
+    }
+
+
+    // ========================================
+    // INITIALIZE SIDEBAR
+    // ========================================
+
+    initializeSidebar();
+
+});
+
+
+// ============================================
+// SIDEBAR FUNCTIONALITY
+// ============================================
+
 function initializeSidebar() {
 
-    const sidebar = document.getElementById("category-sidebar");
+    const sidebar =
+        document.getElementById("category-sidebar");
 
-    const closeButton = document.getElementById("close-sidebar");
-    // This finds the HTML element with:<div id="sidebar-overlay"></div>
-    // overlay covers the page when the sidebar opens
-    // Find the HTML element whose ID is sidebar-overlay and store it in the variable overlay
-    const overlay = document.getElementById("sidebar-overlay");
-    // This finds:<div class="categories"></div>
-    //querySelector with classes(.categories is a class)
-    const categories = document.getElementById("menu-button");
+    const closeButton =
+        document.getElementById("close-sidebar");
+
+    const overlay =
+        document.getElementById("sidebar-overlay");
+
+    const categories =
+        document.getElementById("menu-button");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
 
 
-    const logoutButton = document.getElementById("logoutButton");
+    // Make sure all required elements exist
+    if (
+        !sidebar ||
+        !closeButton ||
+        !overlay ||
+        !categories ||
+        !logoutButton
+    ) {
+        console.error("Sidebar elements were not found.");
+        return;
+    }
 
 
-    // Open sidebar
-    //classList allows JavaScript to manage css classes into html.
-    //When the user clicks the Categories area, run this code.
+    // ========================================
+    // OPEN SIDEBAR
+    // ========================================
+
     categories.addEventListener("click", function () {
-        // sidebar gets the class: open
-        //It adds the class open to the overlay and sidebar
+
         sidebar.classList.add("open");
-        // This creates the dark background behind the sidebar.
-        //CSS detects: #sidebar-overlay.open
+
         overlay.classList.add("open");
 
     });
 
 
-    // Close sidebar
-    //When the user clicks the dark area outside the sidebar, close it.
-    //the user has two ways to close the sidebar:
-    //1. Click ✕
-    //2. Click outside the sidebar
+    // ========================================
+    // CLOSE SIDEBAR
+    // ========================================
+
     closeButton.addEventListener("click", function () {
 
         sidebar.classList.remove("open");
@@ -146,7 +197,10 @@ function initializeSidebar() {
     });
 
 
-    // Close when clicking outside
+    // ========================================
+    // CLOSE WHEN CLICKING OUTSIDE
+    // ========================================
+
     overlay.addEventListener("click", function () {
 
         sidebar.classList.remove("open");
@@ -155,14 +209,22 @@ function initializeSidebar() {
 
     });
 
+
+    // ========================================
+    // LOGOUT
+    // ========================================
+
     logoutButton.addEventListener("click", function (event) {
+
         event.preventDefault();
 
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userFullName');
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userFullName");
 
-        window.location.href = '../html pages/home.html';
+        window.location.href =
+            "../html pages/home.html";
+
     });
 
 }
