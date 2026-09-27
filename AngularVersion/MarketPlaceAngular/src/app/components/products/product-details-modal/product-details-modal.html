@@ -1,0 +1,19 @@
+<div class="modal fade product-modal show" tabindex="-1" aria-modal="true" role="dialog" style="display: block;" (click)="closed.emit()">
+  <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()"><div class="modal-content">
+    <div class="modal-header d-flex align-items-center justify-content-between"><h5 class="modal-category-title">[ {{ product().categoryName || 'General' }} ]</h5><button type="button" class="btn modal-close-btn" (click)="closed.emit()">✕</button></div>
+    <div class="modal-body p-4"><div class="row g-4 align-items-start">
+      <div class="col-12 col-md-5"><img [src]="imageUrl()" class="img-fluid modal-product-img" [alt]="product().productName" (error)="usePlaceholder($event)"></div>
+      <div class="col-12 col-md-7 d-flex flex-column gap-2">
+        <div><small class="text-muted text-uppercase fw-semibold">Product Title</small><h3 class="fw-bold mb-1 text-brand-navy">{{ product().productName }}</h3></div>
+        <div><small class="text-muted fw-semibold">Price</small><div class="fs-4 fw-bold text-brand-orange">{{ product().price.toFixed(3) }} OMR</div></div>
+        <div><small class="text-muted fw-semibold d-block mb-1">Available and Stock</small><span class="badge rounded-pill me-2 badge-brand-count">[ {{ product().isAvailable ? 'Available' : 'Unavailable' }} ]</span><span [class.stock-tag-low]="product().stockQuantity <= 8" [class.stock-tag-good]="product().stockQuantity > 8">[ {{ product().stockQuantity }} remaining ]</span></div>
+        <div class="mt-2"><h6 class="fw-bold mb-1 text-brand-navy">Description</h6><p class="text-muted small mb-0 modal-description-text">{{ product().description || 'No description provided for this product.' }}</p></div>
+      </div>
+    </div></div>
+    <div class="modal-footer d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <div class="d-flex flex-column gap-2"><div class="d-flex align-items-center gap-2"><span class="fw-bold me-1 text-brand-navy">Quantity:</span><button type="button" class="btn qty-box-btn" (click)="quantityChange.emit(-1)">-</button><div class="qty-box-val">{{ quantity() }}</div><button type="button" class="btn qty-box-btn" (click)="quantityChange.emit(1)">+</button></div><div><button type="button" class="btn btn-cancel" (click)="closed.emit()">Cancel</button></div></div>
+      <div class="d-flex flex-column align-items-end gap-2"><div class="fs-5 fw-bold text-brand-navy">Total: <span class="text-brand-orange">{{ (product().price * quantity()).toFixed(3) }} OMR</span></div><button type="button" class="btn btn-add-order" (click)="addToOrder.emit()">Add to order</button></div>
+    </div>
+  </div></div>
+</div>
+<div class="modal-backdrop fade show"></div>
