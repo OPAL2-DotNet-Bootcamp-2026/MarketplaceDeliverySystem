@@ -1,0 +1,18 @@
+<article class="popular-business-card" [routerLink]="['/businesses', business().businessId, 'products']" tabindex="0">
+  <div class="popular-business-logo-wrap">
+    <img class="popular-business-logo" [src]="logoUrl()" [alt]="business().businessName" (error)="usePlaceholder($event)">
+  </div>
+  <div class="popular-business-info">
+    <div class="popular-business-meta">
+      <span class="business-category">{{ business().businessCategoryName || 'Local Business' }}</span>
+      <span class="business-status" [class.open]="business().isOpen">{{ business().isOpen ? 'Open' : 'Closed' }}</span>
+    </div>
+    <h3>{{ business().businessName }}</h3>
+    <p class="business-address"><i class="bi bi-geo-alt"></i> {{ business().address || 'Marketplace business' }}</p>
+    <div class="business-card-footer">
+      <span><i class="bi bi-clock"></i> {{ formatHours() }}</span>
+      <span><i class="bi bi-bag-check"></i> {{ orderLabel() }}</span>
+    </div>
+  </div>
+  <i class="bi bi-arrow-right business-card-arrow"></i>
+</article>
