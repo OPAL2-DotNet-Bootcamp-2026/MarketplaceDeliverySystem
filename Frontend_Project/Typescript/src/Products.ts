@@ -172,7 +172,7 @@ async function loadBusinessHeader(
 
         const logo: string =
             business.logoUrl ||
-            "/assets/img/LogoPlaceHolder.PNG";
+            "../assets/img/ProductPlaceholder.PNG";
 
 
         const formattedHours: string =
@@ -669,7 +669,7 @@ function renderFilteredProducts(): void {
 
             const image: string =
                 product.imageUrl ||
-                "/assets/img/ProductPlaceHolder.PNG";
+                "../assets/img/ProductPlaceholder.PNG";
 
 
             // ==================================================
@@ -1438,7 +1438,7 @@ function addProductToOrder(
 
             imageUrl:
                 product.imageUrl ||
-                "/assets/img/ProductPlaceHolder.PNG",
+                "../assets/img/ProductPlaceholder.PNG",
 
             businessId:
                 currentBusinessId

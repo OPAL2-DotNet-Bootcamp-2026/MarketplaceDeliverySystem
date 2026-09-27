@@ -1,8 +1,11 @@
+// Get the customer's active orders from the backend, 
+// determine each order's status, display its progress, and show driver information when available.
 // =====================================================
 // TRACK ORDER
 // TypeScript version of TrackOrder.js
 // =====================================================
 
+// what an order object should look like
 interface Order {
     orderId: number;
     orderDate: string;
@@ -12,6 +15,7 @@ interface Order {
     driverPhone?: string | null;
 }
 
+//This defines the information that the page needs to display for each order status
 interface OrderStatusInfo {
     badge: string;
     title: string;
@@ -19,18 +23,20 @@ interface OrderStatusInfo {
     statusText: string;
     showDriverButton: boolean;
 }
-
+//OrderStatusKey can only be one of these four values
 type OrderStatusKey = "placed" | "ready" | "onway" | "delivered";
 
-// Driver modal
+// Driver modal (popup window that appears for the driver information)
 const driverModal = document.getElementById("driver-modal");
 const closeDriverModal = document.getElementById("close-driver-modal");
 const modalDriverName = document.getElementById("modal-driver-name");
 const modalDriverPhone = document.getElementById("modal-driver-phone");
 
+// This creates an empty array that will eventually store the customer's orders.
 let currentOrders: Order[] = [];
 
-// orderStatuses stores information for every status
+// orderStatuses stores information for every status in a dictionary-like format, 
+// where the key is the status and the value is an object containing the information for that status.
 const orderStatuses: Record<OrderStatusKey, OrderStatusInfo> = {
     placed: {
         badge: "ORDER RECEIVED",
@@ -93,9 +99,13 @@ function showDriverInformation(order: Order): void {
     driverModal.classList.add("show");
 }
 
-// Close modal
+// Close modal: If the Close button exists AND the modal exists
 if (closeDriverModal && driverModal) {
+    // Wait for the user to click the Close button: When the user clicks the Close button, run the code
     closeDriverModal.addEventListener("click", function () {
+        //CSS no longer applies the show style, so the modal disappears
+        // before: <div id="driver-modal" class="show">
+        // after: <div id="driver-modal">
         driverModal.classList.remove("show");
     });
 }
@@ -103,6 +113,7 @@ if (closeDriverModal && driverModal) {
 // Close when clicking outside the modal
 if (driverModal) {
     driverModal.addEventListener("click", function (event: MouseEvent) {
+        // Did the user click the modal's background itself?
         if (event.target === driverModal) {
             driverModal.classList.remove("show");
         }
@@ -110,6 +121,7 @@ if (driverModal) {
 }
 
 async function loadOrders(): Promise<void> {
+    // This looks inside the browser's localStorage for something called authToken
     const token = localStorage.getItem("authToken");
 
     if (!token) {
@@ -131,26 +143,32 @@ async function loadOrders(): Promise<void> {
                 `Request failed with status ${activeResponse.status}`
             );
         }
-
+        // The response from the backend is converted to JSON and stored in the activeOrders variable, which is an array of Order objects.
         const activeOrders = await activeResponse.json() as Order[];
 
         currentOrders = activeOrders;
+        //Display the orders
         renderOrders(activeOrders);
     } catch (error) {
+        // Show the error in F12 Console
         console.error("Failed to load orders:", error);
     }
 }
 
+//change the date into a nicer format
 function formatDate(dateString: string): string {
+    //Convert the string into a Date
     const date = new Date(dateString);
-
+    ////Format this date using the English (US) date style.
     return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
+        //Choose how to display it:
+        month: "short", //sep
+        day: "numeric", //27
+        year: "numeric" //2026
     });
 }
 
+//main function that creates and displays all the orders on the Track Order page.
 function renderOrders(orders: Order[]): void {
     const ordersContainer = document.getElementById("orders-container");
 
@@ -170,6 +188,7 @@ function renderOrders(orders: Order[]): void {
         return;
     }
 
+    //order: Order --> represents one order at a time
     orders.forEach((order: Order) => {
         const statusKey = convertStatus(order.orderStatus);
 
@@ -180,8 +199,8 @@ function renderOrders(orders: Order[]): void {
         const status = orderStatuses[statusKey];
 
         // Determine which progress step is current
-        let currentStep = 1;
-
+        let currentStep = 1; //means the order has been placed
+        // If the order is ready, on the way, or delivered, update currentStep accordingly
         if (statusKey === "ready") {
             currentStep = 2;
         }
@@ -193,12 +212,13 @@ function renderOrders(orders: Order[]): void {
         if (statusKey === "delivered") {
             currentStep = 4;
         }
+
         // Progress step classes
         const step1Class = currentStep > 1
             ? "completed"
             : currentStep === 1
                 ? "current"
-                : "";
+                : ""; //means no class
 
         const step2Class = currentStep > 2
             ? "completed"
@@ -241,10 +261,13 @@ function renderOrders(orders: Order[]): void {
                 </button>
             `
             : "";
-
+        //Create a new HTML <div> element
         const orderCard = document.createElement("div");
+        //Give it a CSS class
+        //The tracking-card class allows your CSS to style the order card.
         orderCard.className = "tracking-card";
 
+        //Put this HTML code inside the <div>
         orderCard.innerHTML = `
             <!-- Order Header -->
             <div class="order-card-header">
@@ -341,20 +364,30 @@ function renderOrders(orders: Order[]): void {
                 ${driverButton}
             </div>
         `;
-
+        //Put the order card inside the orders container on the webpage
         ordersContainer.appendChild(orderCard);
     });
 
     attachDriverButtons();
 }
-function attachDriverButtons(): void {
-    const driverButtons = document.querySelectorAll(".view-driver-btn");
 
+function attachDriverButtons(): void {
+    // Find all driver buttons
+    // in some cases will have multiple orders, so we need to find all buttons
+    const driverButtons = document.querySelectorAll(".view-driver-btn");
+    // Take each driver button one at a time 
     driverButtons.forEach((button: Element) => {
+        // Get the orderId from the button's data attribute each button looks like:
+        // <button
+        //class="view-driver-btn"
+        //data-order-id="${order.orderId}">
+        //View Driver Information
+        //</button>
         const orderId = Number(
             (button as HTMLElement).dataset.orderId
         );
-
+        // When the user clicks the button, run this code
+        // Find the matching order
         button.addEventListener("click", function () {
             const order = currentOrders.find(
                 (order: Order) => order.orderId === orderId

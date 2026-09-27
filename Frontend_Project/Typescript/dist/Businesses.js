@@ -199,7 +199,7 @@
         pageItems.forEach((business) => {
             const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
             const logo = business.logoUrl ||
-                "/assets/img/LogoPlaceHolder.PNG";
+                "../assets/img/ProductPlaceholder.PNG";
             const cardHtml = `
                     <div class="card business-horizontal-card shadow-sm">
 

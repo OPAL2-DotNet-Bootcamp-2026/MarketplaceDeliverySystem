@@ -342,7 +342,7 @@ interface BusinessCategory {
 
         const logo: string =
           business.logoUrl ||
-          "/assets/img/LogoPlaceHolder.PNG";
+          "../assets/img/ProductPlaceholder.PNG";
 
         const cardHtml: string = `
                     <div class="card business-horizontal-card shadow-sm">
