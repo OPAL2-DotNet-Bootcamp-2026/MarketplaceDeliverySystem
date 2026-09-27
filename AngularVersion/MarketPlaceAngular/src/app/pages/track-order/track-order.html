@@ -1,0 +1,7 @@
+<app-tracking-view
+  [orders]="orders()"
+  [loading]="loading()"
+  [error]="error()"
+  [authenticated]="auth.isAuthenticated()"
+  (driverUnavailable)="error.set('No driver has been assigned to this order yet.')"
+/>
