@@ -1,0 +1,14 @@
+<app-checkout
+  [items]="cart.items()"
+  [subtotal]="cart.subtotal()"
+  [deliveryFee]="deliveryFee"
+  [vat]="vat()"
+  [total]="total()"
+  [submitting]="submitting()"
+  [error]="error()"
+  [orderId]="orderId()"
+  [(selectedPayment)]="selectedPayment"
+  (quantityChanged)="cart.changeQuantity($event.productId, $event.delta)"
+  (orderSubmitted)="submitOrder()"
+  (successClosed)="orderId.set(null)"
+/>
