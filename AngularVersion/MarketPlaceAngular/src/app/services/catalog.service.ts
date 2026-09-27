@@ -26,6 +26,12 @@ export class CatalogService {
     );
   }
 
+  getHomeBusinessCategories() {
+    return this.http.get<Category[]>(
+      `${API_BASE_URL}/api/BusinessCategory/GetHomeCategories`,
+    );
+  }
+
   getBusinesses(categoryId: number | null = null) {
     const options = categoryId === null
       ? {}
