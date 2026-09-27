@@ -1,21 +1,8 @@
 :host {
-    display: block;
-
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-
-
-/* Header is fixed, so leave space for it */
-
-.layout {
-    min-height: 100vh;
-
-    padding-top: 0px;
-
-    box-sizing: border-box;
-}
-
-
 .content {
-    min-height: calc(100vh - 160px);
+  flex: 1;
 }
