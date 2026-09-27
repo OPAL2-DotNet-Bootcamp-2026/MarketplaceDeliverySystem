@@ -1,0 +1,18 @@
+<main class="login-required-page">
+  <section class="login-required-card" aria-labelledby="login-required-title">
+    <div class="login-required-icon" aria-hidden="true">
+      <i class="bi bi-shield-lock"></i>
+    </div>
+    <p class="login-required-eyebrow">SECURE MARKETPLACE</p>
+    <h1 id="login-required-title">{{ title() }}</h1>
+    <p class="login-required-message">{{ message() }}</p>
+    <div class="login-required-actions">
+      <a
+        routerLink="/login"
+        [queryParams]="{ returnUrl: returnUrl() }"
+        class="login-required-primary"
+      >Go to Login <span aria-hidden="true">→</span></a>
+      <a routerLink="/" class="login-required-secondary">Return Home</a>
+    </div>
+  </section>
+</main>
