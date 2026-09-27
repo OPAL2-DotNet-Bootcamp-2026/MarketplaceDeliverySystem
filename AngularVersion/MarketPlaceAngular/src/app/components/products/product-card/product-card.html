@@ -1,0 +1,26 @@
+<article class="card product-horizontal-card shadow-sm">
+  <div class="card-body p-3">
+    <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-sm-nowrap">
+      <div class="d-flex align-items-center gap-3 product-summary" (click)="selectProduct()">
+        <img [src]="imageUrl()" class="product-card-img flex-shrink-0" [alt]="product().productName" (error)="usePlaceholder($event)">
+        <div class="d-flex flex-column justify-content-center">
+          <h5 class="product-card-title mb-1">{{ product().productName }}</h5>
+          <div class="price-tag fw-bold mb-1">{{ product().price.toFixed(3) }} OMR</div>
+          <div>
+            @if (product().stockQuantity <= 8) {
+              <span class="stock-tag-low">⚠️ Only {{ product().stockQuantity }} remaining</span>
+            } @else {
+              <span class="stock-tag-good">✓ {{ product().stockQuantity }} remaining</span>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2 ms-auto ms-sm-0">
+        <button type="button" class="btn qty-box-btn" (click)="changeQuantity(-1)">-</button>
+        <div class="qty-box-val" aria-live="polite">{{ quantity() }}</div>
+        <button type="button" class="btn qty-box-btn" (click)="changeQuantity(1)">+</button>
+        <button type="button" class="btn btn-add-order d-inline-flex align-items-center gap-1" [disabled]="!product().isAvailable" (click)="requestAddToOrder()">Add to Order</button>
+      </div>
+    </div>
+  </div>
+</article>
