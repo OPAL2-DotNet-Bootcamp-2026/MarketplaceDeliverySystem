@@ -1,0 +1,9 @@
+<nav aria-label="Page navigation" class="mt-4">
+  <ul id="pagination-list" class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="currentPage() === 1"><a class="page-link" href="#" (click)="$event.preventDefault(); pageSelected.emit(currentPage() - 1)">Previous</a></li>
+    @for (page of pages(); track page) {
+      <li class="page-item" [class.active]="page === currentPage()"><a class="page-link" href="#" (click)="$event.preventDefault(); pageSelected.emit(page)">{{ page }}</a></li>
+    }
+    <li class="page-item" [class.disabled]="currentPage() === totalPages()"><a class="page-link" href="#" (click)="$event.preventDefault(); pageSelected.emit(currentPage() + 1)">Next</a></li>
+  </ul>
+</nav>
