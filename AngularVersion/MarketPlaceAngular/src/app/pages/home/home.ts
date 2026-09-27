@@ -27,7 +27,7 @@ export class Home implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const [categoriesResult, businessesResult] = await Promise.allSettled([
-      firstValueFrom(this.catalog.getBusinessCategories()),
+      firstValueFrom(this.catalog.getHomeBusinessCategories()),
       firstValueFrom(this.catalog.getPopularBusinesses()),
     ] as const);
 
