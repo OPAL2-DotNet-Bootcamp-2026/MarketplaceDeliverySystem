@@ -1,43 +1,27 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrl: './sidebar.css',
 })
 export class Sidebar {
-
+  private readonly router = inject(Router);
+  readonly auth = inject(AuthService);
+  readonly cart = inject(CartService);
   @Input() isOpen = false;
+  @Output() readonly closeSidebar = new EventEmitter<void>();
 
-  @Output() closeSidebar = new EventEmitter<void>();
-
-  isDriver =
-    (localStorage.getItem('userRole') ?? '').toLowerCase() === 'driver';
-
-  constructor(private router: Router) {}
-
-  close(): void {
-    this.closeSidebar.emit();
-  }
-
-  goToTrackOrder(): void {
-    this.close();
-    this.router.navigate(['/track-order']);
-  }
-
-  goToDeliveredStatus(): void {
-    this.close();
-    this.router.navigate(['/delivered-status']);
-  }
+  close(): void { this.closeSidebar.emit(); }
 
   logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userFullName');
-
-    window.location.href = '/';
+    this.auth.logout();
+    this.close();
+    void this.router.navigate(['/']);
   }
 }
