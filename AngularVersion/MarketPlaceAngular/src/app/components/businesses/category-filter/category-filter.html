@@ -1,0 +1,16 @@
+<aside class="categories-aside p-3 shadow-sm rounded-3 bg-white border">
+  <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+    <h5 class="categories-header-title mb-0 fw-bold">Categories</h5>
+    <small class="text-muted">Home Businesses</small>
+  </div>
+  <div class="list-group list-group-flush border-0" id="category-filter-list">
+    <a href="#" class="list-group-item list-group-item-action category-item d-flex align-items-center" [class.brand-active]="selectedCategoryId() === null" (click)="$event.preventDefault(); categorySelected.emit(null)">
+      <span class="category-emoji">🏪</span><span class="category-name">All Businesses</span>
+    </a>
+    @for (category of categories(); track category.categoryId) {
+      <a href="#" class="list-group-item list-group-item-action category-item d-flex align-items-center" [class.brand-active]="selectedCategoryId() === category.categoryId" (click)="$event.preventDefault(); categorySelected.emit(category.categoryId)">
+        <span class="category-emoji">{{ categoryEmoji(category.categoryName) }}</span><span class="category-name">{{ category.categoryName }}</span>
+      </a>
+    }
+  </div>
+</aside>
