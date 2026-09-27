@@ -57,11 +57,18 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         // PUT: /order/cancel
+        [Authorize(Roles = "Customer")]
         [HttpPut("cancel")]
         public IActionResult CancelOrder([FromBody] OrderCancelDTO dto)
         {
+            string? userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdValue, out int userId))
+            {
+                return Unauthorized();
+            }
+
             MessageOutputDTO result =
-                _orderService.CancelOrder(dto);
+                _orderService.CancelOrder(dto, userId);
 
             if (!result.Success)
             {
@@ -71,10 +78,17 @@ namespace MarketplaceDeliverySystem.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpGet("GetOrderById/{orderId}")]
         public IActionResult GetOrderById(int orderId)
         {
-            var order = _orderService.GetOrderById(orderId);
+            string? userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdValue, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            var order = _orderService.GetOrderById(orderId, userId);
 
             if (order == null)
                 return NotFound("Order not found.");
