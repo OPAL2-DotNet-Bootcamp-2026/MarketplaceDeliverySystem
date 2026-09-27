@@ -1,0 +1,57 @@
+<main class="container">
+  <header class="page-header"><div class="heading-row"><a routerLink="/businesses" class="back-link">← Back to Shopping</a><h1>Review Delivery & Items</h1></div></header>
+
+  <div class="checkout-grid">
+    <div class="main-content">
+      <section class="card payment-section">
+        <div class="card-header"><img src="/assets/img/TruckIconCircle.png" alt="Payment Icon" class="card-icon"><h2>PAYMENT METHOD</h2></div>
+        <div class="payment-options">
+          <label class="payment-card"><input type="radio" name="payment_method" value="Cash On Delivery" [ngModel]="selectedPayment()" (ngModelChange)="selectedPayment.set($event)"><span class="radio-dot"></span><div class="payment-text"><span class="payment-title">Cash On Delivery</span><p class="payment-sub">Pay at your doorstep</p></div></label>
+          <label class="payment-card"><input type="radio" name="payment_method" value="Apple Pay" [ngModel]="selectedPayment()" (ngModelChange)="selectedPayment.set($event)"><span class="radio-dot"></span><div class="payment-text"><span class="payment-title">Apple Pay</span><p class="payment-sub">Fast checkout</p></div></label>
+          <label class="payment-card"><input type="radio" name="payment_method" value="Credit/Debit Card" [ngModel]="selectedPayment()" (ngModelChange)="selectedPayment.set($event)"><span class="radio-dot"></span><div class="payment-text"><span class="payment-title">Credit/Debit Card</span><p class="payment-sub">Visa, Mastercard, Amex</p></div></label>
+        </div>
+      </section>
+
+      <section class="card order-items">
+        <div class="card-header"><h2>ORDER ITEMS ({{ items().length }})</h2></div>
+        <ul class="item-list">
+          @if (!items().length) {
+            <p class="empty-cart-msg">Your cart is empty. Head back to <a routerLink="/businesses">Products</a> to add some items.</p>
+          } @else {
+            @for (item of items(); track item.productId) {
+              <li class="item-row">
+                <div class="item-details"><img [src]="imageUrl(item.imageUrl)" [alt]="item.productName" class="item-thumb" (error)="usePlaceholder($event)"><div class="item-text"><h4>{{ item.productName }}</h4><p class="category">Category: Food & Beverage</p></div></div>
+                <div class="item-controls"><div class="quantity-picker"><button type="button" class="qty-btn" aria-label="Decrease quantity" (click)="quantityChanged.emit({ productId: item.productId, delta: -1 })">−</button><span class="qty-value">{{ item.quantity }}</span><button type="button" class="qty-btn" aria-label="Increase quantity" (click)="quantityChanged.emit({ productId: item.productId, delta: 1 })">+</button></div><span class="price">{{ (item.price * item.quantity).toFixed(3) }} OMR</span></div>
+              </li>
+            }
+          }
+        </ul>
+      </section>
+    </div>
+
+    <aside class="sidebar-summary">
+      <div class="card summary-card">
+        <h2 class="summary-title">Order Summary</h2>
+        <div class="summary-breakdown">
+          <div class="summary-row"><span class="label">Items Subtotal</span><span class="value">{{ subtotal().toFixed(3) }} OMR</span></div>
+          <div class="summary-row"><span class="label">Standard Delivery Fee</span><span class="value">{{ deliveryFee().toFixed(3) }} OMR</span></div>
+          <div class="summary-row"><span class="label">VAT & Custom Duties (5%)</span><span class="value">{{ vat().toFixed(3) }} OMR</span></div>
+        </div>
+        <hr class="summary-divider">
+        <div class="summary-row total-row"><span class="label">Total Amount</span><span class="total-price">{{ total().toFixed(3) }} OMR</span></div>
+        <div class="security-badge"><span class="badge-dot">🔒</span><span>Safe & Secure checkout SSL encrypted payment</span></div>
+        @if (error()) { <p class="alert alert-danger">{{ error() }}</p> }
+        <button type="button" class="btn-place-order" [disabled]="submitting()" (click)="orderSubmitted.emit()">{{ submitting() ? 'Placing order...' : 'Place Order (' + total().toFixed(3) + ' OMR)' }}</button>
+        <p class="disclaimer">By finalizing the transaction, you agree to our Terms of Service and authorize the Delivery platform to execute contact-free delivery at your selected address.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="orderSuccessModal" class="modal-overlay" [class.active]="orderId() !== null">
+  <div class="modal-card">
+    <div class="checkmark-wrapper"><svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg></div>
+    <h2>Order Placed Successfully!</h2><p>Thank you for your purchase. Your order is being prepared and will be on its way shortly.</p>
+    <div class="modal-actions"><a routerLink="/track-order" class="btn-track-order">Track Your Order</a><button type="button" class="btn-close-modal" (click)="successClosed.emit()">Close</button></div>
+  </div>
+</div>
