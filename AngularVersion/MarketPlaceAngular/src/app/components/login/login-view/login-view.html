@@ -1,0 +1,22 @@
+<main class="auth-layout">
+  <aside class="auth-panel-left">
+    <div class="auth-logo"><img src="/assets/img/logo.png" alt="Marketplace Delivery System logo" class="auth-logo-mark"><span class="auth-logo-text">Marketplace</span></div>
+    <div class="auth-hero-placeholder"><img src="/assets/img/ezgif.com-optimize.gif" alt="" class="auth-hero-img"></div>
+    <p class="auth-headline">Shop local. <span class="auth-highlight">Delivered</span> to your door.</p>
+    <ul class="auth-bullet-list"><li><i class="bi bi-check-circle-fill"></i> Browse homemade products</li><li><i class="bi bi-check-circle-fill"></i> Track your delivery</li></ul>
+  </aside>
+
+  <section class="auth-panel-right">
+    <h1 class="auth-form-title">Login</h1>
+    <form class="auth-form" id="loginForm" (ngSubmit)="submit()" #loginForm="ngForm">
+      <div class="form-floating"><input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="email" required email><label for="email">Email</label></div>
+      <div class="form-floating"><input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="password" required minlength="6"><label for="password">Password</label></div>
+      <div class="auth-options-row"><div class="auth-checkbox"><input type="checkbox" id="remember" name="remember" class="checkbox" [(ngModel)]="remember"><label for="remember">Remember me</label></div><a href="#" class="auth-forgot-link">Forgot password?</a></div>
+      @if (registered()) { <div id="registerSuccessMessage" class="alert alert-success">Registration successful! Please log in.</div> }
+      @if (error()) { <div id="loginError" class="alert alert-danger">{{ error() }}</div> }
+      <button type="submit" class="btn btn-primary auth-submit" [disabled]="loginForm.invalid || submitting()">{{ submitting() ? 'Logging in...' : 'Login' }}</button>
+    </form>
+    <p class="auth-footer-link">Don't have an account? <a routerLink="/registration">Sign up</a></p>
+    <p class="auth-footer-link"><a routerLink="/">Continue as a guest</a></p>
+  </section>
+</main>
