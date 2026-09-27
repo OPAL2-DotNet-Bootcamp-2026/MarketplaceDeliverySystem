@@ -1,0 +1,796 @@
+/* ================= GENERAL ================= */
+
+
+main {
+    margin: 0;
+    padding: 25px 50px;
+
+    font-family: Arial, sans-serif;
+
+    color: #102A43;
+    background-color: #F5F0E8;
+}
+
+
+
+
+
+/* ================= HERO ================= */
+
+.hero-section {
+
+    min-height: 270px;
+
+    background-color: #F1FAFA;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 25px 40px;
+
+    overflow: hidden;
+
+    border: 1px solid #E2F1F1;
+}
+
+
+.hero-text {
+    width: 50%;
+}
+
+
+.hero-small-text {
+
+    background-color: #E6F7F7;
+
+    color: #2FA6A6;
+
+    padding: 6px 12px;
+
+    border-radius: 15px;
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+
+.hero-text h1 {
+
+    margin-top: 20px;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    color: #102A43;
+}
+
+
+.hero-text h1 span {
+
+    color: #2FA6A6;
+}
+
+
+.hero-text p {
+
+    color: #52606D;
+
+    max-width: 450px;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+
+/* ================= BUTTONS ================= */
+
+.hero-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 40px;
+
+    margin-top: 20px;
+}
+
+.hero-action-link {
+
+    position: relative;
+
+    z-index: 0;
+
+    isolation: isolate;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #0A1F44;
+
+    font-size: 16px;
+
+    font-weight: 400;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.hero-action-link::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -10px -14px;
+
+    z-index: -1;
+
+    border-radius: 7px;
+
+    background-color: transparent;
+
+    box-shadow: 0 5px 12px rgba(16, 42, 67, 0.12);
+
+    opacity: 0;
+
+    transform: translateY(2px);
+
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-action-link:hover {
+
+    background: transparent;
+
+    color: #102A43;
+}
+
+.hero-action-link:hover::before,
+.hero-action-link:focus-visible::before {
+
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+.shop-btn {
+
+    background-color: #FF6B35;
+
+    color: white;
+
+    padding: 10px 20px;
+
+    border-radius: 6px;
+
+    border: 1px solid #FF6B35;
+}
+
+
+.shop-btn:hover {
+
+    background-color: #E85B2A;
+
+    border-color: #E85B2A;
+
+    color: white;
+}
+
+
+.track-btn {
+
+    border: 1px solid #2FA6A6;
+
+    color: #126E6E;
+
+    background-color: white;
+
+    padding: 10px 20px;
+
+    border-radius: 6px;
+}
+
+
+.track-btn:hover {
+
+    background-color: #E6F7F7;
+
+    border-color: #2FA6A6;
+
+    color: #126E6E;
+}
+
+
+/* ================= HERO IMAGE ================= */
+
+.hero-image {
+
+    width: 45%;
+
+    height: 250px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+.hero-image img {
+
+    width: 100%;
+
+    height: 250px;
+
+    object-fit: contain;
+
+    border-radius: 12px;
+}
+
+
+
+/* ================= FEATURES ================= */
+
+.features {
+
+    margin-top: 15px;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    border: 1px solid #E1EEEE;
+
+    border-radius: 10px;
+
+    padding: 12px 10px;
+
+    background-color: #FFFFFF;
+
+    box-shadow: 0 2px 8px rgba(16, 42, 67, 0.05);
+}
+
+
+/* ================= SECTION TITLE ================= */
+
+.categories-section,
+.businesses-section {
+
+    margin-top: 25px;
+}
+
+
+.section-title {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.section-title h2 {
+
+    font-size: 17px;
+
+    margin: 0;
+
+    font-weight: 700;
+
+    color: #102A43;
+}
+
+
+.section-title a {
+
+    color: #126E6E;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+
+.section-title a:hover {
+
+    color: #FF6B35;
+}
+
+
+
+/* ================= CATEGORIES ================= */
+
+.category-grid {
+    display: grid;
+
+    grid-template-columns: repeat(8, 1fr);
+
+    gap: 10px;
+}
+
+
+/* ================= POPULAR BUSINESSES ================= */
+
+.popular-businesses {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.businesses-message {
+    grid-column: 1 / -1;
+    margin: 4px 0;
+    color: #627D98;
+    font-size: 12px;
+}
+
+
+
+/* ================= DELIVERY BANNER ================= */
+
+.delivery-banner {
+
+    margin-top: 20px;
+
+    min-height: 90px;
+
+    background-color: #F1FAFA;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 15px 25px;
+
+    gap: 20px;
+
+    border: 1px solid #E1F0F0;
+}
+
+
+.delivery-image {
+
+    width: 80px;
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 50px;
+
+    color: #2FA6A6;
+}
+
+
+.delivery-text {
+
+    flex: 1;
+}
+
+
+.delivery-text h2 {
+
+    font-size: 15px;
+
+    margin: 0 0 5px;
+
+    line-height: 1.4;
+
+    color: #102A43;
+}
+
+
+.delivery-text p {
+
+    font-size: 10px;
+
+    color: #627D98;
+
+    margin: 0;
+
+    max-width: 550px;
+
+    line-height: 1.5;
+}
+
+
+.learn-btn {
+
+    background-color: #FF6B35;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 18px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    border: 1px solid #FF6B35;
+}
+
+
+.learn-btn:hover {
+
+    background-color: #E85B2A;
+
+    color: white;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+
+    body {
+        padding: 20px;
+    }
+
+.category-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+    .popular-businesses {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .hero-section {
+
+        flex-direction: column;
+
+        padding: 25px;
+    }
+
+
+    .hero-text {
+
+        width: 100%;
+    }
+
+
+    .hero-image {
+
+        width: 100%;
+
+        margin-top: 20px;
+    }
+
+
+    .features {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .popular-businesses {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    body {
+
+        padding: 15px;
+    }
+
+
+.category-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+
+    .features {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .delivery-banner {
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+}
+
+
+
+/*
+   HOME PAGE ANIMATIONS
+*/
+
+
+/* ================= HERO IMAGE ================= */
+
+/* حركة بسيطة للصورة كاملة */
+
+.hero-image {
+    animation:
+        fadeFromRight 0.8s ease-out,
+        heroFloat 4s ease-in-out 0.8s infinite;
+}
+
+
+/* حركة الصورة للأعلى والأسفل */
+
+@keyframes heroFloat {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+
+/* تكبير بسيط للصورة عند مرور الماوس */
+
+.hero-image img {
+
+    transition: transform 0.4s ease;
+}
+
+
+.hero-section:hover .hero-image img {
+
+    transform: scale(1.03);
+}
+
+
+
+/* ================= HERO TITLE ================= */
+
+/* ظهور العنوان من اليسار */
+
+.hero-title {
+
+    animation: titleSlide 1s ease-out;
+}
+
+
+@keyframes titleSlide {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(-40px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
+}
+
+
+
+/* ================= MOVING TEXT ================= */
+
+/* حركة بسيطة للكلام */
+
+.moving-text {
+
+    animation: movingText 3s ease-in-out infinite;
+}
+
+
+@keyframes movingText {
+
+    0% {
+
+        transform: translateX(0);
+    }
+
+    50% {
+
+        transform: translateX(8px);
+    }
+
+    100% {
+
+        transform: translateX(0);
+    }
+
+}
+
+
+
+/* ================= HERO TEXT ================= */
+
+/* ظهور النص من اليسار */
+
+.hero-text {
+
+    animation: fadeFromLeft 0.8s ease-out;
+}
+
+
+@keyframes fadeFromLeft {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(-25px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
+}
+
+
+
+/* ================= BUTTONS ================= */
+
+.shop-btn,
+.track-btn {
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.shop-btn:hover,
+.track-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 12px rgba(16, 42, 67, 0.12);
+}
+
+
+
+/* ================= DELIVERY BANNER ================= */
+
+.delivery-banner {
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.delivery-banner:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 6px 15px rgba(47, 166, 166, 0.12);
+}
+
+
+.delivery-image {
+
+    transition:
+        transform 0.4s ease;
+}
+
+
+.delivery-banner:hover .delivery-image {
+
+    transform: translateY(-4px) rotate(-3deg);
+}
+
+
+
+/* ================= LEARN MORE BUTTON ================= */
+
+.learn-btn {
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.learn-btn:hover {
+
+    transform: translateX(3px);
+
+    box-shadow:
+        0 5px 12px rgba(255, 107, 53, 0.25);
+}
+
+
+
+/* ================= PAGE LOAD ================= */
+
+/* ظهور النص من اليسار */
+
+.hero-text {
+
+    animation: fadeFromLeft 0.8s ease-out;
+}
+
+
+/* ظهور الصورة من اليمين + الحركة المستمرة */
+
+.hero-image {
+
+    animation:
+        fadeFromRight 0.8s ease-out,
+        heroFloat 4s ease-in-out 0.8s infinite;
+}
+
+
+@keyframes fadeFromRight {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(25px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+    }
+
+}
