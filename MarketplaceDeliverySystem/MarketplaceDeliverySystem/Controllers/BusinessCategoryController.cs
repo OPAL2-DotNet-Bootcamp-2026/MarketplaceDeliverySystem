@@ -17,8 +17,16 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("GetSidebarCategories")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetSidebarCategories()
+        {
+            var result = _businessCategoryService.GetSidebarCategories();
+            return Ok(result);
+        }
+
+        [HttpGet("GetHomeCategories")]
+        [AllowAnonymous]
+        public IActionResult GetHomeCategories()
         {
             var result = _businessCategoryService.GetSidebarCategories();
             return Ok(result);
