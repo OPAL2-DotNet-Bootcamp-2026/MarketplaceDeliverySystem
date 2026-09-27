@@ -139,6 +139,11 @@ namespace MarketplaceDeliverySystem.Services
                 IsOpen = b.IsOpen
             }).ToList();
         }
+
+        public List<PopularBusinessDTO> GetPopularBusinesses(int limit = 4)
+        {
+            return _businessRepository.GetPopularBusinesses(limit);
+        }
     }
 }
 

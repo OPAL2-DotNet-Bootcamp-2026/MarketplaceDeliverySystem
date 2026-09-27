@@ -1,0 +1,11 @@
+<section class="mb-3">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <div><h4 class="fw-bold mb-0 text-brand-navy">Products</h4><small class="text-muted">Category: <span id="parent-category-title" class="fw-semibold text-brand-teal">{{ businessCategoryName() }}</span></small></div>
+    <span id="available-items-badge" class="badge rounded-pill px-3 py-2 badge-brand-count">{{ itemCount() }} Available Items</span>
+  </div>
+  <div id="product-pills-container" class="subcategory-pills mt-3">
+    @for (category of categories(); track category) {
+      <a href="#" class="subcategory-pill" [class.active]="selectedCategory() === category" (click)="$event.preventDefault(); categorySelected.emit(category)">{{ category }}</a>
+    }
+  </div>
+</section>

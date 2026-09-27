@@ -1,0 +1,9 @@
+<app-delivery-update
+  [delivery]="delivery()"
+  [loading]="loading()"
+  [submitting]="submitting()"
+  [completed]="completed()"
+  [error]="error()"
+  (deliveryConfirmed)="markDelivered()"
+  (nextRequested)="nextDelivery()"
+/>

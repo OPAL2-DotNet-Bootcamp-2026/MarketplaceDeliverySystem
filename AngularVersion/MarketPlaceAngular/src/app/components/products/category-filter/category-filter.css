@@ -1,0 +1,8 @@
+:host { display: block; }
+.text-brand-navy { color: #0A1F44 !important; }
+.text-brand-teal { color: #3580A4 !important; }
+.badge-brand-count { color: #0A1F44; font-weight: 600; background-color: #D6F1F1; }
+.subcategory-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.subcategory-pill { padding: 6px 14px; color: #0A1F44; font-size: .85rem; font-weight: 600; text-decoration: none; background-color: #fff; border: 1px solid #CBD5E1; border-radius: 20px; transition: all .2s ease; }
+.subcategory-pill:hover { color: #3580A4; background-color: #F8FAFC; border-color: #3580A4; }
+.subcategory-pill.active { color: #fff !important; background-color: #0A1F44; border-color: #0A1F44; }

@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 
 import { Header } from './layout/header/header';
 import { Sidebar } from './layout/sidebar/sidebar';
@@ -19,10 +20,21 @@ import { Footer } from './layout/footer/footer';
   styleUrl: './app.css'
 })
 export class App {
-
-  protected readonly title = signal('MarketPlaceAngular');
-
+  private readonly router = inject(Router);
+  private readonly currentUrl = signal(this.router.url);
+  readonly isAuthPage = computed(() =>
+    this.currentUrl().startsWith('/login') || this.currentUrl().startsWith('/registration'),
+  );
   isSidebarOpen = false;
+
+  constructor() {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.currentUrl.set(event.urlAfterRedirects);
+        this.isSidebarOpen = false;
+      });
+  }
 
   openSidebar(): void {
     this.isSidebarOpen = true;

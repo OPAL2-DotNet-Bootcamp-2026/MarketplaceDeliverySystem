@@ -1,0 +1,70 @@
+<main class="order-page">
+  <section class="orders-hero">
+    <div class="hero-content"><span class="hero-label">MY ACCOUNT</span><h1>My Orders</h1><p>View, track and manage your orders.</p></div>
+    <div class="hero-order-number"><strong id="total-orders">{{ orders().length }}</strong><span>Total Orders</span></div>
+  </section>
+
+  <section class="order-statistics">
+    <article class="stat-card"><div class="stat-icon">🛍️</div><div class="stat-content"><span>Total Orders</span><strong id="stat-total">{{ orders().length }}</strong></div></article>
+    <article class="stat-card"><div class="stat-icon">⏳</div><div class="stat-content"><span>Pending</span><strong id="stat-pending">{{ pendingCount() }}</strong></div></article>
+    <article class="stat-card"><div class="stat-icon">✓</div><div class="stat-content"><span>Completed</span><strong id="stat-completed">{{ completedCount() }}</strong></div></article>
+    <article class="stat-card"><div class="stat-icon">×</div><div class="stat-content"><span>Cancelled</span><strong id="stat-cancelled">{{ cancelledCount() }}</strong></div></article>
+  </section>
+
+  <section class="orders-toolbar">
+    <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="search-orders" placeholder="Search by order ID or product..." autocomplete="off" [ngModel]="search()" (ngModelChange)="updateSearch($event)"></div>
+    <select id="status-filter" [ngModel]="status()" (ngModelChange)="updateStatus($event)">
+      <option value="all">All Status</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option>
+    </select>
+    <select id="sort-orders" [ngModel]="sort()" (ngModelChange)="updateSort($event)">
+      <option value="newest">Newest First</option><option value="oldest">Oldest First</option><option value="amount-high">Highest Amount</option><option value="amount-low">Lowest Amount</option>
+    </select>
+  </section>
+
+  <div class="results-info"><span id="results-text">Showing {{ visibleOrders().length }} of {{ filteredOrders().length }} orders</span></div>
+
+  <section id="orders-container" class="orders-container">
+    @if (loading()) {
+      <div class="loading-orders">Loading your orders...</div>
+    } @else if (error()) {
+      <div class="error-message">{{ error() }} @if (!authenticated()) { <a routerLink="/login">Login</a> }</div>
+    } @else if (!visibleOrders().length) {
+      <div class="no-orders">No orders found.</div>
+    } @else {
+      @for (order of visibleOrders(); track order.orderId) {
+        <details class="order">
+          <summary class="order-header">
+            <span class="order-arrow" aria-hidden="true"></span>
+            <span class="order-main-info"><span class="order-number">Order #{{ order.orderId }}</span><span class="order-date">{{ formatDate(order.orderDate) }}</span></span>
+            <span class="items-count">{{ order.products.length }} {{ order.products.length === 1 ? 'Product' : 'Products' }}</span>
+            <span class="status-badge">{{ order.orderStatus }}</span>
+            <span class="order-total">{{ order.totalAmount.toFixed(3) }} OMR</span>
+            <span class="view-details">View Details</span>
+          </summary>
+
+          <div class="order-details">
+            <h2 class="details-title">Order Information</h2>
+            <div class="status-container">
+              <article class="status-card"><div class="status-icon">📦</div><h4>Order Status</h4><p>{{ order.orderStatus }}</p></article>
+              <article class="status-card"><div class="status-icon">💳</div><h4>Payment Status</h4><p>{{ order.paymentStatus }}</p></article>
+              <article class="status-card"><div class="status-icon">🚚</div><h4>Delivery Status</h4><p>{{ order.deliveryStatus }}</p></article>
+              <article class="status-card"><div class="status-icon">💰</div><h4>Total Amount</h4><p>{{ order.totalAmount.toFixed(3) }} OMR</p></article>
+            </div>
+            <h2 class="details-title products-title">Products</h2>
+            <div class="products-wrapper"><table class="order-products"><thead><tr><th>Product Name</th><th>Quantity</th><th>Unit Price</th></tr></thead><tbody>
+              @for (product of order.products; track $index) { <tr><td class="product-name">{{ product.productName }}</td><td><span class="product-quantity">{{ product.quantity }}</span></td><td class="product-price">{{ product.unitPrice.toFixed(3) }} OMR</td></tr> }
+            </tbody></table></div>
+          </div>
+        </details>
+      }
+    }
+  </section>
+
+  @if (totalPages() > 1) {
+    <div id="pagination" class="pagination">
+      <button type="button" [disabled]="currentPage() === 1" (click)="pageSelected.emit(currentPage() - 1)">Previous</button>
+      @for (page of pages(); track page) { <button type="button" [class.active]="page === currentPage()" (click)="pageSelected.emit(page)">{{ page }}</button> }
+      <button type="button" [disabled]="currentPage() === totalPages()" (click)="pageSelected.emit(currentPage() + 1)">Next</button>
+    </div>
+  }
+</main>

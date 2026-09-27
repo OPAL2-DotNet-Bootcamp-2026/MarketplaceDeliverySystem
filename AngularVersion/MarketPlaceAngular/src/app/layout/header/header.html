@@ -1,107 +1,73 @@
-<header class="header" [class.driver-header]="isDriver">
+<div class="header-wrapper"></div>
 
-    <!-- Top section -->
-    <div class="header-top">
-
-        <div class="logo-area">
-
-            <img src="/assets/logo.png" alt="Marketplace Logo" class="marketplace-logo">
-
-            <div class="logo-text">
-
-                <div class="logo">
-                    MARKETPLACE
-                </div>
-
-                <div class="logo-subtitle">
-                    YOUR WORLD OF SHOPPING
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="tagline-container">
-
-            <span class="tagline-line"></span>
-
-            <div class="tagline">
-
-                <span class="tagline-item">
-                    <span class="tagline-icon">⌕</span>
-                    Discover
-                </span>
-
-                <span class="tagline-item">
-                    <span class="tagline-icon">🛍</span>
-                    Shop
-                </span>
-
-                <span class="tagline-item">
-                    <span class="tagline-icon">✦</span>
-                    Enjoy
-                </span>
-
-            </div>
-
-        </div>
-
+<header class="header" [class.scrolled]="isScrolled">
+  <div class="header-top">
+    <div class="logo-area">
+      <img src="/assets/img/logo.png" alt="Marketplace Logo" class="marketplace-logo">
+      <div class="logo-text">
+        <div class="logo">MARKETPLACE</div>
+        <div class="logo-subtitle">YOUR WORLD OF SHOPPING</div>
+      </div>
     </div>
 
-
-    <!-- Navigation section -->
-    <div class="header-bottom">
-
-        <button class="categories" type="button" aria-label="Open menu" (click)="openMenu()">
-            <span class="menu-icon">☰</span>
-        </button>
-
-        <!-- Customer Navigation -->
-        @if (!isDriver) {
-
-        <nav class="navigation">
-
-            <a href="#">Home</a>
-
-            <a href="#">Businesses</a>
-
-            <a routerLink="/track-order">
-                Track Order
-            </a>
-
-            <a href="#">Orders</a>
-
-            <a href="#">
-                Your Driver
-            </a>
-
-        </nav>
-        }
-
-        <!-- Driver has no customer navigation links -->
-        <div class="header-icons">
-
-            <!-- Profile -->
-            <span class="header-icon" title="Profile">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4"></circle>
-
-                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
-                </svg>
-            </span>
-
-
-            <!-- Notifications -->
-            <span class="header-icon" title="Notifications">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-
-                    <path d="M10 21h4"></path>
-                </svg>
-            </span>
-
-        </div>
-
+    <div class="tagline-container">
+      <span class="tagline-line"></span>
+      <div class="tagline">
+        <span class="tagline-item"><span class="tagline-icon">⌕</span>Discover</span>
+        <span class="tagline-item"><span class="tagline-icon">🛍</span>Shop</span>
+        <span class="tagline-item"><span class="tagline-icon">✦</span>Enjoy</span>
+      </div>
     </div>
+  </div>
 
+  <div class="header-bottom">
+    <button class="categories" id="menu-button" type="button" aria-label="Open menu" (click)="menuToggle.emit()">
+      <span class="menu-icon">☰</span>
+    </button>
+
+    @if (!auth.isDriver()) {
+      <nav class="navigation">
+        <a routerLink="/">Home</a>
+        <a routerLink="/businesses">Businesses</a>
+        <a routerLink="/track-order">Track Order</a>
+        <a routerLink="/orders">Orders</a>
+        <a routerLink="/driver-info">Your Driver</a>
+      </nav>
+    }
+
+    <div class="header-icons">
+      @if (!auth.isDriver()) {
+        <a routerLink="/place-order" class="header-icon cart-icon" title="Shopping cart" aria-label="Open shopping cart">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.4a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path>
+          </svg>
+          @if (cart.itemCount() > 0) {
+            <span class="cart-count" aria-label="{{ cart.itemCount() }} items in cart">
+              {{ cart.itemCount() > 99 ? '99+' : cart.itemCount() }}
+            </span>
+          }
+        </a>
+      }
+      <span class="header-icon" title="Profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path></svg>
+      </span>
+      <span class="header-icon" title="Notifications">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+      </span>
+    </div>
+  </div>
 </header>
+
+<nav class="floating-navigation" id="floating-navigation" [class.show]="isScrolled" aria-label="Quick navigation">
+  <a
+    routerLink="/"
+    class="floating-nav-item"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >Home</a>
+  <a routerLink="/businesses" class="floating-nav-item" routerLinkActive="active">Businesses</a>
+  <a routerLink="/orders" class="floating-nav-item" routerLinkActive="active">Orders</a>
+  <a routerLink="/track-order" class="floating-nav-item" routerLinkActive="active">Track Order</a>
+</nav>

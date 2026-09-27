@@ -14,6 +14,7 @@
     padding: 30px 26px;
 
     display: flex;
+
     flex-direction: column;
 
     box-sizing: border-box;
@@ -25,18 +26,27 @@
     box-shadow: 5px 0 25px rgba(10, 31, 68, 0.18);
 
     z-index: 1000;
-
+    /* This means the sidebar starts outside the screen */
     transform: translateX(-100%);
-
+    /* Do not change immediately Move smoothly for 0.4 seconds */
     transition: transform 0.4s ease;
-
+    /* If the sidebar content becomes taller than the screen, allow vertical scrolling.*/
     overflow-y: auto;
 }
 
 
-/* =========================
-   OPEN SIDEBAR
-   ========================= */
+/* Open sidebar */
+/* when JavaScript adds:
+
+sidebar.classList.add("open");
+
+your CSS:
+
+.sidebar.open {
+    transform: translateX(0);
+}
+takes effect.
+Now the sidebar moves into the screen and Overlay appears behind it*/
 
 .sidebar.open {
     transform: translateX(0);
@@ -46,33 +56,75 @@
 /* =========================
    LOGO
    ========================= */
+/* This puts the logo image and text next to each other */
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 35px;
+}
+
+
+
+
+
+.sidebar-logo-name {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    color: #0A1F44;
+}
+
+
+
+
+
+.sidebar-logo-subtitle {
+    margin-top: 3px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #35B0A4;
+}
+
+/* =========================
+   LOGO
+   ========================= */
 
 .sidebar-logo {
     display: flex;
     align-items: center;
 
-    gap: 0;
+    gap: 0px;
 
     margin-bottom: 35px;
     margin-left: -40px;
 }
 
+
 .sidebar-logo-image {
     width: 90px;
     height: 90px;
-
+    /* Keep the complete image visible without stretching or cutting it */
     object-fit: contain;
-
+    /* Do not allow this flex item to become smaller
+    Without flex-shrink: 0, if there isn't enough space, Flexbox may shrink the logo */
     flex-shrink: 0;
 }
+
 
 .sidebar-logo-text {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     margin-left: -15px;
 }
+
 
 .sidebar-logo-name {
     font-size: 27px;
@@ -86,6 +138,7 @@
     line-height: 1;
 }
 
+
 .sidebar-logo-subtitle {
     margin-top: 8px;
 
@@ -97,7 +150,6 @@
 
     white-space: nowrap;
 }
-
 
 /* =========================
    USER CARD
@@ -120,6 +172,7 @@
     background-color: #fff3eb;
 }
 
+
 .user-icon {
     width: 52px;
     height: 52px;
@@ -137,6 +190,7 @@
     color: white;
 }
 
+
 .user-icon svg {
     width: 30px;
     height: 30px;
@@ -150,6 +204,7 @@
     stroke-linecap: round;
 }
 
+
 .user-info h3 {
     margin: 0 0 5px;
 
@@ -157,6 +212,7 @@
 
     color: #0A1F44;
 }
+
 
 .user-info span {
     display: inline-block;
@@ -182,14 +238,19 @@
    ========================= */
 
 .sidebar-menu {
+    /* This puts menu items one below another */
     display: flex;
-
+    /* Arrange items vertically */
     flex-direction: column;
 
     gap: 5px;
 }
 
+
 .sidebar-item {
+    /* Keep the element in its normal position, but also
+    allow it to be a reference point for absolutely
+    positioned child elements. */
     position: relative;
 
     display: flex;
@@ -216,9 +277,7 @@
 }
 
 
-/* =========================
-   ICON
-   ========================= */
+/* Icon */
 
 .sidebar-icon {
     width: 25px;
@@ -235,38 +294,31 @@
     height: 22px;
 
     fill: none;
-
     stroke: currentColor;
 
     stroke-width: 1.8;
-
     stroke-linecap: round;
-
     stroke-linejoin: round;
 }
 
-
-/* =========================
-   HOVER
-   ========================= */
+/* Hover */
 
 .sidebar-item:hover {
     background-color: #D6F1F1;
 
     color: #0A1F44;
-
+    /* Item moves slightly right */
     transform: translateX(4px);
 }
+
 
 .sidebar-item:hover .sidebar-icon {
     color: #35B0A4;
 }
 
 
-/* =========================
-   ACTIVE ITEM
-   ========================= */
-
+/* Active */
+/* the item is active, so it becomes highlighted */
 .sidebar-item.active {
     background-color: #fff0e7;
 
@@ -277,24 +329,25 @@
 
 
 /* Orange active bar */
-
 .sidebar-item.active::before {
+    /* The empty content means you are not adding text.
+       You are creating a decorative element. */
     content: "";
-
+    /* the orange bar is positioned relative to .sidebar-item */
     position: absolute;
-
+    /* places it on the left */
     left: -18px;
-
+    /* 12px down from its top */
     top: 12px;
-
+    /* makes it a thin vertical line */
     width: 5px;
-
     height: 28px;
 
     border-radius: 0 5px 5px 0;
 
     background-color: #F37D42;
 }
+
 
 .sidebar-item.active .sidebar-icon {
     color: #F37D42;
@@ -306,6 +359,7 @@
    ========================= */
 
 .live-badge {
+    /* CSS moves (Live) to the right: Take all available empty space on the left.So the badge gets pushed to the far right. */
     margin-left: auto;
 
     padding: 4px 10px;
@@ -341,11 +395,9 @@
     border-radius: 24px;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #F37D42,
-            #ff6655
-        );
+            #ff6655);
 
     color: white;
 
@@ -353,11 +405,13 @@
         0 10px 20px rgba(243, 125, 66, 0.2);
 }
 
+
 .promo-content h2 {
     margin: 0 0 7px;
 
     font-size: 22px;
 }
+
 
 .promo-content p {
     margin: 0 0 18px;
@@ -366,6 +420,7 @@
 
     line-height: 1.4;
 }
+
 
 .promo-content a {
     display: inline-block;
@@ -387,6 +442,7 @@
     transition: transform 0.2s ease;
 }
 
+
 .promo-content a:hover {
     transform: translateY(-2px);
 }
@@ -397,12 +453,13 @@
    ========================= */
 
 .logout-section {
-    margin-top: auto;
+     margin-top: auto;
 
     padding-top: 28px;
 
     border-top: 1px solid rgba(10, 31, 68, 0.08);
 }
+
 
 .logout-button {
     display: flex;
@@ -411,8 +468,6 @@
     gap: 18px;
 
     padding: 14px 18px;
-
-    width: 100%;
 
     border: 1px solid rgba(243, 125, 66, 0.3);
 
@@ -428,18 +483,18 @@
 
     background-color: #fff5f0;
 
-    cursor: pointer;
-
     transition:
         background-color 0.2s ease,
         color 0.2s ease;
 }
+
 
 .logout-button:hover {
     background-color: #F37D42;
 
     color: white;
 }
+
 
 .logout-icon {
     font-size: 25px;
@@ -450,14 +505,12 @@
     height: 22px;
 
     fill: none;
-
     stroke: currentColor;
 
     stroke-width: 1.8;
-
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
-
 
 /* =========================
    CLOSE BUTTON
@@ -487,6 +540,7 @@
     justify-content: center;
 }
 
+
 .close-sidebar:hover {
     color: #F37D42;
 }
@@ -514,6 +568,7 @@
         visibility 0.4s ease;
 }
 
+
 .sidebar-overlay.open {
     opacity: 1;
 
@@ -524,7 +579,7 @@
 /* =========================
    SCROLLBAR
    ========================= */
-
+/* Makes the scrollbar thin */
 .sidebar::-webkit-scrollbar {
     width: 5px;
 }
@@ -535,18 +590,10 @@
     border-radius: 10px;
 }
 
-
-/* =========================
-   SVG ICONS
-   ========================= */
-
 .sidebar-icon svg {
     display: inline-block;
-
     vertical-align: middle;
-
     stroke: var(--brand-navy, #0A1F44);
-
     transition: stroke 0.2s ease;
 }
 

@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 85px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #FFFFFF;
+  border: 1px solid #E3EEEE;
+  border-radius: 10px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.category-card:hover {
+  background-color: #F5FBFB;
+  border-color: #9DDCDC;
+  box-shadow: 0 8px 18px rgba(47, 166, 166, 0.15);
+  transform: translateY(-5px);
+}
+
+i {
+  margin-bottom: 8px;
+  color: #2FA6A6;
+  font-size: 25px;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover i {
+  transform: scale(1.15);
+}
+
+p {
+  margin: 0;
+  color: #243B53;
+  font-size: 10px;
+}

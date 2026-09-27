@@ -1,0 +1,19 @@
+<section id="business-info-container" class="card business-header-card mb-4 shadow-sm">
+  <div class="card-body p-4">
+    @if (business(); as businessInfo) {
+      <div class="row align-items-center g-3">
+        <div class="col-auto"><img [src]="logoUrl()" class="business-circle-logo" [alt]="businessInfo.businessName" (error)="usePlaceholder($event)"></div>
+        <div class="col">
+          <h4 class="card-title fw-bold mb-1 text-brand-navy">{{ businessInfo.businessName }}</h4>
+          <span class="badge small" [class.badge-status-open]="businessInfo.isOpen" [class.badge-status-closed]="!businessInfo.isOpen">🕒 Open: {{ formatHours() }}</span>
+        </div>
+        <div class="col-12 col-sm-auto d-flex flex-column gap-2 min-w-action">
+          <a [href]="'tel:' + (businessInfo.phoneNumber || '+96890000000')" class="btn btn-call-brand d-inline-flex align-items-center justify-content-center gap-2">📞 {{ businessInfo.phoneNumber || '+968 9000 0000' }}</a>
+          <button type="button" class="btn btn-outline-favorite d-inline-flex align-items-center justify-content-center gap-2">❤️ Add to Favorite</button>
+        </div>
+      </div>
+    } @else if (loading()) {
+      <div class="d-flex align-items-center justify-content-center py-3 text-muted"><div class="spinner-border spinner-border-sm me-2" role="status"></div>Loading business information...</div>
+    }
+  </div>
+</section>

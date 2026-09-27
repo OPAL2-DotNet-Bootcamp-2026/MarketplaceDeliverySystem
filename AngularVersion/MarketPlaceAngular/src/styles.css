@@ -1,5 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
-body {
-    margin: 0;
-    background-color: #F5F0E8;
+:root {
+  /* Original native frontend palette. Keep these names because the copied
+     page styles use them directly. */
+  --navy: #0A1F44;
+  --orange: #FD751F;
+  --teal: #0A1F44;
+  --light-cyan: #FD751F;
+  --very-light-cyan: #FDFDFF;
+
+  --brand-navy: #0A1F44;
+  --brand-orange: #F37D42;
+  --brand-teal: #3580A4;
+  --brand-cyan: #AFFFFF;
+  --brand-light-cyan: #D6F1F1;
+  --brand-bg-light: #F8FAFC;
+
+  --color-primary: #F37D42;
+  --color-secondary: #0A1F44;
+  --color-accent: #35B0A4;
+  --color-bg-panel: #D6F1F1;
+  --color-bg-tint: #AFFFFF;
+  --color-text-muted: #5C6B7A;
+  --color-border: #E1ECEC;
+  --color-white: #FFFFFF;
+  --color-primary-text: #C1501B;
 }
+
+html, body { margin: 0; min-height: 100%; }
+body { min-height: 100vh; background-color: #F5F0E8; }

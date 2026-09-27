@@ -1,0 +1,33 @@
+<main class="py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4 col-lg-3 mb-4">
+        <app-business-category-filter [categories]="categories()" [selectedCategoryId]="selectedCategoryId()" (categorySelected)="selectCategory($event)" />
+      </div>
+
+      <div class="col-12 col-md-8 col-lg-9">
+        <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+          <div><h4 class="fw-bold mb-0" style="color: #0A1F44;">Home Businesses</h4><small class="text-muted">Explore local registered vendors and kitchens</small></div>
+        </div>
+
+        <div id="businesses-list" class="d-flex flex-column gap-3 mb-4">
+          @if (loading()) {
+            <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm me-2" role="status"></div>Loading businesses...</div>
+          } @else if (error()) {
+            <div class="alert alert-danger" role="alert">{{ error() }}</div>
+          } @else if (!visibleBusinesses().length) {
+            <p class="text-muted p-3">No registered businesses found in this category.</p>
+          } @else {
+            @for (business of visibleBusinesses(); track business.businessId) {
+              <app-business-card [business]="business" />
+            }
+          }
+        </div>
+
+        @if (totalPages() > 1) {
+          <app-business-pagination [pages]="pages()" [currentPage]="currentPage()" [totalPages]="totalPages()" (pageSelected)="setPage($event)" />
+        }
+      </div>
+    </div>
+  </div>
+</main>

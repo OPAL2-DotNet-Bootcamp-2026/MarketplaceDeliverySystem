@@ -1,18 +1,9 @@
-<app-header 
-    (menuToggle)="openSidebar()" 
-/> 
- 
-<div class="layout"> 
- 
-    <app-sidebar 
-        [isOpen]="isSidebarOpen" 
-        (closeSidebar)="closeSidebar()" 
-    /> 
- 
-    <main class="content"> 
-        <router-outlet />
-    </main> 
- 
-</div> 
- 
-<app-footer />
+@if (isAuthPage()) {
+  <router-outlet />
+  <app-footer />
+} @else {
+  <app-header (menuToggle)="openSidebar()" />
+  <app-sidebar [isOpen]="isSidebarOpen" (closeSidebar)="closeSidebar()" />
+  <main class="content"><router-outlet /></main>
+  <app-footer />
+}

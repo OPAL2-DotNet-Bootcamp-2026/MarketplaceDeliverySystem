@@ -1,0 +1,16 @@
+<main class="container">
+  <header class="page-header"><div class="heading-row"><a routerLink="/businesses" class="back-link">← Back to Shopping</a><h1>YOUR DRIVER</h1></div></header>
+  <section class="card delivery-status">
+    <div class="card-header"><img src="/assets/img/TruckIconCircle.png" alt="Delivery Icon" class="card-icon"><h2>DELIVERY STATUS</h2></div>
+    @if (loading()) {
+      <div class="info-box"><span class="label"><span class="dot">•</span> Your Driver</span><span class="value">Loading...</span></div>
+      <div class="info-box"><span class="label"><span class="dot">•</span> Phone Number</span><span class="value">Loading...</span></div>
+    } @else if (error()) {
+      <div class="info-box"><span class="label"><span class="dot">•</span> Your Driver</span><span class="value">{{ error() }}</span></div>
+      <div class="info-box"><span class="label"><span class="dot">•</span> Phone Number</span><span class="value">—</span></div>
+    } @else if (order(); as currentOrder) {
+      <div class="info-box"><span class="label"><span class="dot">•</span> Your Driver</span><span class="value" id="driver-name">{{ currentOrder.driverName || 'No active driver' }}</span></div>
+      <div class="info-box"><span class="label"><span class="dot">•</span> Phone Number</span><span class="value" id="driver-phone">{{ currentOrder.driverPhone || '—' }}</span></div>
+    }
+  </section>
+</main>

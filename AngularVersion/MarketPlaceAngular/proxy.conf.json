@@ -1,0 +1,12 @@
+{
+  "/api": {
+    "target": "https://localhost:7299",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/delivery": {
+    "target": "https://localhost:7299",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

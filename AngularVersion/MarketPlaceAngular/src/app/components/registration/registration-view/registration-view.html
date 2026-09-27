@@ -1,0 +1,23 @@
+<main class="auth-layout">
+  <aside class="auth-panel-left">
+    <div class="auth-logo"><img src="/assets/img/logo.png" alt="Marketplace Delivery System logo" class="auth-logo-mark"><span class="auth-logo-text">Marketplace</span></div>
+    <div class="auth-hero-placeholder"><img src="/assets/img/ezgif.com-optimize.gif" alt="" class="auth-hero-img"></div>
+    <p class="auth-headline">Shop local. <span class="auth-highlight">Delivered</span> to your door.</p>
+    <ul class="auth-bullet-list"><li><i class="bi bi-check-circle-fill"></i> Browse homemade products</li><li><i class="bi bi-check-circle-fill"></i> Track your delivery</li></ul>
+  </aside>
+
+  <section class="auth-panel-right">
+    <h1 class="auth-form-title">SignUp</h1>
+    <form class="auth-form" id="registerForm" (ngSubmit)="submit()" #registrationForm="ngForm">
+      <div class="form-floating"><input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name" [(ngModel)]="fullName" required><label for="fullName">Full Name</label></div>
+      <div class="form-floating"><input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="email" required email><label for="email">Email</label></div>
+      <div class="form-floating"><input type="tel" class="form-control" id="phone" name="phoneNumber" placeholder="Phone Number" [(ngModel)]="phoneNumber" required minlength="8"><label for="phone">Phone Number</label></div>
+      <div class="form-floating"><input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="password" required minlength="6"><label for="password">Password</label></div>
+      <div class="form-floating"><input type="text" class="form-control" id="address" name="address" placeholder="Address" [(ngModel)]="address" required><label for="address">Address</label></div>
+      <div class="auth-checkbox"><input type="checkbox" id="terms" name="terms" class="checkbox" [(ngModel)]="terms" required><label for="terms">I agree to the terms and conditions</label></div>
+      @if (error()) { <div id="registerError" class="alert alert-danger">{{ error() }}</div> }
+      <button type="submit" class="btn btn-primary auth-submit" [disabled]="registrationForm.invalid || submitting()">{{ submitting() ? 'Creating Account...' : 'Create Account' }}</button>
+    </form>
+    <p class="auth-footer-link">Already have an account? <a routerLink="/login">Log in</a></p>
+  </section>
+</main>

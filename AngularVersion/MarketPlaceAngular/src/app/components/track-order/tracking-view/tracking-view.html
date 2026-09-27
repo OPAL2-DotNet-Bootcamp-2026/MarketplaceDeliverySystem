@@ -1,0 +1,44 @@
+<main class="track-page">
+  <section class="track-header"><span class="track-label">ORDER TRACKING</span><h1>Track Your Orders</h1><p>View your current orders and recent deliveries below.</p></section>
+
+  <section id="orders-container" class="orders-container">
+    @if (loading()) { <p class="no-orders">Loading active orders...</p> }
+    @else if (error() && !orders().length) { <p class="no-orders">{{ error() }} @if (!authenticated()) { <a routerLink="/login">Login</a> }</p> }
+    @else if (!orders().length) { <p class="no-orders">You have no active or recent orders.</p> }
+    @else {
+      @for (order of orders(); track order.orderId) {
+        <div class="tracking-card">
+          <div class="order-card-header"><span>Order</span><strong>#{{ order.orderId }}</strong><span class="order-separator">•</span><span>Placed</span><strong>{{ formatDate(order.orderDate) }}</strong></div>
+
+          <div class="progress-container">
+            <div class="progress-step" [class.completed]="step(order) > 1" [class.current]="step(order) === 1"><div class="step-circle">{{ step(order) > 1 ? '✓' : '1' }}</div><span>Order Placed</span></div>
+            <div class="progress-line" [class.completed-line]="step(order) > 1"></div>
+            <div class="progress-step" [class.completed]="step(order) > 2" [class.current]="step(order) === 2"><div class="step-circle">{{ step(order) > 2 ? '✓' : '2' }}</div><span>Order Ready</span></div>
+            <div class="progress-line" [class.completed-line]="step(order) > 2"></div>
+            <div class="progress-step" [class.completed]="step(order) > 3" [class.current]="step(order) === 3"><div class="step-circle">{{ step(order) > 3 ? '✓' : '3' }}</div><span>On the Way</span></div>
+            <div class="progress-line" [class.completed-line]="step(order) > 3" [class.active-line]="step(order) === 3"></div>
+            <div class="progress-step" [class.current]="step(order) === 4"><div class="step-circle">4</div><span>Delivered</span></div>
+          </div>
+
+          <div class="current-status">
+            <div class="delivery-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3z"></path><path d="M14 10h4l3 3v4h-7z"></path><circle cx="7" cy="19" r="1.5"></circle><circle cx="18" cy="19" r="1.5"></circle></svg></div>
+            <span class="status-badge">{{ info(order).badge }}</span><h2>{{ info(order).title }}</h2><p>{{ info(order).description }}</p>
+            <div class="delivery-time"><div><span>BUSINESS</span><strong>{{ order.businessName }}</strong></div><div><span>STATUS</span><strong>{{ info(order).statusText }}</strong></div></div>
+            @if (statusKey(order.orderStatus) === 'onway') { <button type="button" class="view-driver-btn" (click)="showDriver(order)">View Driver Information</button> }
+          </div>
+        </div>
+      }
+    }
+  </section>
+</main>
+
+@if (selectedDriver(); as driver) {
+  <div id="driver-modal" class="driver-modal show" (click)="selectedDriver.set(null)">
+    <div class="driver-modal-content" (click)="$event.stopPropagation()">
+      <button type="button" class="close-driver-modal" (click)="selectedDriver.set(null)">&times;</button>
+      <h2>Driver Information</h2>
+      <div class="driver-info-item"><span>Driver Name</span><strong>{{ driver.driverName }}</strong></div>
+      <div class="driver-info-item"><span>Phone Number</span><strong>{{ driver.driverPhone }}</strong></div>
+    </div>
+  </div>
+}

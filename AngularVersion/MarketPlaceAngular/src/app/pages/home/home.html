@@ -1,0 +1,58 @@
+<main>
+  <section class="hero-section">
+    <div class="hero-text">
+      <span class="hero-small-text">Fast. Reliable. Always on time.</span>
+      <h1>Your Marketplace,<br><span>Delivered</span> with Care</h1>
+      <p>Shop from trusted sellers and get your orders delivered safely and on time to your doorstep.</p>
+      <div class="hero-buttons">
+        <a routerLink="/businesses" class="hero-action-link"><i class="bi bi-bag"></i> Shop Now</a>
+        <a routerLink="/track-order" class="hero-action-link"><i class="bi bi-box-seam"></i> Track Your Order</a>
+        @if (!auth.isAuthenticated()) {
+          <a routerLink="/login" id="authButton" class="hero-action-link"><i class="bi bi-person"></i> Login / Sign Up</a>
+        }
+      </div>
+    </div>
+    <div class="hero-image"><img src="/assets/img/deviler.jpeg" alt="Delivery"></div>
+  </section>
+
+  <section class="features">
+    <app-feature-item icon="bi bi-shield-check" title="Secure Shopping" description="Safe checkout and payments always secure." />
+    <app-feature-item icon="bi bi-truck" title="Fast Delivery" description="Quick and reliable delivery to your door." />
+    <app-feature-item icon="bi bi-geo-alt" title="Real-time Tracking" description="Track your order at every step." />
+    <app-feature-item icon="bi bi-headset" title="24/7 Support" description="We're here to help you anytime, anywhere." />
+  </section>
+
+  <section class="categories-section">
+    <div class="section-title"><h2>Shop by Category</h2><a routerLink="/businesses">View all categories <i class="bi bi-arrow-right"></i></a></div>
+    <div id="categories-container" class="category-grid">
+      @if (loading()) { <p>Loading categories...</p> }
+      @else if (error()) { <p>{{ error() }}</p> }
+      @else if (!categories().length) { <p>No business categories available.</p> }
+      @else {
+        @for (category of categories(); track category.categoryId) {
+          <app-business-category-card [category]="category" />
+        }
+      }
+    </div>
+  </section>
+
+  <section class="businesses-section">
+    <div class="section-title"><h2>Popular Businesses</h2><a routerLink="/businesses">View all businesses <i class="bi bi-arrow-right"></i></a></div>
+    <div id="popular-businesses-container" class="popular-businesses">
+      @if (loading()) { <p class="businesses-message">Loading businesses...</p> }
+      @else if (businessesError()) { <p class="businesses-message">{{ businessesError() }}</p> }
+      @else if (!popularBusinesses().length) { <p class="businesses-message">No businesses available.</p> }
+      @else {
+        @for (business of popularBusinesses(); track business.businessId) {
+          <app-popular-business-card [business]="business" />
+        }
+      }
+    </div>
+  </section>
+
+  <section class="delivery-banner">
+    <div class="delivery-image"><i class="bi bi-box-seam"></i></div>
+    <div class="delivery-text"><h2>Delivering Happiness<br>To Your Doorstep</h2><p>We partner with trusted delivery agents to make sure your orders reach you quickly and safely.</p></div>
+    <a href="#" class="learn-btn">Learn More <i class="bi bi-arrow-right"></i></a>
+  </section>
+</main>

@@ -1,0 +1,57 @@
+:host {
+  display: block;
+}
+
+.business-horizontal-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #F1F5F9;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.business-horizontal-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-teal, #3580A4);
+  box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
+}
+
+.card-title {
+  color: var(--brand-navy, #0A1F44);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.card-title a {
+  color: var(--brand-navy, #0A1F44) !important;
+  transition: color 0.2s ease;
+}
+
+.business-horizontal-card:hover .card-title a {
+  color: var(--brand-teal, #3580A4) !important;
+}
+
+.business-card-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  background-color: var(--brand-bg-light, #F8FAFC);
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.business-horizontal-card:hover .business-card-img {
+  transform: scale(1.03);
+}
+
+.badge-status-open {
+  padding: 6px 12px;
+  color: var(--brand-navy, #0A1F44) !important;
+  font-weight: 600;
+  background-color: var(--brand-light-cyan, #D6F1F1);
+  border-radius: 20px;
+}

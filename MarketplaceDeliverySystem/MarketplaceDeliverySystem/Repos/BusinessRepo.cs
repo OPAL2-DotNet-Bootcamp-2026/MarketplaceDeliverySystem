@@ -26,6 +26,33 @@ namespace MarketplaceDeliverySystem.Repos
                 .ToList();
         }
 
+        public List<PopularBusinessDTO> GetPopularBusinesses(int limit)
+        {
+            int safeLimit = Math.Clamp(limit, 1, 12);
+
+            return _context.Businesses
+                .AsNoTracking()
+                .Select(b => new PopularBusinessDTO
+                {
+                    BusinessId = b.BusinessId,
+                    BusinessName = b.BusinessName,
+                    BusinessCategoryName = b.businessCategory == null
+                        ? null
+                        : b.businessCategory.BusinessCategoryName,
+                    LogoUrl = b.LogoUrl,
+                    Address = b.Address,
+                    OpeningTime = b.OpeningTime,
+                    ClosingTime = b.ClosingTime,
+                    IsOpen = b.IsOpen,
+                    OrderCount = _context.Orders.Count(o =>
+                        o.BusinessId == b.BusinessId && o.Status != "Cancelled")
+                })
+                .OrderByDescending(b => b.OrderCount)
+                .ThenBy(b => b.BusinessName)
+                .Take(safeLimit)
+                .ToList();
+        }
+
         public bool EmailExists(string email)
         {
             return _context.Businesses
