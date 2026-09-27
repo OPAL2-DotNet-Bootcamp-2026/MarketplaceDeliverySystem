@@ -1,0 +1,45 @@
+<main class="delivery-status-page">
+  <section class="delivery-header"><span class="delivery-label">DELIVERY MANAGEMENT</span><h1>Update Delivery Status</h1><p>Manage the current delivery status for your order.</p></section>
+
+  @if (loading()) { <section class="delivery-status-card"><p>Loading your delivery...</p></section> }
+  @else if (error() && !delivery()) { <section class="delivery-status-card"><p>{{ error() }}</p></section> }
+  @else if (delivery(); as current) {
+    <section class="delivery-status-card">
+      <div class="delivery-order-info">
+        <div class="order-icon"><svg viewBox="0 0 24 24"><path d="M3 6h11v11H3z"></path><path d="M14 10h4l3 3v4h-7z"></path><circle cx="7" cy="19" r="2"></circle><circle cx="18" cy="19" r="2"></circle></svg></div>
+        <div><span class="order-small-title">CURRENT ORDER</span><h2 class="order-number">#ORD-{{ current.orderId }}</h2><p>Delivery is currently on the way.</p></div>
+      </div>
+      <div class="delivery-divider"></div>
+
+      <div class="status-update-section">
+        <h3>Delivery Status</h3>
+        <div class="status-options">
+          <div class="status-option completed"><div class="status-circle">✓</div><div class="status-option-content"><strong>Order Placed</strong><span>Order has been received</span></div></div>
+          <div class="status-option completed"><div class="status-circle">✓</div><div class="status-option-content"><strong>Order Ready</strong><span>Order is ready for pickup</span></div></div>
+          <div class="status-option completed"><div class="status-circle">✓</div><div class="status-option-content"><strong>On the Way</strong><span>Order is being delivered</span></div></div>
+          <div class="status-option delivered-status"><div class="status-circle">{{ completed() ? '✓' : '4' }}</div><div class="status-option-content"><strong>Delivered</strong><span>Mark the order as successfully delivered</span></div></div>
+        </div>
+      </div>
+
+      <section class="proof-of-delivery">
+        <h3>PROOF OF DELIVERY</h3>
+        <label class="add-photo-box"><input type="file" accept="image/*" (change)="onPhotoSelected($event)"><div class="camera-icon">📷</div><span>{{ selectedPhoto?.name || 'Add Photo' }}</span></label>
+        <textarea class="delivery-note" [(ngModel)]="deliveryNote" placeholder="Add a delivery note (optional) — e.g. left with neighbor, at the front desk..."></textarea>
+      </section>
+      <br><p class="report-issue">Can't deliver this stop? <a href="#">Report an issue</a></p>
+      @if (error()) { <p class="report-issue">{{ error() }}</p> }
+
+      <div class="delivery-actions">
+        <input type="checkbox" id="delivery-confirm-toggle" class="delivery-confirm-toggle" [checked]="completed()" [disabled]="submitting() || completed()" (change)="deliveryConfirmed.emit()">
+        <label for="delivery-confirm-toggle" class="slide-confirm"><span class="slide-button">›</span><span class="slide-text">{{ submitting() ? 'CONFIRMING DELIVERY...' : 'SLIDE TO CONFIRM DELIVERED' }}</span><span class="slide-dots"><span></span><span></span><span></span></span></label>
+        <div class="delivered-message" [class.show]="completed()"><div class="delivered-check">✓</div><h2>MARKED AS DELIVERED</h2><p>Order #ORD-{{ current.orderId }} has been successfully delivered.</p><p class="delivery-closed">This delivery is now closed.</p><button type="button" class="next-stop-button" (click)="nextRequested.emit()">Next Delivery →</button></div>
+      </div>
+    </section>
+
+    <section class="delivery-details">
+      <div class="delivery-detail-card"><span>ORDER NUMBER</span><strong>#ORD-{{ current.orderId }}</strong></div>
+      <div class="delivery-detail-card"><span>CUSTOMER</span><strong>Marketplace Customer</strong></div>
+      <div class="delivery-detail-card"><span>CURRENT STATUS</span><strong class="onway-status">{{ current.orderStatus || 'On the Way' }}</strong></div>
+    </section>
+  }
+</main>
