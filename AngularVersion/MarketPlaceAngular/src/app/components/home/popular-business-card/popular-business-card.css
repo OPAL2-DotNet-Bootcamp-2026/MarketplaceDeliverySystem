@@ -1,0 +1,123 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.popular-business-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  min-height: 112px;
+  height: 100%;
+  padding: 13px 40px 13px 13px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #FFFFFF;
+  border: 1px solid #E3EEEE;
+  border-radius: 12px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.popular-business-card:hover,
+.popular-business-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: #9DDCDC;
+  box-shadow: 0 8px 18px rgba(16, 42, 67, 0.10);
+  outline: none;
+}
+
+.popular-business-logo-wrap {
+  width: 86px;
+  height: 86px;
+  flex: 0 0 86px;
+  padding: 5px;
+  background: #F1FAFA;
+  border-radius: 11px;
+}
+
+.popular-business-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.popular-business-card:hover .popular-business-logo {
+  transform: scale(1.05);
+}
+
+.popular-business-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.popular-business-meta,
+.business-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.business-category {
+  overflow: hidden;
+  color: #2FA6A6;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.business-status {
+  padding: 3px 7px;
+  color: #9B3A35;
+  font-size: 9px;
+  font-weight: 700;
+  background: #FFF0ED;
+  border-radius: 20px;
+}
+
+.business-status.open {
+  color: #126E6E;
+  background: #E7F7F7;
+}
+
+.popular-business-info h3 {
+  margin: 6px 0 4px;
+  overflow: hidden;
+  color: #102A43;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.business-address {
+  margin: 0 0 10px;
+  overflow: hidden;
+  color: #627D98;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.business-card-footer {
+  justify-content: flex-start;
+  color: #486581;
+  font-size: 9px;
+}
+
+.business-card-footer span:last-child {
+  color: #E85B2A;
+}
+
+.business-card-arrow {
+  position: absolute;
+  right: 16px;
+  color: #2FA6A6;
+  font-size: 14px;
+}
