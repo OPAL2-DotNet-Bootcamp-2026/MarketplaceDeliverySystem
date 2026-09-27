@@ -1,0 +1,22 @@
+:host { display: block; }
+.text-brand-navy { color: #0A1F44 !important; }
+.text-brand-orange { color: #F37D42 !important; }
+.badge-brand-count { color: #0A1F44; font-weight: 600; background-color: #D6F1F1; }
+.modal-description-text { line-height: 1.6; }
+.product-modal .modal-content { overflow: hidden; border: 1px solid #E2E8F0; border-radius: 12px; }
+.product-modal .modal-header { padding: 14px 20px; background-color: #fff; border-bottom: 1px solid #E2E8F0; }
+.product-modal .modal-category-title { margin-bottom: 0; color: #0A1F44; font-size: 1.1rem; font-weight: 700; }
+.product-modal .modal-close-btn { padding: 4px 10px; color: #660000; font-size: .85rem; font-weight: 600; background-color: #fa5252; border: 1px solid #fa5252; border-radius: 6px; transition: all .2s ease; }
+.product-modal .modal-close-btn:hover { background-color: #f1f5f9; border-color: #0A1F44; }
+.product-modal .modal-product-img { width: 100%; max-height: 220px; object-fit: cover; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; }
+.product-modal .modal-footer { padding: 16px 20px; background-color: #f8fafc; border-top: 1px solid #E2E8F0; }
+.product-modal .btn-cancel { padding: 6px 18px; color: #0A1F44; font-weight: 600; background-color: #fff; border: 1px solid #CBD5E1; border-radius: 8px; transition: all .2s ease; }
+.product-modal .btn-cancel:hover { background-color: #f1f5f9; }
+.stock-tag-low,.stock-tag-good { display: inline-block; padding: 3px 8px; font-size: .8rem; font-weight: 600; border-radius: 6px; }
+.stock-tag-low { color: #92400E; background-color: #FEF3C7; }
+.stock-tag-good { color: #137333; background-color: #E6F4EA; }
+.qty-box-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; color: #0A1F44; font-size: 1.1rem; font-weight: 700; cursor: pointer; background-color: #fff; border: 1px solid #CBD5E1; border-radius: 8px; }
+.qty-box-btn:hover { color: #fff; background-color: #3580A4; border-color: #3580A4; }
+.qty-box-val { display: flex; align-items: center; justify-content: center; width: 40px; height: 36px; color: #0A1F44; font-weight: 700; background-color: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 8px; }
+.btn-add-order { height: 36px; padding: 8px 18px; color: #fff !important; font-size: .9rem; font-weight: 600; background-color: #F37D42; border: 0; border-radius: 8px; transition: all .2s ease; }
+.btn-add-order:hover { color: #fff !important; background-color: #e0682d; transform: translateY(-1px); }
