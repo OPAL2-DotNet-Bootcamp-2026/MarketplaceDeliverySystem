@@ -60,14 +60,16 @@
   </div>
 </header>
 
-<nav class="floating-navigation" id="floating-navigation" [class.show]="isScrolled" aria-label="Quick navigation">
-  <a
-    routerLink="/"
-    class="floating-nav-item"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >Home</a>
-  <a routerLink="/businesses" class="floating-nav-item" routerLinkActive="active">Businesses</a>
-  <a routerLink="/orders" class="floating-nav-item" routerLinkActive="active">Orders</a>
-  <a routerLink="/track-order" class="floating-nav-item" routerLinkActive="active">Track Order</a>
-</nav>
+@if (!auth.isDriver()) {
+  <nav class="floating-navigation" id="floating-navigation" [class.show]="isScrolled" aria-label="Quick navigation">
+    <a
+      routerLink="/"
+      class="floating-nav-item"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Home</a>
+    <a routerLink="/businesses" class="floating-nav-item" routerLinkActive="active">Businesses</a>
+    <a routerLink="/orders" class="floating-nav-item" routerLinkActive="active">Orders</a>
+    <a routerLink="/track-order" class="floating-nav-item" routerLinkActive="active">Track Order</a>
+  </nav>
+}

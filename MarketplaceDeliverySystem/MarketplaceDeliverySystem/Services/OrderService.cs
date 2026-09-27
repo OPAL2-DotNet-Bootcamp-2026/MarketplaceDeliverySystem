@@ -211,10 +211,10 @@ namespace MarketplaceDeliverySystem.Services
 
 
 
-        public MessageOutputDTO CancelOrder(OrderCancelDTO dto)
+        public MessageOutputDTO CancelOrder(OrderCancelDTO dto, int userId)
         {
             Order? order =
-       _orderRepo.GetOrderWithDetails(dto.OrderId);
+       _orderRepo.GetOrderWithDetails(dto.OrderId, userId);
 
             if (order == null)
             {
@@ -295,9 +295,9 @@ namespace MarketplaceDeliverySystem.Services
             };
         }
 
-        public OrderDetailsDTO? GetOrderById(int orderId)
+        public OrderDetailsDTO? GetOrderById(int orderId, int userId)
         {
-            Order? order = _orderRepo.GetById(orderId);
+            Order? order = _orderRepo.GetById(orderId, userId);
 
             if (order == null)
                 return null;

@@ -18,11 +18,12 @@ namespace MarketplaceDeliverySystem.Repos
             _context.SaveChanges();
         }
 
-        public Order? GetOrderWithDetails(int orderId)
+        public Order? GetOrderWithDetails(int orderId, int userId)
         {
             return _context.Orders
+                .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
-                .FirstOrDefault(o => o.OrderId == orderId);
+                .FirstOrDefault(o => o.OrderId == orderId && o.Customer.UserId == userId);
         }
 
         public void Update()
@@ -30,7 +31,7 @@ namespace MarketplaceDeliverySystem.Repos
             _context.SaveChanges();
         }
 
-        public Order? GetById(int orderId)
+        public Order? GetById(int orderId, int userId)
         {
             return _context.Orders
                 .Include(o => o.Customer)
@@ -48,7 +49,7 @@ namespace MarketplaceDeliverySystem.Repos
                         // Get driver's User
                         .ThenInclude(d => d.User)
 
-                .FirstOrDefault(o => o.OrderId == orderId);
+                .FirstOrDefault(o => o.OrderId == orderId && o.Customer.UserId == userId);
         }
         // Only return active orders belonging to the logged-in customer
         public List<Order> GetActiveOrdersByUserId(int userId)

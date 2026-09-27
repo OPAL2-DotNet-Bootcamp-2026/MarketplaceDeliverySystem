@@ -26,6 +26,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("GetBestProductForEachBusiness")]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetBestProductForEachBusiness()
         {
             List<BestProductDTO> bestProducts =
@@ -34,7 +35,7 @@ namespace MarketplaceDeliverySystem.Controllers
             return Ok(bestProducts);
         }
         [HttpGet("GetAllBusinessesWithProducts")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetAllBusinessesWithProducts()
         {
             List<BusinessWithProductsRespDTO> businesses =
@@ -44,7 +45,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("GetAllBusinesses")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetAllBusinesses([FromQuery] int? categoryId = null)
         {
             List<BusinessCardRespDTO> result = _businessService.GetAllBusinesses(categoryId);

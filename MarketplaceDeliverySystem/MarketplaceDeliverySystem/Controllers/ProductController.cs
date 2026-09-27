@@ -28,6 +28,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpPost("FilterProducts")]
+        [Authorize(Roles = "Customer")]
         public IActionResult FilterProducts(FilterProductsDTO dto)
         {
             List<FilterProductsOutputDto> result = _productService.FilterProducts(dto);
@@ -49,6 +50,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("business/{businessId:int}")]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetProductsByBusiness(int businessId, [FromQuery] int? categoryId = null)
         {
             List<FilterProductsOutputDto> result = _productService.GetProductsByBusiness(businessId, categoryId);
@@ -56,7 +58,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("GetBusinessHeader/{businessId}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetBusinessHeader(int businessId)
         {
             var header = _productService.GetBusinessHeader(businessId);
