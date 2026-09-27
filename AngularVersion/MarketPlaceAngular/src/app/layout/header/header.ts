@@ -1,17 +1,29 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, EventEmitter, HostListener, Output, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
+
 @Component({
-    selector: 'app-header',
-    standalone: true,
-    imports: [RouterLink],
-    templateUrl: './header.html',
-    styleUrl: './header.css'
+  selector: 'app-header',
+  imports: [RouterLink, RouterLinkActive],
+  templateUrl: './header.html',
+  styleUrl: './header.css',
 })
 export class Header {
-    // is called when the button is clicked.
-    @Output() menuToggle = new EventEmitter<void>();
-    isDriver = (localStorage.getItem('userRole') ?? '').toLowerCase() === 'driver';
-    openMenu(): void {
-        this.menuToggle.emit();
-    }
+  private readonly router = inject(Router);
+  readonly auth = inject(AuthService);
+  readonly cart = inject(CartService);
+  @Output() readonly menuToggle = new EventEmitter<void>();
+  isScrolled = false;
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.isScrolled = window.scrollY > 100;
+  }
+
+  logout(): void {
+    this.auth.logout();
+    void this.router.navigate(['/']);
+  }
 }
