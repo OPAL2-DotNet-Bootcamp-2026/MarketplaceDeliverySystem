@@ -28,16 +28,14 @@ describe('Header', () => {
     });
   });
 
-  it('shows only the driver delivery link in the floating navbar for a driver', () => {
+  it('does not render the floating navbar for a driver', () => {
     driver = true;
     const fixture = TestBed.createComponent(Header);
     fixture.componentInstance.isScrolled = true;
     fixture.detectChanges();
 
-    const nav = fixture.nativeElement.querySelector('.floating-navigation') as HTMLElement;
-    expect(nav.textContent).toContain('My Delivery');
-    expect(nav.textContent).not.toContain('Businesses');
-    expect(nav.textContent).not.toContain('Track Order');
+    const nav = fixture.nativeElement.querySelector('.floating-navigation');
+    expect(nav).toBeNull();
   });
 
   it('keeps customer navigation in the floating navbar for a non-driver', () => {
