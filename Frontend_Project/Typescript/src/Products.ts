@@ -95,7 +95,7 @@ document.addEventListener(
                         No business selected.
                         Please return to
 
-                        <a href="/html pages/Businesses.html">
+                        <a href="Businesses.html">
                             Businesses
                         </a>.
 

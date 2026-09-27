@@ -80,6 +80,8 @@ async function loadDelivery(): Promise<void> {
             );
         }
         // Parse the JSON response from the backend into a Delivery object
+        //response.json() = takes the JSON sent by your backend and converts it into a TypeScript object
+        //await = wait for the backend to send the response before continuing
         const delivery: Delivery = await response.json();
 
         console.log("Current delivery:", delivery);
@@ -90,6 +92,7 @@ async function loadDelivery(): Promise<void> {
         // Update order information
         if (orderNumber) {
             // Set the text content of the order number element to display the order ID in the format "#ORD-12345"
+            // means change the text inside that HTML element
             orderNumber.textContent =
                 `#ORD-${delivery.orderId}`;
         }
@@ -128,17 +131,20 @@ async function markAsDelivered(): Promise<void> {
     }
 
     try {
-
+        // Make a PUT request to the backend to update the delivery status to "Delivered"
         const response = await fetch(
+            // I want to update the status of this delivery id 
             `${API_URL}/delivery/${deliveryId}/status`,
             {
                 method: "PUT",
 
                 headers: {
+                    //The data I'm sending is in JSON format
                     "Content-Type": "application/json",
+                    //sends the user's JWT token to the backend to determine if the user is authorized to mark the delivery as delivered
                     "Authorization": `Bearer ${token}`
                 },
-
+                // The body of the request contains the new status in JSON format
                 body: JSON.stringify({
                     status: "Delivered"
                 })
@@ -151,7 +157,8 @@ async function markAsDelivered(): Promise<void> {
                 `Request failed with status ${response.status}`
             );
         }
-
+        // This part handles the response from the backend after sending the PUT request
+        // The backend sends back JSON like { "success": true, "message": "Order delivered successfully." }
         const result: DeliveryResponse =
             await response.json();
 
@@ -177,9 +184,11 @@ async function markAsDelivered(): Promise<void> {
         );
 
         if (confirmToggle) {
+            //Uncheck the checkbox if the delivery could not be marked as delivered
+            // example: if the backend returned an error, we don't want the checkbox to stay checked because the delivery wasn't actually marked as delivered
             confirmToggle.checked = false;
         }
-
+        // If the error is an object of the Error class, we can access its message property and display it in an alert to inform the user about what went wrong.
         if (error instanceof Error) {
             alert(error.message);
         } else {
@@ -193,9 +202,12 @@ async function markAsDelivered(): Promise<void> {
 loadDelivery();
 
 
-// Listen for driver confirmation
+// Wait for the driver to interact with the confirmation switch. 
+// When they turn it ON, mark the delivery as delivered
+//if (confirmToggle): If the confirmation toggle exists in the HTML, continue.
 if (confirmToggle) {
-
+    //addEventListener(): Wait for the user to change the state of the confirmation toggle (checkbox). 
+    // When they do, run the function that marks the delivery as delivered.
     confirmToggle.addEventListener(
         "change",
         async () => {
@@ -216,6 +228,9 @@ if (nextDeliveryButton) {
     nextDeliveryButton.addEventListener(
         "click",
         () => {
+            //window: browser window/page
+            // location: the current URL of the page
+            // reload(): refresh the page and start the process of loading the next delivery for the driver
             window.location.reload();
         }
     );

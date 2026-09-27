@@ -8,5 +8,38 @@ fetch("../sharedComponents/footer.html")
         // .innerHTML: Put the footer HTML inside that container.
         //document. represents the entire HTML of the webpage
     });
+/* =========================
+   FLOATING NAVIGATION
+   ========================= */
 
+window.addEventListener("scroll", function () {
+
+    const floatingNavigation =
+        document.getElementById("floating-navigation");
+
+    const mainHeader =
+        document.querySelector(".header");
+
+    if (!floatingNavigation || !mainHeader) {
+        return;
+    }
+
+    if (window.scrollY > 100) {
+
+        // Hide the original header
+        mainHeader.classList.add("scrolled");
+
+        // Show the compact header
+        floatingNavigation.classList.add("show");
+
+    } else {
+
+        // Show the original header
+        mainHeader.classList.remove("scrolled");
+
+        // Hide the compact header
+        floatingNavigation.classList.remove("show");
+    }
+
+});
     
