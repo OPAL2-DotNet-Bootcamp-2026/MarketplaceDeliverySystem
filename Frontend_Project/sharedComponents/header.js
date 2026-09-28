@@ -1,3 +1,8 @@
+// 1. Find which page the user is on
+// 2. Check if login is required
+// 3. Load the header and sidebar
+// 4. Make the sidebar buttons work
+
 // ============================================
 // CURRENT PAGE
 // ============================================
