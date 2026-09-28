@@ -951,3 +951,18 @@
     }
 
 }
+/* =========================
+   DRIVER PAGE HEADER
+   ========================= */
+
+/* Keep the full header visible */
+.header.scrolled {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Hide only the floating navigation */
+.floating-navigation {
+    display: none !important;
+}
