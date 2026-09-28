@@ -10,8 +10,13 @@
         // header.js redirects guests to Login.html; do not send protected requests meanwhile.
         if (!localStorage.getItem("authToken"))
             return;
+        const categoryParam = new URLSearchParams(window.location.search).get("categoryId");
+        const categoryId = Number(categoryParam);
+        selectedCategoryId = categoryParam && Number.isInteger(categoryId) && categoryId > 0
+            ? categoryId
+            : null;
         if (await loadCategories()) {
-            await loadBusinesses();
+            await loadBusinesses(selectedCategoryId);
         }
     });
     async function fetchCustomerData(url) {
@@ -104,7 +109,7 @@
             let html = `
                 <a href="#"
                     data-category-id=""
-                    class="list-group-item list-group-item-action category-item brand-active d-flex align-items-center">
+                    class="list-group-item list-group-item-action category-item ${selectedCategoryId === null ? "brand-active" : ""} d-flex align-items-center">
 
                     <span class="category-emoji">🏪</span>
 
@@ -120,7 +125,7 @@
                 html += `
                         <a href="#"
                             data-category-id="${cat.categoryId}"
-                            class="list-group-item list-group-item-action category-item d-flex align-items-center">
+                            class="list-group-item list-group-item-action category-item ${selectedCategoryId === cat.categoryId ? "brand-active" : ""} d-flex align-items-center">
 
                             <span class="category-emoji">
                                 ${emoji}
