@@ -1,11 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { DriverStatus } from '../../components/driver-info/driver-status/driver-status';
 import { OrderDetails } from '../../models/marketplace.models';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { redirectIfAccessDenied, showLoginRequired } from '../login-required/login-required-navigation';
 
 @Component({
   selector: 'app-driver-info',
@@ -16,6 +18,7 @@ export class DriverInfo implements OnInit {
   private readonly orders = inject(OrderService);
   private readonly auth = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   readonly order = signal<OrderDetails | null>(null);
   readonly loading = signal(true);
@@ -23,7 +26,7 @@ export class DriverInfo implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (!this.auth.isAuthenticated()) {
-      this.error.set('Please log in first.');
+      showLoginRequired(this.router);
       this.loading.set(false);
       return;
     }
@@ -37,8 +40,13 @@ export class DriverInfo implements OnInit {
     }
     try {
       this.order.set(await firstValueFrom(this.orders.getOrderById(orderId)));
-    } catch {
-      this.error.set('Unable to load driver information.');
+    } catch (error: unknown) {
+      if (redirectIfAccessDenied(error, this.router, 'Customer')) return;
+      this.error.set(
+        error instanceof HttpErrorResponse && error.status === 0
+          ? 'Unable to reach the API. Make sure it is running.'
+          : 'Unable to load driver information. Please try again.',
+      );
     } finally {
       this.loading.set(false);
     }

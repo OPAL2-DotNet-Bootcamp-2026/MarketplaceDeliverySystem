@@ -1,10 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { OrdersView } from '../../components/order-history/orders-view/orders-view';
 import { OrderHistoryItem } from '../../models/marketplace.models';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { redirectIfAccessDenied, showLoginRequired } from '../login-required/login-required-navigation';
 
 @Component({
   selector: 'app-order-history',
@@ -13,6 +16,7 @@ import { OrderService } from '../../services/order.service';
 })
 export class OrderHistory implements OnInit {
   private readonly ordersApi = inject(OrderService);
+  private readonly router = inject(Router);
   readonly auth = inject(AuthService);
   private readonly pageSize = 5;
 
@@ -51,14 +55,19 @@ export class OrderHistory implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (!this.auth.isAuthenticated()) {
-      this.error.set('Please log in to view your orders.');
+      showLoginRequired(this.router);
       this.loading.set(false);
       return;
     }
     try {
       this.orders.set(await firstValueFrom(this.ordersApi.getOrderHistory()));
-    } catch {
-      this.error.set('Unable to load your orders. Make sure the API is running.');
+    } catch (error: unknown) {
+      if (redirectIfAccessDenied(error, this.router, 'Customer')) return;
+      this.error.set(
+        error instanceof HttpErrorResponse && error.status === 0
+          ? 'Unable to reach the API. Make sure it is running.'
+          : 'Unable to load your orders. Please try again.',
+      );
     } finally {
       this.loading.set(false);
     }

@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
@@ -7,13 +8,14 @@ import { OrderPayload } from '../../models/marketplace.models';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
+import { redirectIfAccessDenied, showLoginRequired } from '../login-required/login-required-navigation';
 
 @Component({
   selector: 'app-place-order',
   imports: [Checkout],
   templateUrl: './place-order.html',
 })
-export class PlaceOrder {
+export class PlaceOrder implements OnInit {
   private readonly orders = inject(OrderService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -33,8 +35,17 @@ export class PlaceOrder {
     { value: 'Credit/Debit Card', title: 'Credit / debit card', detail: 'Secure card payment', icon: '▭' },
   ];
 
+  ngOnInit(): void {
+    if (!this.auth.isAuthenticated()) showLoginRequired(this.router);
+  }
+
   async submitOrder(): Promise<void> {
     this.error.set('');
+
+    if (!this.auth.isAuthenticated()) {
+      showLoginRequired(this.router);
+      return;
+    }
 
     if (!this.cart.items().length) {
       this.error.set('Your order bag is empty.');
@@ -44,11 +55,6 @@ export class PlaceOrder {
       this.error.set('Choose a payment method before placing the order.');
       return;
     }
-    if (!this.auth.isAuthenticated()) {
-      await this.router.navigate(['/login'], { queryParams: { returnUrl: '/place-order' } });
-      return;
-    }
-
     const items = this.cart.items();
     const payload: OrderPayload = {
       businessId: items[0].businessId,
@@ -65,8 +71,13 @@ export class PlaceOrder {
       this.orderId.set(result.orderId);
       this.rememberOrder(result.orderId);
       this.cart.clear();
-    } catch {
-      this.error.set("We couldn't place your order. Review your bag and try again.");
+    } catch (error: unknown) {
+      if (redirectIfAccessDenied(error, this.router, 'Customer')) return;
+      this.error.set(
+        error instanceof HttpErrorResponse && error.status === 0
+          ? 'Unable to reach the API. Make sure it is running.'
+          : "We couldn't place your order. Review your bag and try again.",
+      );
     } finally {
       this.submitting.set(false);
     }

@@ -4,7 +4,7 @@ Angular 22 refactor of the marketplace frontend. The original native HTML, CSS, 
 
 ## Structure
 
-The application follows the same feature structure as the supplied Angular reference:
+The application uses the same folder responsibilities as the supplied Angular reference while keeping the Marketplace pages and its existing API contract:
 
 ```text
 src/app/
@@ -15,7 +15,7 @@ src/app/
 └── services/     HTTP, authentication, cart, and order state
 ```
 
-The migrated routes cover home, businesses, products, checkout, order history, tracking, driver information, delivery updates, login, and registration.
+The migrated routes cover home, businesses, products, checkout, order history, tracking, driver information, delivery updates, login, and registration. The course sample's Shop pages and `/api/products` endpoint are not copied into this application. No new authentication mechanism is added; the existing backend still requires a login for protected marketplace endpoints. The business, product, order, tracking, driver-info, and checkout pages open the existing login-required view when login is missing or the backend responds with 401 or 403; connection failures keep their own error message.
 
 ## Run locally
 
@@ -34,5 +34,4 @@ For a production deployment where Angular and the API use different origins, the
 
 ```bash
 npm run build
-npm test -- --watch=false
 ```
