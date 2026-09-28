@@ -7,13 +7,14 @@
 // CURRENT PAGE
 // ============================================
 
+//This gets the current page path from the browser like "/html pages/Products.html" and converts it to lowercase.
 const currentPagePath = window.location.pathname.toLowerCase();
 
 
 // ============================================
 // LOGIN CHECK
 // ============================================
-
+//List the pages that require login
 const customerPages = [
     "businesses.html",
     "products.html",
@@ -22,16 +23,19 @@ const customerPages = [
     "driverinfo.html"
 ];
 
+//Check whether the current page is one of the customerPages
+// if yes, then requiresLogin will be true. If not, it will be false.
 const requiresLogin = customerPages.some(page =>
     currentPagePath.includes(page)
 );
 
+//Get the login token
 const authToken = localStorage.getItem("authToken");
 
 if (requiresLogin && !authToken) {
 
     alert("Please login first.");
-
+    //Send user to Login page
     window.location.href = "Login.html";
 }
 
@@ -49,96 +53,96 @@ Promise.all([
         .then(response => response.text())
 
 ])
-.then(([headerData, sidebarData]) => {
+    .then(([headerData, sidebarData]) => {
 
-    // Load header
-    const headerContainer =
-        document.getElementById("header-container");
+        // Load header
+        const headerContainer =
+            document.getElementById("header-container");
 
-    if (headerContainer) {
-        headerContainer.innerHTML = headerData;
-    }
-
-
-    // Load sidebar
-    const sidebarContainer =
-        document.getElementById("sidebar-container");
-
-    if (sidebarContainer) {
-        sidebarContainer.innerHTML = sidebarData;
-    }
-
-
-    // ========================================
-    // DELIVERED STATUS PAGE
-    // ========================================
-
-    if (currentPagePath.includes("deliveredstatus.html")) {
-
-        // Hide customer navigation
-        const navigation =
-            document.querySelector(".navigation");
-
-        if (navigation) {
-            navigation.style.display = "none";
+        if (headerContainer) {
+            headerContainer.innerHTML = headerData;
         }
 
 
-        // Change Shopper information to Driver
-        const userTitle =
-            document.querySelector(".user-info h3");
+        // Load sidebar
+        const sidebarContainer =
+            document.getElementById("sidebar-container");
 
-        const userRole =
-            document.querySelector(".user-info span");
-
-        if (userTitle) {
-            userTitle.textContent = "Hi, Driver!";
-        }
-
-        if (userRole) {
-            userRole.textContent = "DRIVER";
+        if (sidebarContainer) {
+            sidebarContainer.innerHTML = sidebarData;
         }
 
 
-        // Remove customer-only menu items
-        const sidebarItems =
-            document.querySelectorAll(".sidebar-item");
+        // ========================================
+        // DELIVERED STATUS PAGE
+        // ========================================
 
-        sidebarItems.forEach(item => {
+        if (currentPagePath.includes("deliveredstatus.html")) {
 
-            const text =
-                item.textContent.trim();
+            // Hide customer navigation
+            const navigation =
+                document.querySelector(".navigation");
 
-            if (
-                text.includes("Home") ||
-                text.includes("Browse Products") ||
-                text.includes("My Orders") ||
-                text.includes("Track Delivery") ||
-                text.includes("Favorites")
-            ) {
-                item.remove();
+            if (navigation) {
+                navigation.style.display = "none";
             }
 
-        });
+
+            // Change Shopper information to Driver
+            const userTitle =
+                document.querySelector(".user-info h3");
+
+            const userRole =
+                document.querySelector(".user-info span");
+
+            if (userTitle) {
+                userTitle.textContent = "Hi, Driver!";
+            }
+
+            if (userRole) {
+                userRole.textContent = "DRIVER";
+            }
 
 
-        // Remove customer promotional card
-        const promoCard =
-            document.querySelector(".sidebar-promo");
+            // Remove customer-only menu items
+            const sidebarItems =
+                document.querySelectorAll(".sidebar-item");
 
-        if (promoCard) {
-            promoCard.remove();
+            sidebarItems.forEach(item => {
+
+                const text =
+                    item.textContent.trim();
+
+                if (
+                    text.includes("Home") ||
+                    text.includes("Browse Products") ||
+                    text.includes("My Orders") ||
+                    text.includes("Track Delivery") ||
+                    text.includes("Favorites")
+                ) {
+                    item.remove();
+                }
+
+            });
+
+
+            // Remove customer promotional card
+            const promoCard =
+                document.querySelector(".sidebar-promo");
+
+            if (promoCard) {
+                promoCard.remove();
+            }
         }
-    }
 
 
-    // ========================================
-    // INITIALIZE SIDEBAR
-    // ========================================
+        // ========================================
+        // INITIALIZE SIDEBAR
+        // ========================================
 
-    initializeSidebar();
+        initializeSidebar();
 
-});
+    });
 
 
 // ============================================
