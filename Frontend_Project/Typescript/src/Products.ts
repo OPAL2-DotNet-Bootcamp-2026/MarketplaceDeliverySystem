@@ -43,6 +43,26 @@ const BASE_PRODUCTS_API: string =
 const BASE_HEADER_API: string =
     "https://localhost:7299/api/Product/GetBusinessHeader";
 
+async function fetchCustomerData(url: string): Promise<Response | null> {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+        window.location.replace("Login.html");
+        return null;
+    }
+
+    const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (response.status === 401) {
+        localStorage.removeItem("authToken");
+        window.location.replace("Login.html");
+        return null;
+    }
+
+    return response;
+}
+
 
 // ============================================================
 // GLOBAL VARIABLES
@@ -106,6 +126,11 @@ document.addEventListener(
             return;
         }
 
+        // header.js redirects guests; avoid sending protected requests during navigation.
+        if (!localStorage.getItem("authToken")) {
+            return;
+        }
+
 
         // Convert business ID from string to number
         currentBusinessId =
@@ -116,7 +141,9 @@ document.addEventListener(
         // LOAD BUSINESS AND PRODUCTS
         // ====================================================
 
-        await loadBusinessHeader(businessId);
+        if (!await loadBusinessHeader(businessId)) {
+            return;
+        }
 
         await loadProducts(
             businessId,
@@ -132,7 +159,7 @@ document.addEventListener(
 
 async function loadBusinessHeader(
     businessId: string
-): Promise<void> {
+): Promise<boolean> {
 
     const container =
         document.querySelector<HTMLElement>(
@@ -140,17 +167,28 @@ async function loadBusinessHeader(
         );
 
     if (!container) {
-        return;
+        return false;
     }
 
 
     try {
 
         // Call backend
-        const response: Response =
-            await fetch(
-                `${BASE_HEADER_API}/${businessId}`
-            );
+        const response = await fetchCustomerData(
+            `${BASE_HEADER_API}/${businessId}`
+        );
+        if (!response) {
+            return false;
+        }
+
+        if (response.status === 403) {
+            container.innerHTML = '<div class="card-body p-3 text-danger">A Customer account is required to view this business.</div>';
+            const productsContainer = document.querySelector<HTMLElement>("#products-list-container");
+            if (productsContainer) {
+                productsContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view products.</div>';
+            }
+            return false;
+        }
 
 
         if (!response.ok) {
@@ -284,6 +322,8 @@ async function loadBusinessHeader(
                 "General";
         }
 
+        return true;
+
 
     } catch (error: unknown) {
 
@@ -302,6 +342,7 @@ async function loadBusinessHeader(
             </div>
 
         `;
+        return true;
     }
 }
 
@@ -347,8 +388,15 @@ async function loadProducts(
         // FETCH PRODUCTS
         // ====================================================
 
-        const response: Response =
-            await fetch(url);
+        const response = await fetchCustomerData(url);
+        if (!response) {
+            return;
+        }
+
+        if (response.status === 403) {
+            listContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view products.</div>';
+            return;
+        }
 
 
         if (!response.ok) {
