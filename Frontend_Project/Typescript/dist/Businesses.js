@@ -7,13 +7,33 @@
     const itemsPerPage = 3;
     let selectedCategoryId = null;
     document.addEventListener("DOMContentLoaded", async () => {
-        await loadCategories();
-        await loadBusinesses();
+        // header.js redirects guests to Login.html; do not send protected requests meanwhile.
+        if (!localStorage.getItem("authToken"))
+            return;
+        if (await loadCategories()) {
+            await loadBusinesses();
+        }
     });
+    async function fetchCustomerData(url) {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            window.location.replace("Login.html");
+            return null;
+        }
+        const response = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status === 401) {
+            localStorage.removeItem("authToken");
+            window.location.replace("Login.html");
+            return null;
+        }
+        return response;
+    }
     async function loadCategories() {
         const categoryContainer = document.querySelector("#category-filter-list");
         if (!categoryContainer)
-            return;
+            return false;
         function getCategoryEmoji(categoryName) {
             if (!categoryName)
                 return "🛍️";
@@ -65,7 +85,17 @@
             return "🛍️";
         }
         try {
-            const response = await fetch(CATEGORIES_API_URL);
+            const response = await fetchCustomerData(CATEGORIES_API_URL);
+            if (!response)
+                return false;
+            if (response.status === 403) {
+                categoryContainer.innerHTML = '<p class="text-danger small p-2">A Customer account is required.</p>';
+                const businessContainer = document.querySelector("#businesses-list");
+                if (businessContainer) {
+                    businessContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view businesses.</div>';
+                }
+                return false;
+            }
             if (!response.ok) {
                 throw new Error("Failed to load categories");
             }
@@ -121,6 +151,7 @@
                     loadBusinesses(selectedCategoryId);
                 });
             });
+            return true;
         }
         catch (err) {
             console.error("Error loading categories:", err);
@@ -129,6 +160,7 @@
                     Failed to load categories.
                 </p>
             `;
+            return true;
         }
     }
     async function loadBusinesses(categoryId = null) {
@@ -151,7 +183,15 @@
             if (categoryId) {
                 url += `?categoryId=${categoryId}`;
             }
-            const response = await fetch(url);
+            const response = await fetchCustomerData(url);
+            if (!response)
+                return;
+            if (response.status === 403) {
+                listContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view businesses.</div>';
+                if (paginationList)
+                    paginationList.innerHTML = "";
+                return;
+            }
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
