@@ -22,9 +22,10 @@ import { Footer } from './layout/footer/footer';
 export class App {
   private readonly router = inject(Router);
   private readonly currentUrl = signal(this.router.url);
-  readonly isAuthPage = computed(() =>
-    this.currentUrl().startsWith('/login') || this.currentUrl().startsWith('/registration'),
-  );
+  readonly isAuthPage = computed(() => {
+    const path = this.currentUrl().split('?')[0];
+    return path === '/login' || path === '/registration';
+  });
   isSidebarOpen = false;
 
   constructor() {
