@@ -1,437 +1,178 @@
-// ============================================
-// HOME PAGE - TypeScript
-// ============================================
-// ============================================
-// API URLs
-// ============================================
-const CATEGORIES_API = "https://localhost:7299/api/Category/GetSidebarCategories";
-const PRODUCTS_API = "https://localhost:7299/api/Product/business";
-// ============================================
-// BUSINESS ID
-// ============================================
-// The products in our database belong to BusinessId = 1
-const BUSINESS_ID = 1;
-// ============================================
-// WHEN PAGE IS LOADED
-// ============================================
+const API_BASE_URL = "https://localhost:7299";
+const HOME_CATEGORIES_API = `${API_BASE_URL}/api/BusinessCategory/GetHomeCategories`;
+const POPULAR_BUSINESSES_API = `${API_BASE_URL}/api/Business/GetPopularBusinesses?limit=4`;
+const LOGO_PLACEHOLDER = "../assets/img/LogoPlaceHolder.png";
 document.addEventListener("DOMContentLoaded", () => {
-    // Load Categories
-    loadCategories();
-    // Load Popular Products
-    loadProducts();
-    // Hide Login / Sign Up when logged in
-    hideAuthButtonIfLoggedIn();
-});
-// ============================================
-// HIDE LOGIN BUTTON WHEN LOGGED IN
-// ============================================
-function hideAuthButtonIfLoggedIn() {
+    void loadCategories();
+    void loadPopularBusinesses();
     const authButton = document.getElementById("authButton");
-    const token = localStorage.getItem("authToken");
-    // ========================================
-    // Hide only if the button exists
-    // and the customer is logged in
-    // ========================================
-    if (authButton && token) {
+    if (authButton && localStorage.getItem("authToken")) {
         authButton.style.display = "none";
     }
+});
+async function getItems(url, isItem) {
+    const response = await fetch(url);
+    if (!response.ok)
+        throw new Error(`Request failed: ${response.status}`);
+    const data = await response.json();
+    if (!Array.isArray(data))
+        throw new Error("Expected an array from the API");
+    return data.filter(isItem);
 }
-// ============================================
-// LOAD CATEGORIES
-// ============================================
+function showMessage(container, message) {
+    const paragraph = document.createElement("p");
+    paragraph.className = "home-section-message";
+    paragraph.textContent = message;
+    container.replaceChildren(paragraph);
+}
 async function loadCategories() {
     const container = document.getElementById("categories-container");
-    // ========================================
-    // Make sure container exists
-    // ========================================
-    if (!container) {
-        console.error("categories-container was not found.");
+    if (!container)
         return;
-    }
+    showMessage(container, "Loading categories...");
     try {
-        // ========================================
-        // Send GET request to Backend
-        // ========================================
-        const response = await fetch(CATEGORIES_API);
-        // ========================================
-        // Check response
-        // ========================================
-        if (!response.ok) {
-            throw new Error("Failed to load categories");
-        }
-        // ========================================
-        // Convert response to JSON
-        // ========================================
-        const data = await response.json();
-        // ========================================
-        // Make sure JSON is an array
-        // ========================================
-        if (!Array.isArray(data)) {
-            throw new Error("Invalid categories data");
-        }
-        // ========================================
-        // Convert to Category[]
-        // ========================================
-        const categories = data.filter(isCategory);
-        // ========================================
-        // Remove duplicate categories
-        // ========================================
-        const uniqueCategories = [];
-        const categoryNames = new Set();
-        categories.forEach((category) => {
-            // Get category name
-            const name = category.categoryName.trim();
-            // Ignore empty names
-            if (!name) {
-                return;
-            }
-            // Convert to lowercase
-            // Perfumes and perfumes
-            // are considered the same
-            const key = name.toLowerCase();
-            // Add only if not already added
-            if (!categoryNames.has(key)) {
-                categoryNames.add(key);
-                uniqueCategories.push(category);
-            }
+        const categories = await getItems(HOME_CATEGORIES_API, isHomeCategory);
+        const seen = new Set();
+        const uniqueCategories = categories.filter(category => {
+            const key = category.categoryName.trim().toLowerCase();
+            if (!key || seen.has(key))
+                return false;
+            seen.add(key);
+            return true;
         });
-        // ========================================
-        // Show ONLY first 3 categories
-        // ========================================
-        const displayedCategories = uniqueCategories.slice(0, 3);
-        // ========================================
-        // Clear container
-        // ========================================
-        container.innerHTML = "";
-        // ========================================
-        // Check if there are no categories
-        // ========================================
-        if (displayedCategories.length === 0) {
-            container.innerHTML = `
-                <p>No categories available.</p>
-            `;
+        if (uniqueCategories.length === 0) {
+            showMessage(container, "No business categories available.");
             return;
         }
-        // ========================================
-        // Create category cards
-        // ========================================
-        displayedCategories.forEach((category) => {
-            // Get icon
-            const icon = getCategoryIcon(category.categoryName);
-            // Create category card
-            const categoryCard = `
-
-                    <div
-                        class="category-card"
-                        onclick="openCategory(${category.categoryId})"
-                        style="cursor: pointer;"
-                    >
-
-                        <i class="${icon}"></i>
-
-                        <p>
-                            ${category.categoryName}
-                        </p>
-
-                    </div>
-
-                `;
-            // Add card to container
-            container.insertAdjacentHTML("beforeend", categoryCard);
+        const fragment = document.createDocumentFragment();
+        uniqueCategories.forEach(category => {
+            const card = document.createElement("a");
+            card.className = "category-card";
+            card.href = `Businesses.html?categoryId=${encodeURIComponent(category.categoryId)}`;
+            const icon = document.createElement("i");
+            icon.className = categoryIcon(category.categoryName);
+            icon.setAttribute("aria-hidden", "true");
+            const name = document.createElement("p");
+            name.textContent = category.categoryName;
+            card.append(icon, name);
+            fragment.append(card);
         });
+        container.replaceChildren(fragment);
     }
     catch (error) {
-        console.error("Category Error:", error);
-        container.innerHTML = `
-
-            <p>
-                Failed to load categories.
-            </p>
-
-        `;
+        console.error("Home categories could not be loaded:", error);
+        showMessage(container, "Business categories could not be loaded. Make sure the API is running.");
     }
 }
-// ============================================
-// OPEN CATEGORY
-// ============================================
-function openCategory(categoryId) {
-    window.location.href =
-        `Products.html?businessId=${BUSINESS_ID}&categoryId=${categoryId}`;
+async function loadPopularBusinesses() {
+    const container = document.getElementById("popular-businesses-container");
+    if (!container)
+        return;
+    showMessage(container, "Loading businesses...");
+    try {
+        const businesses = await getItems(POPULAR_BUSINESSES_API, isPopularBusiness);
+        if (businesses.length === 0) {
+            showMessage(container, "No businesses available.");
+            return;
+        }
+        const fragment = document.createDocumentFragment();
+        businesses.forEach(business => fragment.append(createBusinessCard(business)));
+        container.replaceChildren(fragment);
+    }
+    catch (error) {
+        console.error("Popular businesses could not be loaded:", error);
+        showMessage(container, "Popular businesses could not be loaded. Make sure the API is running.");
+    }
 }
-// ============================================
-// CATEGORY ICONS
-// ============================================
-function getCategoryIcon(categoryName) {
+function createBusinessCard(business) {
+    const card = document.createElement("a");
+    card.className = "popular-business-card";
+    card.href = `Products.html?businessId=${encodeURIComponent(business.businessId)}`;
+    const logoWrap = document.createElement("div");
+    logoWrap.className = "popular-business-logo-wrap";
+    const logo = document.createElement("img");
+    logo.className = "popular-business-logo";
+    logo.src = logoUrl(business.logoUrl);
+    logo.alt = business.businessName;
+    logo.addEventListener("error", () => {
+        logo.src = LOGO_PLACEHOLDER;
+    }, { once: true });
+    logoWrap.append(logo);
+    const info = document.createElement("div");
+    info.className = "popular-business-info";
+    const meta = document.createElement("div");
+    meta.className = "popular-business-meta";
+    const category = document.createElement("span");
+    category.className = "business-category";
+    category.textContent = business.businessCategoryName || "Local Business";
+    const status = document.createElement("span");
+    status.className = `business-status${business.isOpen ? " open" : ""}`;
+    status.textContent = business.isOpen ? "Open" : "Closed";
+    meta.append(category, status);
+    const name = document.createElement("h3");
+    name.textContent = business.businessName;
+    const address = document.createElement("p");
+    address.className = "business-address";
+    address.textContent = business.address || "Marketplace business";
+    const footer = document.createElement("div");
+    footer.className = "business-card-footer";
+    const hours = document.createElement("span");
+    hours.textContent = business.openingTime && business.closingTime
+        ? `${formatTime(business.openingTime)} - ${formatTime(business.closingTime)}`
+        : "Hours unavailable";
+    const orders = document.createElement("span");
+    orders.textContent = business.orderCount < 1
+        ? "New business"
+        : `${business.orderCount} ${business.orderCount === 1 ? "order" : "orders"}`;
+    footer.append(hours, orders);
+    info.append(meta, name, address, footer);
+    const arrow = document.createElement("i");
+    arrow.className = "bi bi-arrow-right business-card-arrow";
+    arrow.setAttribute("aria-hidden", "true");
+    card.append(logoWrap, info, arrow);
+    return card;
+}
+function logoUrl(value) {
+    if (!value)
+        return LOGO_PLACEHOLDER;
+    return /^(https?:|data:|\/)/i.test(value) ? value : `../assets/img/${value}`;
+}
+function formatTime(value) {
+    const [hoursValue, minutes = "00"] = value.split(":");
+    const hours = Number(hoursValue);
+    if (Number.isNaN(hours))
+        return value;
+    return `${hours % 12 || 12}:${minutes} ${hours >= 12 ? "PM" : "AM"}`;
+}
+function categoryIcon(categoryName) {
     const name = categoryName.toLowerCase();
-    // ========================================
-    // Perfumes
-    // ========================================
-    if (name.includes("perfume")) {
+    if (name.includes("perfume") || name.includes("oud"))
         return "bi bi-stars";
-    }
-    // ========================================
-    // Flowers
-    // ========================================
-    if (name.includes("flower")) {
+    if (name.includes("flower"))
         return "bi bi-flower1";
-    }
-    // ========================================
-    // Chocolate
-    // ========================================
-    if (name.includes("chocolate")) {
+    if (name.includes("chocolate") || name.includes("sweet"))
         return "bi bi-gift";
-    }
-    // ========================================
-    // Food
-    // ========================================
-    if (name.includes("food")) {
+    if (name.includes("food") || name.includes("kitchen") || name.includes("bakery"))
         return "bi bi-egg-fried";
-    }
-    // ========================================
-    // Fashion
-    // ========================================
-    if (name.includes("fashion")) {
+    if (name.includes("fashion"))
         return "bi bi-handbag";
-    }
-    // ========================================
-    // Decor
-    // ========================================
-    if (name.includes("decor")) {
+    if (name.includes("decor") || name.includes("craft"))
         return "bi bi-palette";
-    }
-    // ========================================
-    // Default
-    // ========================================
     return "bi bi-grid";
 }
-// ============================================
-// LOAD PRODUCTS
-// ============================================
-async function loadProducts() {
-    const container = document.getElementById("products-container");
-    // ========================================
-    // Make sure container exists
-    // ========================================
-    if (!container) {
-        console.error("products-container was not found.");
-        return;
-    }
-    try {
-        // ========================================
-        // Build API URL
-        // ========================================
-        const url = `${PRODUCTS_API}/${BUSINESS_ID}`;
-        // ========================================
-        // Send GET request
-        // ========================================
-        const response = await fetch(url);
-        // ========================================
-        // Check response
-        // ========================================
-        if (!response.ok) {
-            throw new Error("Failed to load products");
-        }
-        // ========================================
-        // Convert response to JSON
-        // ========================================
-        const data = await response.json();
-        // ========================================
-        // Make sure JSON is an array
-        // ========================================
-        if (!Array.isArray(data)) {
-            throw new Error("Invalid products data");
-        }
-        // ========================================
-        // Convert to Product[]
-        // ========================================
-        const products = data.filter(isProduct);
-        // ========================================
-        // Remove duplicate products
-        // ========================================
-        const uniqueProducts = [];
-        const productIds = new Set();
-        products.forEach((product) => {
-            // Get product ID
-            const productId = product.productId;
-            // Ignore products without ID
-            if (!productId) {
-                return;
-            }
-            // Add only unique products
-            if (!productIds.has(productId)) {
-                productIds.add(productId);
-                uniqueProducts.push(product);
-            }
-        });
-        // ========================================
-        // Show ONLY first 3 products
-        // ========================================
-        const displayedProducts = uniqueProducts.slice(0, 3);
-        // ========================================
-        // Clear container
-        // ========================================
-        container.innerHTML = "";
-        // ========================================
-        // Check if there are no products
-        // ========================================
-        if (displayedProducts.length === 0) {
-            container.innerHTML = `
-                <p>No products available.</p>
-            `;
-            return;
-        }
-        // ========================================
-        // Create product cards
-        // ========================================
-        displayedProducts.forEach((product) => {
-            createProductCard(product, container);
-        });
-    }
-    catch (error) {
-        console.error("Product Error:", error);
-        container.innerHTML = `
-
-            <p>
-                Failed to load products.
-            </p>
-
-        `;
-    }
-}
-// ============================================
-// CREATE PRODUCT CARD
-// ============================================
-function createProductCard(product, container) {
-    // ========================================
-    // Product Image
-    // ========================================
-    let imageUrl = "../assets/img/ProductPlaceHolder.png";
-    if (product.imageUrl) {
-        imageUrl =
-            "../assets/img/" +
-                product.imageUrl;
-    }
-    // ========================================
-    // Product Rating
-    // ========================================
-    const rating = Number(product.averageRating || 0).toFixed(1);
-    // ========================================
-    // Product Price
-    // ========================================
-    const price = Number(product.price || 0).toFixed(3);
-    // ========================================
-    // Create Product Card
-    // ========================================
-    const productCard = `
-
-        <article
-            class="product-card"
-            data-product-id="${product.productId}"
-        >
-
-            <!-- ================================= -->
-            <!-- Product Image -->
-            <!-- ================================= -->
-
-            <div class="product-image">
-
-                <img
-                    src="${imageUrl}"
-                    alt="${product.productName}"
-                >
-
-            </div>
-
-
-            <!-- ================================= -->
-            <!-- Product Information -->
-            <!-- ================================= -->
-
-            <div class="product-info">
-
-                <h3>
-                    ${product.productName}
-                </h3>
-
-                <strong>
-                    ${price} OMR
-                </strong>
-
-                <p>
-                    ⭐ ${rating}
-                </p>
-
-            </div>
-
-
-            <!-- ================================= -->
-            <!-- Favorite Button -->
-            <!-- ================================= -->
-
-            <i
-                class="bi bi-heart product-heart"
-                onclick="toggleFavorite(this)"
-            ></i>
-
-
-        </article>
-
-    `;
-    // ========================================
-    // Add card to container
-    // ========================================
-    container.insertAdjacentHTML("beforeend", productCard);
-}
-// ============================================
-// FAVORITE BUTTON
-// ============================================
-function toggleFavorite(heart) {
-    // ========================================
-    // Empty heart → Filled heart
-    // ========================================
-    if (heart.classList.contains("bi-heart")) {
-        heart.classList.remove("bi-heart");
-        heart.classList.add("bi-heart-fill");
-    }
-    // ========================================
-    // Filled heart → Empty heart
-    // ========================================
-    else {
-        heart.classList.remove("bi-heart-fill");
-        heart.classList.add("bi-heart");
-    }
-}
-// ============================================
-// CATEGORY TYPE GUARD
-// ============================================
-function isCategory(value) {
-    // Make sure value is an object
-    if (typeof value !== "object" ||
-        value === null) {
+function isHomeCategory(value) {
+    if (typeof value !== "object" || value === null)
         return false;
-    }
     const category = value;
-    return (typeof category.categoryId === "number" &&
-        typeof category.categoryName === "string");
+    return typeof category.categoryId === "number" && typeof category.categoryName === "string";
 }
-// ============================================
-// PRODUCT TYPE GUARD
-// ============================================
-function isProduct(value) {
-    // Make sure value is an object
-    if (typeof value !== "object" ||
-        value === null) {
+function isPopularBusiness(value) {
+    if (typeof value !== "object" || value === null)
         return false;
-    }
-    const product = value;
-    return (typeof product.productId === "number" &&
-        typeof product.productName === "string");
+    const business = value;
+    return typeof business.businessId === "number"
+        && typeof business.businessName === "string"
+        && typeof business.isOpen === "boolean"
+        && typeof business.orderCount === "number";
 }
-// ============================================
-// CONNECT FUNCTIONS TO WINDOW
-// ============================================
-window.openCategory =
-    openCategory;
-window.toggleFavorite =
-    toggleFavorite;
 export {};
