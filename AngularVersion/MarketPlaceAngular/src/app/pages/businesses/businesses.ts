@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { BusinessCard } from '../../components/businesses/business-card/business-card';
@@ -7,6 +8,7 @@ import { BusinessPagination } from '../../components/businesses/business-paginat
 import { BusinessCategoryFilter } from '../../components/businesses/category-filter/category-filter';
 import { Business, Category } from '../../models/marketplace.models';
 import { CatalogService } from '../../services/catalog.service';
+import { redirectIfAccessDenied } from '../login-required/login-required-navigation';
 
 @Component({
   selector: 'app-businesses',
@@ -16,6 +18,7 @@ import { CatalogService } from '../../services/catalog.service';
 export class Businesses implements OnInit {
   private readonly catalog = inject(CatalogService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly pageSize = 3;
 
   readonly categories = signal<Category[]>([]);
@@ -66,9 +69,14 @@ export class Businesses implements OnInit {
       this.businesses.set(await firstValueFrom(
         this.catalog.getBusinesses(this.selectedCategoryId()),
       ));
-    } catch {
+    } catch (error: unknown) {
       this.businesses.set([]);
-      this.error.set('Unable to load businesses. Make sure the API is running.');
+      if (redirectIfAccessDenied(error, this.router, 'Customer')) return;
+      this.error.set(
+        error instanceof HttpErrorResponse && error.status === 0
+          ? 'Unable to reach the API. Make sure it is running.'
+          : 'Unable to load businesses. Please try again.',
+      );
     } finally {
       this.loading.set(false);
     }

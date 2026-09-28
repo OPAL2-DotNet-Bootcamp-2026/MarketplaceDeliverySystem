@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { BusinessHeader as BusinessHeaderComponent } from '../../components/products/business-header/business-header';
@@ -9,6 +10,7 @@ import { ProductDetailsModal } from '../../components/products/product-details-m
 import { BusinessHeader, Product } from '../../models/marketplace.models';
 import { CartService } from '../../services/cart.service';
 import { CatalogService } from '../../services/catalog.service';
+import { redirectIfAccessDenied } from '../login-required/login-required-navigation';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +20,7 @@ import { CatalogService } from '../../services/catalog.service';
 })
 export class Products implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly catalog = inject(CatalogService);
   readonly cart = inject(CartService);
 
@@ -60,8 +63,13 @@ export class Products implements OnInit {
       ]);
       this.business.set(business);
       this.products.set(products);
-    } catch {
-      this.error.set('Products could not be loaded. Make sure the API is running.');
+    } catch (error: unknown) {
+      if (redirectIfAccessDenied(error, this.router, 'Customer')) return;
+      this.error.set(
+        error instanceof HttpErrorResponse && error.status === 0
+          ? 'Unable to reach the API. Make sure it is running.'
+          : 'Products could not be loaded. Please try again.',
+      );
     } finally {
       this.loading.set(false);
     }
