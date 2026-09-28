@@ -7,6 +7,22 @@
 // ============================================================
 const BASE_PRODUCTS_API = "https://localhost:7299/api/Product/business";
 const BASE_HEADER_API = "https://localhost:7299/api/Product/GetBusinessHeader";
+async function fetchCustomerData(url) {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+        window.location.replace("Login.html");
+        return null;
+    }
+    const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.status === 401) {
+        localStorage.removeItem("authToken");
+        window.location.replace("Login.html");
+        return null;
+    }
+    return response;
+}
 // ============================================================
 // GLOBAL VARIABLES
 // ============================================================
@@ -43,13 +59,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         return;
     }
+    // header.js redirects guests; avoid sending protected requests during navigation.
+    if (!localStorage.getItem("authToken")) {
+        return;
+    }
     // Convert business ID from string to number
     currentBusinessId =
         parseInt(businessId, 10);
     // ====================================================
     // LOAD BUSINESS AND PRODUCTS
     // ====================================================
-    await loadBusinessHeader(businessId);
+    if (!await loadBusinessHeader(businessId)) {
+        return;
+    }
     await loadProducts(businessId, categoryId);
 });
 // ============================================================
@@ -58,11 +80,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadBusinessHeader(businessId) {
     const container = document.querySelector("#business-info-container");
     if (!container) {
-        return;
+        return false;
     }
     try {
         // Call backend
-        const response = await fetch(`${BASE_HEADER_API}/${businessId}`);
+        const response = await fetchCustomerData(`${BASE_HEADER_API}/${businessId}`);
+        if (!response) {
+            return false;
+        }
+        if (response.status === 403) {
+            container.innerHTML = '<div class="card-body p-3 text-danger">A Customer account is required to view this business.</div>';
+            const productsContainer = document.querySelector("#products-list-container");
+            if (productsContainer) {
+                productsContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view products.</div>';
+            }
+            return false;
+        }
         if (!response.ok) {
             throw new Error("Failed to load business header details.");
         }
@@ -160,6 +193,7 @@ async function loadBusinessHeader(businessId) {
                 business.businessCategoryName ||
                     "General";
         }
+        return true;
     }
     catch (error) {
         console.error("Header load error:", error);
@@ -172,6 +206,7 @@ async function loadBusinessHeader(businessId) {
             </div>
 
         `;
+        return true;
     }
 }
 // ============================================================
@@ -194,7 +229,14 @@ async function loadProducts(businessId, categoryId) {
         // ====================================================
         // FETCH PRODUCTS
         // ====================================================
-        const response = await fetch(url);
+        const response = await fetchCustomerData(url);
+        if (!response) {
+            return;
+        }
+        if (response.status === 403) {
+            listContainer.innerHTML = '<div class="alert alert-warning" role="alert">Please sign in with a Customer account to view products.</div>';
+            return;
+        }
         if (!response.ok) {
             throw new Error(`Failed to load products. Status: ${response.status}`);
         }
