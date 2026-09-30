@@ -1,6 +1,8 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System.Net;
+using System.Globalization;
 namespace MarketplaceDeliverySystem.Services
 {
     // Responsible for sending emails from the system.
@@ -59,15 +61,28 @@ namespace MarketplaceDeliverySystem.Services
             message.To.Add(
                 new MailboxAddress(customerName, customerEmail));
 
-            message.Subject =
-                $"Order #{orderId} Confirmation";
+            string safeCustomerName = WebUtility.HtmlEncode(customerName);
+            bool arabic = LocalizedText.IsArabic;
+            message.Subject = arabic
+                ? $"تأكيد الطلب رقم {orderId}"
+                : $"Order #{orderId} Confirmation";
 
             message.Body = new TextPart("html")
             {
-                Text = $"""
+                Text = arabic ? $"""
+                    <div lang="ar" dir="rtl">
+                    <h2>تم تأكيد الطلب</h2>
+                    <p>مرحبًا {safeCustomerName}،</p>
+                    <p>تم تقديم طلبك بنجاح.</p>
+                    <p><strong>رقم الطلب:</strong> {orderId}</p>
+                    <p><strong>المبلغ الإجمالي:</strong> {totalAmount.ToString("0.000", CultureInfo.GetCultureInfo("ar-OM"))} ر.ع.</p>
+                    <p><strong>الحالة:</strong> قيد الانتظار</p>
+                    <p>شكرًا لاستخدامك نظام توصيل السوق.</p>
+                    </div>
+                    """ : $"""
                     <h2>Order Confirmed</h2>
 
-                    <p>Hello {customerName},</p>
+                    <p>Hello {safeCustomerName},</p>
 
                     <p>Your order has been placed successfully.</p>
 

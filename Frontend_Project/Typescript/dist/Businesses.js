@@ -121,7 +121,7 @@
             `;
             // Dynamic Categories
             categories.forEach((cat) => {
-                const emoji = getCategoryEmoji(cat.categoryName);
+                const emoji = getCategoryEmoji(cat.categoryNameEn || cat.categoryName);
                 html += `
                         <a href="#"
                             data-category-id="${cat.categoryId}"

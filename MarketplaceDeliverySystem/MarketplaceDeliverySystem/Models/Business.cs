@@ -26,9 +26,13 @@ namespace MarketplaceDeliverySystem.Models
         [Required(ErrorMessage = "Business name is required.")]
         [MaxLength(100)]
         public string BusinessName { get; set; }//User Input
+        [MaxLength(100)]
+        public string? BusinessNameAr { get; set; }
 
         [MaxLength(500)]
         public string? Description { get; set; }//User Input
+        [MaxLength(500)]
+        public string? DescriptionAr { get; set; }
 
         [MaxLength(300)]
         public string? LogoUrl { get; set; }//User Input

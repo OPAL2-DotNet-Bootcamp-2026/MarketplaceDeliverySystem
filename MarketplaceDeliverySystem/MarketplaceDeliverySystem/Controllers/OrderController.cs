@@ -43,13 +43,13 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Order could not be created."
+                    Message = LocalizedText.Choose("Order could not be created.", "تعذر إنشاء الطلب.")
                 });
             }
 
             return Ok(new
             {
-                Message = "Order created successfully.",
+                Message = LocalizedText.Choose("Order created successfully.", "تم إنشاء الطلب بنجاح."),
                 OrderId = order.OrderId,
                 TotalAmount = order.TotalAmount,
                 Status = order.Status
@@ -91,7 +91,7 @@ namespace MarketplaceDeliverySystem.Controllers
             var order = _orderService.GetOrderById(orderId, userId);
 
             if (order == null)
-                return NotFound("Order not found.");
+                return NotFound(LocalizedText.Choose("Order not found.", "لم يتم العثور على الطلب."));
 
             return Ok(order);
         }

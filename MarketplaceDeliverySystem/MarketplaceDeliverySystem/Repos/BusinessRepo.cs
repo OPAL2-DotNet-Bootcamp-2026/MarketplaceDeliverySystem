@@ -1,5 +1,6 @@
 using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
+using MarketplaceDeliverySystem.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
@@ -30,20 +31,24 @@ namespace MarketplaceDeliverySystem.Repos
         {
             int safeLimit = Math.Clamp(limit, 1, 12);
 
-            return _context.Businesses
+            var businesses = _context.Businesses
                 .AsNoTracking()
-                .Select(b => new PopularBusinessDTO
+                .Select(b => new
                 {
-                    BusinessId = b.BusinessId,
-                    BusinessName = b.BusinessName,
-                    BusinessCategoryName = b.businessCategory == null
+                    b.BusinessId,
+                    b.BusinessName,
+                    b.BusinessNameAr,
+                    CategoryName = b.businessCategory == null
                         ? null
                         : b.businessCategory.BusinessCategoryName,
-                    LogoUrl = b.LogoUrl,
-                    Address = b.Address,
-                    OpeningTime = b.OpeningTime,
-                    ClosingTime = b.ClosingTime,
-                    IsOpen = b.IsOpen,
+                    CategoryNameAr = b.businessCategory == null
+                        ? null
+                        : b.businessCategory.BusinessCategoryNameAr,
+                    b.LogoUrl,
+                    b.Address,
+                    b.OpeningTime,
+                    b.ClosingTime,
+                    b.IsOpen,
                     OrderCount = _context.Orders.Count(o =>
                         o.BusinessId == b.BusinessId && o.Status != "Cancelled")
                 })
@@ -51,6 +56,21 @@ namespace MarketplaceDeliverySystem.Repos
                 .ThenBy(b => b.BusinessName)
                 .Take(safeLimit)
                 .ToList();
+
+            return businesses.Select(b => new PopularBusinessDTO
+            {
+                BusinessId = b.BusinessId,
+                BusinessName = LocalizedText.Choose(b.BusinessName, b.BusinessNameAr),
+                BusinessCategoryName = b.CategoryName == null
+                    ? null
+                    : LocalizedText.Choose(b.CategoryName, b.CategoryNameAr),
+                LogoUrl = b.LogoUrl,
+                Address = b.Address,
+                OpeningTime = b.OpeningTime,
+                ClosingTime = b.ClosingTime,
+                IsOpen = b.IsOpen,
+                OrderCount = b.OrderCount
+            }).ToList();
         }
 
         public bool EmailExists(string email)
@@ -89,6 +109,7 @@ namespace MarketplaceDeliverySystem.Repos
         public List<Business> GetBusinessesByCategoryId(int categoryId)
         {
             return _context.Businesses
+                .Include(b => b.businessCategory)
                 .Where(b => b.BusinessCategoryId == categoryId)
                 .ToList();
         }

@@ -38,7 +38,9 @@ namespace MarketplaceDeliverySystem.Services
             {
                 OwnerId = dto.OwnerId,
                 BusinessName = dto.BusinessName,
+                BusinessNameAr = dto.BusinessNameAr,
                 Description = dto.Description,
+                DescriptionAr = dto.DescriptionAr,
                 LogoUrl = dto.LogoUrl,
                 Email = dto.Email,
                 Address = dto.Address,
@@ -59,7 +61,7 @@ namespace MarketplaceDeliverySystem.Services
             return businesses.Select(b => new BusinessWithProductsRespDTO
             {
 
-                BusinessName = b.BusinessName,
+                BusinessName = LocalizedText.Choose(b.BusinessName, b.BusinessNameAr),
 
                 Address = b.Address,
 
@@ -70,7 +72,7 @@ namespace MarketplaceDeliverySystem.Services
                 Products = b.Products.Select(p => new BusinessProductRespDTO
                 {
 
-                    ProductName = p.ProductName,
+                    ProductName = LocalizedText.Choose(p.ProductName, p.ProductNameAr),
 
                     Price = p.Price,
 
@@ -106,8 +108,8 @@ namespace MarketplaceDeliverySystem.Services
                 {
                     result.Add(new BestProductDTO
                     {
-                        BusinessName = business.BusinessName,
-                        ProductName = bestProduct.ProductName,
+                        BusinessName = LocalizedText.Choose(business.BusinessName, business.BusinessNameAr),
+                        ProductName = LocalizedText.Choose(bestProduct.ProductName, bestProduct.ProductNameAr),
                         AverageRating = bestProduct.Reviews.Count == 0
                             ? 0
                             : bestProduct.Reviews.Average(r => r.Rating),
@@ -130,9 +132,9 @@ namespace MarketplaceDeliverySystem.Services
             return businesses.Select(b => new BusinessCardRespDTO
             {
                 BusinessId = b.BusinessId,
-                BusinessName = b.BusinessName,
+                BusinessName = LocalizedText.Choose(b.BusinessName, b.BusinessNameAr),
                 BusinessCategoryId = b.BusinessCategoryId,
-                BusinessCategoryName = b.businessCategory?.BusinessCategoryName,
+                BusinessCategoryName = b.businessCategory == null ? null : LocalizedText.Choose(b.businessCategory.BusinessCategoryName, b.businessCategory.BusinessCategoryNameAr),
                 LogoUrl = b.LogoUrl,
                 OpeningTime = b.OpeningTime,
                 ClosingTime = b.ClosingTime,

@@ -20,7 +20,8 @@ namespace MarketplaceDeliverySystem.Services
             return categories.Select(c => new CategorySidebarDTO
             {
                 CategoryId = c.BusinessCategoryId,
-                CategoryName = c.BusinessCategoryName
+                CategoryName = LocalizedText.Choose(c.BusinessCategoryName, c.BusinessCategoryNameAr),
+                CategoryNameEn = c.BusinessCategoryName
             }).ToList();
         }
     }

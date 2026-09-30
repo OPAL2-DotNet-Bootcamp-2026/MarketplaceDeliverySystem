@@ -114,26 +114,8 @@ Promise.all([
 
 
             // Remove customer-only menu items
-            const sidebarItems =
-                document.querySelectorAll(".sidebar-item");
-
-            sidebarItems.forEach(item => {
-                // Get the text content of the sidebar item and trim whitespace
-                const text =
-                    item.textContent.trim();
-
-                if (
-                    text.includes("Home") ||
-                    text.includes("Browse Products") ||
-                    text.includes("My Orders") ||
-                    text.includes("Track Delivery") ||
-                    text.includes("Favorites")
-                ) {
-                    // Remove the item from the sidebar if it matches any of the customer-only items
-                    item.remove();
-                }
-
-            });
+            document.querySelectorAll(".sidebar-item[data-customer-only]")
+                .forEach(item => item.remove());
 
 
             // Remove customer promotional card: 
