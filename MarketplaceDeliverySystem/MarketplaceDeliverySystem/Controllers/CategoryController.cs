@@ -16,7 +16,7 @@ namespace MarketplaceDeliverySystem.Controllers
         }
 
         [HttpGet("GetSidebarCategories")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer,BusinessOwner,Admin")]
         public IActionResult GetSidebarCategories()
         {
             var result = _categoryService.GetSidebarCategories();

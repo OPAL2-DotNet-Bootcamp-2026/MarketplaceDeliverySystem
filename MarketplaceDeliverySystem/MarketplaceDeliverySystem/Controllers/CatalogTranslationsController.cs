@@ -14,8 +14,13 @@ namespace MarketplaceDeliverySystem.Controllers
     public class CatalogTranslationsController : ControllerBase
     {
         private readonly MarketplaceContext _context;
+        private readonly IConfiguration _configuration;
 
-        public CatalogTranslationsController(MarketplaceContext context) => _context = context;
+        public CatalogTranslationsController(MarketplaceContext context, IConfiguration configuration)
+        {
+            _context = context;
+            _configuration = configuration;
+        }
 
         public sealed class ProductTranslation
         {
@@ -69,6 +74,8 @@ namespace MarketplaceDeliverySystem.Controllers
                 product.DescriptionArIsManual,
                 product.ProductNameArNeedsReview,
                 product.DescriptionArNeedsReview,
+                AutoTranslationConfigured =
+                    !string.IsNullOrWhiteSpace(_configuration["Translation:ApiKey"]),
                 TranslationPending =
                     (!product.ProductNameArIsManual && product.ProductNameAr == null) ||
                     (!string.IsNullOrWhiteSpace(product.Description) &&

@@ -73,6 +73,8 @@ if (!loginForm || !loginError) {
 
       if (data.role === 'Driver') {
         window.location.href = 'DeliveredStatus.html';
+      } else if (data.role === 'BusinessOwner') {
+        window.location.href = 'AddProduct.html';
       } else {
         window.location.href = 'home.html';
       }

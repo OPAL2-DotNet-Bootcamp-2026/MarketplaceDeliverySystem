@@ -2,6 +2,8 @@
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MarketplaceDeliverySystem.Controllers
 {
@@ -11,10 +13,31 @@ namespace MarketplaceDeliverySystem.Controllers
     public class BusinessController : ControllerBase
     {
         private readonly BusinessService _businessService;
+        private readonly MarketplaceContext _context;
 
-        public BusinessController(BusinessService businessService)
+        public BusinessController(BusinessService businessService, MarketplaceContext context)
         {
             _businessService = businessService;
+            _context = context;
+        }
+
+        [HttpGet("my-businesses")]
+        [Authorize(Roles = "BusinessOwner")]
+        public async Task<IActionResult> GetMyBusinesses()
+        {
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+                return Unauthorized();
+
+            var businesses = await _context.Businesses.AsNoTracking()
+                .Where(b => b.BusinessOwner.UserId == userId)
+                .OrderBy(b => b.BusinessName)
+                .Select(b => new { b.BusinessId, b.BusinessName, b.BusinessNameAr })
+                .ToListAsync();
+            return Ok(businesses.Select(b => new
+            {
+                b.BusinessId,
+                BusinessName = LocalizedText.Choose(b.BusinessName, b.BusinessNameAr)
+            }));
         }
 
         [HttpPost("Register")]
