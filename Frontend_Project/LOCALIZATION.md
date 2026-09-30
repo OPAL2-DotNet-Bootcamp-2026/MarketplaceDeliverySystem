@@ -1,6 +1,6 @@
 # English and Arabic in Frontend_Project
 
-The ten HTML pages load pinned i18next 26.4.2, `sharedComponents/translations.js`,
+The HTML pages load pinned i18next 26.4.2, `sharedComponents/translations.js`,
 and `sharedComponents/localization.js`. The language control is placed in the
 shared header, or at the top of login and registration pages. It saves `en` or
 `ar` in `localStorage` as `marketplaceLanguage`, then reloads the current page
@@ -41,10 +41,21 @@ configuration values through environment variables or a secret manager:
 | `Translation:Endpoint` | `Translation__Endpoint` | Optional base URL. Defaults to `https://api.cognitive.microsofttranslator.com`; use the full `/translator/text/v3.0` base path for a private/custom endpoint. |
 
 Keep the key on the backend; never add it to frontend JavaScript or committed
-configuration. The worker scans up to 20 products every 30 seconds. It
+configuration. For a fresh checkout, copy
+`MarketplaceDeliverySystem/MarketplaceDeliverySystem/appsettings.example.json`
+to `appsettings.json` and supply local database, JWT, and email settings. Git
+ignores `appsettings.json`; keep the Azure key in User Secrets or an environment
+variable. The worker scans up to 20 products every 30 seconds. It
 translates missing Arabic fields for new and existing products, writes the
 result to the same product row, and retries failed calls with a delay. Without
 a configured key, the worker does not run and English fallback remains in use.
+For local testing in Visual Studio, right-click the backend project and choose
+**Manage User Secrets**. Add `Translation:ApiKey` and `Translation:Region` there,
+using the key and region from your Azure Translator resource. Restart the API
+with the Development launch profile after saving the secrets; the worker starts
+only when the API starts. Existing products with empty Arabic fields are picked
+up automatically. The seller page reports when automatic translation is not
+configured, while still allowing manual Arabic entry.
 
 `POST /api/Product` creates a product for an authenticated BusinessOwner of
 the selected business or an Admin. It accepts `businessId`, `categoryId`,
@@ -60,8 +71,12 @@ and review flags with `GET /api/catalog-translations/products/{id}`. They can
 correct or approve both Arabic fields with the product `PUT` endpoint in the
 table above. Sending a null or empty field clears it and queues that field for
 automatic translation. The other catalog translation endpoints remain Admin
-only. `Frontend_Project` currently has no seller editing page; this review
-workflow is available through the backend API.
+only. `Frontend_Project/html pages/AddProduct.html` now offers a simple seller
+workflow. A BusinessOwner is sent there after login. The page loads only that
+owner's businesses and the product categories, creates an English product,
+then displays the generated Arabic draft for review and correction. To test
+the complete flow, run the backend with both migrations applied, an existing
+business linked to the owner, and Azure Translator configured.
 
 Category icons continue to use the English category name returned in
 `categoryNameEn`, while the visible name uses the selected language. Product

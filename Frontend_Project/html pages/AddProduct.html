@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Marketplace</title>
+    <link rel="stylesheet" href="../sharedComponents/localization.css">
+    <link rel="stylesheet" href="../css pages/addProduct.css">
+    <script src="https://unpkg.com/i18next@26.4.2/dist/umd/i18next.min.js"></script>
+    <script src="../sharedComponents/translations.js"></script>
+    <script src="../sharedComponents/localization.js"></script>
+    <script src="../JavaScript/AddProduct.js" defer></script>
+</head>
+<body>
+    <header class="seller-topbar">
+        <div class="seller-brand">Marketplace</div>
+        <div class="seller-account">
+            <span id="ownerName"></span>
+            <button type="button" id="logoutButton" class="text-button">Log Out</button>
+        </div>
+    </header>
+
+    <main class="seller-container">
+        <h1>Add a product</h1>
+        <p class="intro">Enter the English product details. An Arabic draft will be generated after you save.</p>
+
+        <div id="authNotice" class="notice notice-error" role="alert" hidden>
+            Sign in as a Business Owner to add products. <a href="Login.html">Go to login</a>
+        </div>
+        <div id="pageMessage" class="notice" role="status" aria-live="polite" hidden></div>
+
+        <section id="formPanel" class="seller-panel" hidden>
+            <h2>Product details</h2>
+            <form id="productForm">
+                <div class="form-grid">
+                    <label>Business
+                        <select id="businessId" name="businessId" required>
+                            <option value="">Loading businesses...</option>
+                        </select>
+                    </label>
+                    <label>Category
+                        <select id="categoryId" name="categoryId" required>
+                            <option value="">Loading categories...</option>
+                        </select>
+                    </label>
+                    <label class="full-width">Product name (English)
+                        <input id="productName" name="productName" type="text" maxlength="150" required>
+                    </label>
+                    <label class="full-width">Description (English)
+                        <textarea id="description" name="description" rows="3" maxlength="1000"></textarea>
+                    </label>
+                    <label>Price (OMR)
+                        <input id="price" name="price" type="number" min="0.01" step="0.001" required>
+                    </label>
+                    <label>Stock quantity
+                        <input id="stockQuantity" name="stockQuantity" type="number" min="1" step="1" required>
+                    </label>
+                    <label class="full-width">Image URL (optional)
+                        <input id="imageUrl" name="imageUrl" type="url" maxlength="300" placeholder="https://example.com/product.jpg">
+                    </label>
+                </div>
+                <button id="createButton" type="submit" class="primary-button">Save product</button>
+            </form>
+        </section>
+
+        <section id="translationPanel" class="seller-panel" hidden>
+            <h2>Arabic translation</h2>
+            <p id="productNumber" class="muted"></p>
+            <p id="translationStatus" role="status" aria-live="polite"></p>
+            <form id="translationForm">
+                <div class="form-grid">
+                    <label class="full-width">Product name (Arabic)
+                        <input id="productNameAr" name="productNameAr" type="text" lang="ar" dir="rtl" maxlength="150">
+                    </label>
+                    <label class="full-width">Description (Arabic)
+                        <textarea id="descriptionAr" name="descriptionAr" lang="ar" dir="rtl" rows="3" maxlength="1000"></textarea>
+                    </label>
+                </div>
+                <div class="button-row">
+                    <button type="submit" id="saveArabicButton" class="primary-button">Save Arabic changes</button>
+                    <button type="button" id="refreshButton" class="secondary-button">Refresh translation</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
