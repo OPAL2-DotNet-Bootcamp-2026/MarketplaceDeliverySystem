@@ -28,5 +28,9 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public DateTime PaymentDate { get; set; } = DateTime.UtcNow; //System Generated 
+
+        // Thawani checkout session id, set when the customer starts an online payment.
+        [MaxLength(100)]
+        public string? ThawaniSessionId { get; set; }
     }
 }
