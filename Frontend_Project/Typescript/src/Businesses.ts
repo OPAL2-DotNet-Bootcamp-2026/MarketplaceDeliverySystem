@@ -391,7 +391,7 @@ interface BusinessCategory {
 
         const logo: string =
           business.logoUrl ||
-          "../assets/img/ProductPlaceholder.PNG";
+          "../assets/img/LogoPlaceHolder.png";
 
         const cardHtml: string = `
                     <div class="card business-horizontal-card shadow-sm">

@@ -244,7 +244,7 @@
         pageItems.forEach((business) => {
             const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
             const logo = business.logoUrl ||
-                "../assets/img/ProductPlaceholder.PNG";
+                "../assets/img/LogoPlaceHolder.png";
             const cardHtml = `
                     <div class="card business-horizontal-card shadow-sm">
 

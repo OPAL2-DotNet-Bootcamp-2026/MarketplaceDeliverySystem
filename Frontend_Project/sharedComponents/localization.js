@@ -5,7 +5,9 @@
   const english = Object.fromEntries(Object.keys(arabic).map(key => [key, key]));
   Object.assign(english, {
     productCount_one: "{{count}} Product",
-    productCount_other: "{{count}} Products"
+    productCount_other: "{{count}} Products",
+    stockLow: "Only {{quantity}} remaining",
+    stockRemaining: "{{quantity}} remaining"
   });
   Object.assign(arabic, {
     productCount_zero: "لا توجد منتجات",
@@ -45,6 +47,10 @@
     return `${formatted} ${language === "ar" ? "ر.ع." : "OMR"}`;
   }
 
+  function formatNumber(value) {
+    return new Intl.NumberFormat(language === "ar" ? "ar-OM" : "en-OM").format(Number(value));
+  }
+
   function translate(value) {
     const start = value.search(/\S/);
     if (start < 0) return value;
@@ -72,6 +78,7 @@
   }
 
   function translateAttribute(element, name) {
+    if (element.closest('[translate="no"]')) return;
     if (!element.hasAttribute(name)) return;
     const records = originalAttributes.get(element) || {};
     const current = element.getAttribute(name);
@@ -86,11 +93,11 @@
 
   function translateTree(root) {
     if (root.nodeType === Node.TEXT_NODE) {
-      if (!root.parentElement?.closest("script, style, code, pre, textarea, svg")) translateTextNode(root);
+      if (!root.parentElement?.closest('script, style, code, pre, textarea, svg, [translate="no"]')) translateTextNode(root);
       return;
     }
     if (root.nodeType !== Node.ELEMENT_NODE) return;
-    if (root.matches("script, style, code, pre, textarea, svg")) return;
+    if (root.closest('[translate="no"]') || root.matches("script, style, code, pre, textarea, svg")) return;
     for (const name of ["placeholder", "title", "aria-label", "alt"]) translateAttribute(root, name);
     for (const child of root.childNodes) translateTree(child);
   }
@@ -99,17 +106,28 @@
     if (!document.body) return;
     let switcher = document.getElementById("marketplace-language-switcher");
     if (!switcher) {
-      switcher = document.createElement("select");
+      switcher = document.createElement("div");
       switcher.id = "marketplace-language-switcher";
       switcher.className = "marketplace-language-switcher";
+      switcher.setAttribute("role", "group");
       switcher.setAttribute("aria-label", "Language / اللغة");
-      switcher.innerHTML = '<option value="en">English</option><option value="ar">العربية</option>';
-      switcher.value = language;
-      switcher.addEventListener("change", async () => {
-        const selected = switcher.value === "ar" ? "ar" : "en";
-        localStorage.setItem(STORAGE_KEY, selected);
-        await i18next.changeLanguage(selected);
-        window.location.reload();
+      switcher.setAttribute("translate", "no");
+      switcher.innerHTML = `
+        <svg class="language-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9M12 3c-2.5 2.5-3.8 5.5-3.8 9s1.3 6.5 3.8 9"></path>
+        </svg>
+        <button type="button" data-language="en" lang="en" aria-label="English">EN</button>
+        <button type="button" data-language="ar" lang="ar" aria-label="العربية">العربية</button>
+      `;
+      switcher.querySelectorAll("button[data-language]").forEach(button => {
+        const selected = button.dataset.language;
+        button.setAttribute("aria-pressed", String(selected === language));
+        button.addEventListener("click", () => {
+          if (selected === language) return;
+          localStorage.setItem(STORAGE_KEY, selected);
+          window.location.reload();
+        });
       });
     }
     const header = document.querySelector(".header-icons");
@@ -136,7 +154,12 @@
     return nativeAlert(typeof message === "string" ? translate(message) : message);
   };
 
-  window.MarketplaceI18n = { language, t: key => i18next.t(key), formatMoney };
+  window.MarketplaceI18n = {
+    language,
+    t: (key, options) => i18next.t(key, options),
+    formatMoney,
+    formatNumber
+  };
 
   function start() {
     ensureSwitcher();
