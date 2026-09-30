@@ -25,11 +25,19 @@ interface CreateOrderResponse {
     [key: string]: unknown;
 }
 
+interface CheckoutResponse {
+    success: boolean;
+    message: string;
+    checkoutUrl?: string;
+    testMode: boolean;
+}
+
 type PaymentMethodKey = "cod" | "apple_pay" | "card";
 
 // --- Constants & State ---
 
 const CREATE_ORDER_API: string = "https://localhost:7299/api/Order/CreateOrder";
+const PAYMENT_CHECKOUT_API: string = "https://localhost:7299/api/Payment/checkout";
 const DELIVERY_FEE: number = 0.700;
 const VAT_RATE: number = 0.05;
 
@@ -140,6 +148,13 @@ async function handlePlaceOrder(e: MouseEvent): Promise<void> {
         }
 
         const result: CreateOrderResponse = await response.json();
+
+        // Card / Apple Pay are paid online through Thawani; COD skips this.
+        if (rawPayment !== "cod") {
+            await startOnlinePayment(result, paymentMethod, token);
+            return;
+        }
+
         onOrderPlaced(result, paymentMethod);
 
     } catch (err) {
@@ -152,7 +167,41 @@ async function handlePlaceOrder(e: MouseEvent): Promise<void> {
     }
 }
 
-function onOrderPlaced(result: CreateOrderResponse, paymentMethod: string): void {
+async function startOnlinePayment(
+    result: CreateOrderResponse,
+    paymentMethod: string,
+    token: string
+): Promise<void> {
+    // The order already exists, so clear the cart and remember it for tracking.
+    rememberPlacedOrder(result, paymentMethod);
+
+    try {
+        const response = await fetch(PAYMENT_CHECKOUT_API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ orderId: result.orderId })
+        });
+
+        const checkout: CheckoutResponse = await response.json();
+
+        if (response.ok && checkout.success && checkout.checkoutUrl) {
+            window.location.href = checkout.checkoutUrl;
+            return;
+        }
+
+        console.error("Checkout failed:", response.status, checkout);
+    } catch (err) {
+        console.error("Network error while starting payment:", err);
+    }
+
+    alert("Your order was placed, but online payment could not be started. Payment is still pending.");
+    showSuccessModal();
+}
+
+function rememberPlacedOrder(result: CreateOrderResponse, paymentMethod: string): void {
     localStorage.setItem("lastPaymentMethod", paymentMethod);
     localStorage.removeItem("orderCart");
     cartItems = [];
@@ -166,7 +215,14 @@ function onOrderPlaced(result: CreateOrderResponse, paymentMethod: string): void
     }
 
     sessionStorage.setItem("trackedOrderIds", JSON.stringify(trackedOrderIds));
+}
 
+function onOrderPlaced(result: CreateOrderResponse, paymentMethod: string): void {
+    rememberPlacedOrder(result, paymentMethod);
+    showSuccessModal();
+}
+
+function showSuccessModal(): void {
     const trackLink = document.querySelector<HTMLAnchorElement>(".btn-track-order");
     if (trackLink) {
         trackLink.href = "TrackOrder.html";
