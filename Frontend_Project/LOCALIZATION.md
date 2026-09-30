@@ -28,10 +28,11 @@ with these endpoints:
 | `PUT /api/catalog-translations/categories/{id}` | `{"nameAr":"...","descriptionAr":"..."}` |
 | `PUT /api/catalog-translations/business-categories/{id}` | `{"nameAr":"..."}` |
 
-## Automatic product translation
+## Automatic catalog translation
 
 The backend uses [Azure AI Translator's text API](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/how-to/use-rest-api)
-to generate Arabic product names and descriptions. Set these backend
+to generate Arabic product names and descriptions, category names and descriptions,
+business category names, and business names and descriptions. Set these backend
 configuration values through environment variables or a secret manager:
 
 | Configuration key | Environment variable | Purpose |
@@ -45,15 +46,19 @@ configuration. For a fresh checkout, copy
 `MarketplaceDeliverySystem/MarketplaceDeliverySystem/appsettings.example.json`
 to `appsettings.json` and supply local database, JWT, and email settings. Git
 ignores `appsettings.json`; keep the Azure key in User Secrets or an environment
-variable. The worker scans up to 20 products every 30 seconds. It
-translates missing Arabic fields for new and existing products, writes the
-result to the same product row, and retries failed calls with a delay. Without
-a configured key, the worker does not run and English fallback remains in use.
+variable. The product worker scans up to 20 products every 30 seconds. A separate
+catalog worker scans up to 10 rows of each other catalog type every 30 seconds.
+Both fill missing Arabic fields for new and existing rows and write the result
+to the same row. Failed catalog calls retry with an increasing delay while the
+API runs. Existing Arabic text, including manual corrections, is preserved. To
+queue a new translation after editing English text, clear the corresponding
+Arabic field with the Admin translation endpoint. Without a configured key,
+the workers do not run and English fallback remains in use.
 For local testing in Visual Studio, right-click the backend project and choose
 **Manage User Secrets**. Add `Translation:ApiKey` and `Translation:Region` there,
 using the key and region from your Azure Translator resource. Restart the API
-with the Development launch profile after saving the secrets; the worker starts
-only when the API starts. Existing products with empty Arabic fields are picked
+with the Development launch profile after saving the secrets; the workers start
+only when the API starts. Existing rows with empty Arabic fields are picked
 up automatically. The seller page reports when automatic translation is not
 configured, while still allowing manual Arabic entry.
 

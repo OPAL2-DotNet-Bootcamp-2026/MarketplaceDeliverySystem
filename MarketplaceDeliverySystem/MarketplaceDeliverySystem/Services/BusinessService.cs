@@ -38,9 +38,9 @@ namespace MarketplaceDeliverySystem.Services
             {
                 OwnerId = dto.OwnerId,
                 BusinessName = dto.BusinessName,
-                BusinessNameAr = dto.BusinessNameAr,
+                BusinessNameAr = string.IsNullOrWhiteSpace(dto.BusinessNameAr) ? null : dto.BusinessNameAr.Trim(),
                 Description = dto.Description,
-                DescriptionAr = dto.DescriptionAr,
+                DescriptionAr = string.IsNullOrWhiteSpace(dto.DescriptionAr) ? null : dto.DescriptionAr.Trim(),
                 LogoUrl = dto.LogoUrl,
                 Email = dto.Email,
                 Address = dto.Address,

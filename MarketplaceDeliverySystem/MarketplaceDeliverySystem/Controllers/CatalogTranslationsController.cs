@@ -99,8 +99,8 @@ namespace MarketplaceDeliverySystem.Controllers
         {
             Business? business = await _context.Businesses.FindAsync(id);
             if (business == null) return NotFound();
-            business.BusinessNameAr = translation.NameAr?.Trim();
-            business.DescriptionAr = translation.DescriptionAr?.Trim();
+            business.BusinessNameAr = string.IsNullOrWhiteSpace(translation.NameAr) ? null : translation.NameAr.Trim();
+            business.DescriptionAr = string.IsNullOrWhiteSpace(translation.DescriptionAr) ? null : translation.DescriptionAr.Trim();
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -111,8 +111,8 @@ namespace MarketplaceDeliverySystem.Controllers
         {
             Category? category = await _context.Categories.FindAsync(id);
             if (category == null) return NotFound();
-            category.CategoryNameAr = translation.NameAr?.Trim();
-            category.DescriptionAr = translation.DescriptionAr?.Trim();
+            category.CategoryNameAr = string.IsNullOrWhiteSpace(translation.NameAr) ? null : translation.NameAr.Trim();
+            category.DescriptionAr = string.IsNullOrWhiteSpace(translation.DescriptionAr) ? null : translation.DescriptionAr.Trim();
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -123,7 +123,7 @@ namespace MarketplaceDeliverySystem.Controllers
         {
             BusinessCategory? category = await _context.BusinessCategories.FindAsync(id);
             if (category == null) return NotFound();
-            category.BusinessCategoryNameAr = translation.NameAr?.Trim();
+            category.BusinessCategoryNameAr = string.IsNullOrWhiteSpace(translation.NameAr) ? null : translation.NameAr.Trim();
             await _context.SaveChangesAsync();
             return NoContent();
         }

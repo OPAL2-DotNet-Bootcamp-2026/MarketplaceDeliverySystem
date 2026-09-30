@@ -54,7 +54,10 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddHttpClient<ITextTranslator, AzureTextTranslator>(client =>
                 client.Timeout = TimeSpan.FromSeconds(20));
             if (!string.IsNullOrWhiteSpace(builder.Configuration["Translation:ApiKey"]))
+            {
                 builder.Services.AddHostedService<ProductTranslationWorker>();
+                builder.Services.AddHostedService<CatalogTranslationWorker>();
+            }
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<BusinessOwnerService>();
             builder.Services.AddScoped<BusinessService>();
