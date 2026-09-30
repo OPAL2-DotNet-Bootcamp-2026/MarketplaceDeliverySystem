@@ -31,6 +31,17 @@ namespace MarketplaceDeliverySystem.Repos
             _context.SaveChanges();
         }
 
+        // Order with items and payment, only if it belongs to the given user.
+        public Order? GetForPayment(int orderId, int userId)
+        {
+            return _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Payment)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .FirstOrDefault(o => o.OrderId == orderId && o.Customer.UserId == userId);
+        }
+
         public Order? GetById(int orderId, int userId)
         {
             return _context.Orders
