@@ -374,10 +374,6 @@ namespace MarketplaceDeliverySystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ThawaniSessionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.HasKey("PaymentId");
 
                     b.HasIndex("OrderId")
