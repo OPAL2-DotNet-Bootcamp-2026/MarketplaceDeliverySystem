@@ -1,6 +1,7 @@
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 using MarketplaceDeliverySystem.Services;
+using MarketplaceDeliverySystem.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
@@ -67,7 +68,10 @@ namespace MarketplaceDeliverySystem
             builder.Services.AddScoped<DriverService>();
             builder.Services.AddScoped<OrderItemService>();
             builder.Services.AddScoped<OrderService>();
-            builder.Services.AddScoped<PaymentService>();
+            // Typed HttpClient: PaymentService calls the Thawani API.
+            builder.Services.Configure<ThawaniSettings>(
+                builder.Configuration.GetSection("Thawani"));
+            builder.Services.AddHttpClient<PaymentService>();
             builder.Services.AddScoped<ReviewService>();
             builder.Services.AddScoped<AdminService>();
             builder.Services.AddScoped<BusinessCategoryService>();

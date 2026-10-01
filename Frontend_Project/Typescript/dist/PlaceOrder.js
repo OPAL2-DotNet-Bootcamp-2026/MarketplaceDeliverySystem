@@ -2,6 +2,7 @@
 // --- Interfaces & Types ---
 // --- Constants & State ---
 const CREATE_ORDER_API = "https://localhost:7299/api/Order/CreateOrder";
+const PAYMENT_CHECKOUT_API = "https://localhost:7299/api/Payment/checkout";
 const DELIVERY_FEE = 0.700;
 const VAT_RATE = 0.05;
 const PAYMENT_METHOD_LABELS = {
@@ -92,6 +93,11 @@ async function handlePlaceOrder(e) {
             return;
         }
         const result = await response.json();
+        // Card / Apple Pay are paid online through Thawani; COD skips this.
+        if (rawPayment !== "cod") {
+            await startOnlinePayment(result, paymentMethod, token);
+            return;
+        }
         onOrderPlaced(result, paymentMethod);
     }
     catch (err) {
@@ -103,7 +109,34 @@ async function handlePlaceOrder(e) {
         }
     }
 }
-function onOrderPlaced(result, paymentMethod) {
+async function startOnlinePayment(result, paymentMethod, token) {
+    // The order already exists, so clear the cart and remember it for tracking.
+    rememberPlacedOrder(result, paymentMethod);
+    try {
+        const response = await fetch(PAYMENT_CHECKOUT_API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ orderId: result.orderId })
+        });
+        const checkout = await response.json();
+        if (response.ok && checkout.success && checkout.checkoutUrl && checkout.sessionId) {
+            // The backend keeps no session id, so hold it for the payment result page.
+            localStorage.setItem(`thawaniSession_${result.orderId}`, checkout.sessionId);
+            window.location.href = checkout.checkoutUrl;
+            return;
+        }
+        console.error("Checkout failed:", response.status, checkout);
+    }
+    catch (err) {
+        console.error("Network error while starting payment:", err);
+    }
+    alert("Your order was placed, but online payment could not be started. Payment is still pending.");
+    showSuccessModal();
+}
+function rememberPlacedOrder(result, paymentMethod) {
     localStorage.setItem("lastPaymentMethod", paymentMethod);
     localStorage.removeItem("orderCart");
     cartItems = [];
@@ -112,6 +145,12 @@ function onOrderPlaced(result, paymentMethod) {
         trackedOrderIds.push(result.orderId);
     }
     sessionStorage.setItem("trackedOrderIds", JSON.stringify(trackedOrderIds));
+}
+function onOrderPlaced(result, paymentMethod) {
+    rememberPlacedOrder(result, paymentMethod);
+    showSuccessModal();
+}
+function showSuccessModal() {
     const trackLink = document.querySelector(".btn-track-order");
     if (trackLink) {
         trackLink.href = "TrackOrder.html";
