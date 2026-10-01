@@ -1,9 +1,10 @@
-using MarketplaceDeliverySystem.DTOs;
+﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 using MarketplaceDeliverySystem.Settings;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace MarketplaceDeliverySystem.Services
 {
@@ -12,6 +13,11 @@ namespace MarketplaceDeliverySystem.Services
     public class PaymentService
     {
         private const int MaxProductNameLength = 40; // Thawani limit
+
+        // Thawani session ids look like "checkout_AbC123...". Checked before the id
+        // is placed in a URL path.
+        private static readonly Regex SessionIdPattern =
+            new(@"^checkout_[A-Za-z0-9]{10,100}$", RegexOptions.Compiled);
 
         private readonly HttpClient _http;
         private readonly ThawaniSettings _settings;
@@ -127,13 +133,13 @@ namespace MarketplaceDeliverySystem.Services
                     return CheckoutFail("Could not start online payment.");
                 }
 
-                payment.ThawaniSessionId = sessionId;
-                _paymentRepo.Update();
-
+                // The session id is not stored in our DB (no schema change). The browser
+                // keeps it and sends it back to verify, which re-checks it with Thawani.
                 return new PaymentCheckoutOutputDTO
                 {
                     Success = true,
                     Message = "Checkout session created.",
+                    SessionId = sessionId,
                     CheckoutUrl =
                         $"{_settings.BaseUrl}/pay/{sessionId}?key={_settings.PublishableKey}",
                     TestMode = _settings.UseTestMode
@@ -150,7 +156,8 @@ namespace MarketplaceDeliverySystem.Services
         }
 
         // Asks Thawani for the real session state. Never trust the redirect URL alone.
-        public async Task<PaymentVerifyOutputDTO> VerifyPaymentAsync(int orderId, int userId)
+        public async Task<PaymentVerifyOutputDTO> VerifyPaymentAsync(
+            int orderId, int userId, string? sessionId)
         {
             Order? order = _orderRepo.GetForPayment(orderId, userId);
 
@@ -173,7 +180,7 @@ namespace MarketplaceDeliverySystem.Services
                 };
             }
 
-            if (string.IsNullOrEmpty(payment.ThawaniSessionId))
+            if (string.IsNullOrEmpty(sessionId) || !SessionIdPattern.IsMatch(sessionId))
             {
                 return VerifyFail(orderId, "No online payment was started for this order.");
             }
@@ -181,7 +188,7 @@ namespace MarketplaceDeliverySystem.Services
             try
             {
                 HttpResponseMessage response = await _http.GetAsync(
-                    $"/api/v1/checkout/session/{payment.ThawaniSessionId}");
+                    $"/api/v1/checkout/session/{sessionId}");
                 string raw = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -192,10 +199,21 @@ namespace MarketplaceDeliverySystem.Services
                 }
 
                 using JsonDocument doc = JsonDocument.Parse(raw);
-                string? thawaniStatus = doc.RootElement
-                    .GetProperty("data")
-                    .GetProperty("payment_status")
-                    .GetString();
+                JsonElement data = doc.RootElement.GetProperty("data");
+                string? thawaniStatus = data.GetProperty("payment_status").GetString();
+                string? reference = data.GetProperty("client_reference_id").GetString();
+                int paidBaisa = data.GetProperty("total_amount").GetInt32();
+
+                // The session must be one we created for THIS order and for THIS amount.
+                // Stops a paid session of another order being used to mark this one paid.
+                if (reference != order.OrderId.ToString() ||
+                    paidBaisa != ToBaisa(order.TotalAmount))
+                {
+                    _logger.LogWarning(
+                        "Thawani session {Session} does not match order {Order}.",
+                        sessionId, order.OrderId);
+                    return VerifyFail(orderId, "Payment does not match this order.");
+                }
 
                 if (thawaniStatus == "paid")
                 {

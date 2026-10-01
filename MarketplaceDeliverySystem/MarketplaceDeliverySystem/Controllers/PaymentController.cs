@@ -1,4 +1,4 @@
-using MarketplaceDeliverySystem.DTOs;
+﻿using MarketplaceDeliverySystem.DTOs;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,11 +41,11 @@ namespace MarketplaceDeliverySystem.Controllers
             return Ok(result);
         }
 
-        // GET: api/Payment/verify/5
+        // GET: api/Payment/verify/5?sessionId=checkout_...
         // Checks with Thawani whether the order was really paid.
         [EnableRateLimiting("orderPolicy")]
         [HttpGet("verify/{orderId}")]
-        public async Task<IActionResult> Verify(int orderId)
+        public async Task<IActionResult> Verify(int orderId, [FromQuery] string? sessionId)
         {
             if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             {
@@ -53,7 +53,7 @@ namespace MarketplaceDeliverySystem.Controllers
             }
 
             PaymentVerifyOutputDTO result =
-                await _paymentService.VerifyPaymentAsync(orderId, userId);
+                await _paymentService.VerifyPaymentAsync(orderId, userId, sessionId);
 
             return Ok(result);
         }
