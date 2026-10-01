@@ -122,7 +122,9 @@ async function startOnlinePayment(result, paymentMethod, token) {
             body: JSON.stringify({ orderId: result.orderId })
         });
         const checkout = await response.json();
-        if (response.ok && checkout.success && checkout.checkoutUrl) {
+        if (response.ok && checkout.success && checkout.checkoutUrl && checkout.sessionId) {
+            // The backend keeps no session id, so hold it for the payment result page.
+            localStorage.setItem(`thawaniSession_${result.orderId}`, checkout.sessionId);
             window.location.href = checkout.checkoutUrl;
             return;
         }

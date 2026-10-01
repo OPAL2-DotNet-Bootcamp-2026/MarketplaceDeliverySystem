@@ -29,6 +29,7 @@ interface CheckoutResponse {
     success: boolean;
     message: string;
     checkoutUrl?: string;
+    sessionId?: string;
     testMode: boolean;
 }
 
@@ -187,7 +188,9 @@ async function startOnlinePayment(
 
         const checkout: CheckoutResponse = await response.json();
 
-        if (response.ok && checkout.success && checkout.checkoutUrl) {
+        if (response.ok && checkout.success && checkout.checkoutUrl && checkout.sessionId) {
+            // The backend keeps no session id, so hold it for the payment result page.
+            localStorage.setItem(`thawaniSession_${result.orderId}`, checkout.sessionId);
             window.location.href = checkout.checkoutUrl;
             return;
         }

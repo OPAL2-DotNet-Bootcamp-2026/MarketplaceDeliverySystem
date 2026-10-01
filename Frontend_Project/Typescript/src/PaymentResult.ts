@@ -29,9 +29,15 @@ async function verifyPayment(): Promise<void> {
         return;
     }
 
+    const sessionId = localStorage.getItem(`thawaniSession_${orderId}`);
+    if (!sessionId) {
+        showResult("failed", "Payment not found", "No payment was started from this browser for this order.");
+        return;
+    }
+
     try {
         // The URL "status" param is ignored on purpose: only Thawani's answer counts.
-        const response = await fetch(`${VERIFY_PAYMENT_API}/${orderId}`, {
+        const response = await fetch(`${VERIFY_PAYMENT_API}/${orderId}?sessionId=${encodeURIComponent(sessionId)}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -44,6 +50,7 @@ async function verifyPayment(): Promise<void> {
         const result: VerifyResponse = await response.json();
 
         if (result.success) {
+            localStorage.removeItem(`thawaniSession_${orderId}`);
             showResult("success", "Payment successful", `Order #${result.orderId} is paid. Thank you!`);
         } else {
             showResult("failed", "Payment not completed", result.message);
