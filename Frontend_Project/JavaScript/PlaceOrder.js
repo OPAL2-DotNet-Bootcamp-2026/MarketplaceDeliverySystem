@@ -4,8 +4,9 @@ const VAT_RATE = 0.05;
 
 let cartItems = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     loadCartFromStorage();
+    await refreshCartNames();
     renderCartItems();
     updateOrderSummary();
 
@@ -16,6 +17,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     attachModalHandlers();
 });
+
+async function refreshCartNames() {
+    if (!cartItems.length) return;
+    const token = localStorage.getItem("authToken");
+    const businessId = cartItems[0].businessId;
+    if (!token || !businessId) return;
+    try {
+        const response = await fetch(`https://localhost:7299/api/Product/business/${businessId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!response.ok) return;
+        const products = await response.json();
+        if (!Array.isArray(products)) return;
+        const names = new Map(products.map(product => [product.productId, product.productName]));
+        for (const item of cartItems) {
+            if (names.has(item.productId)) item.productName = names.get(item.productId);
+        }
+        localStorage.setItem("orderCart", JSON.stringify(cartItems));
+    } catch {
+        // Keep the saved name when the API is temporarily unavailable.
+    }
+}
 
 function attachModalHandlers() {
     const modal = document.getElementById("orderSuccessModal");

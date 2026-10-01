@@ -1,0 +1,92 @@
+# English and Arabic in Frontend_Project
+
+The HTML pages load pinned i18next 26.4.2, `sharedComponents/translations.js`,
+and `sharedComponents/localization.js`. The language control is placed in the
+shared header, or at the top of login and registration pages. It saves `en` or
+`ar` in `localStorage` as `marketplaceLanguage`, then reloads the current page
+so API content is requested in the selected language. The Arabic view sets
+`lang="ar"` and `dir="rtl"`.
+
+`localization.js` sends `Accept-Language` to the existing API. The backend
+returns the Arabic catalog field when populated, otherwise the English field.
+Order, payment, and delivery status values remain unchanged in API responses
+and requests. The frontend translates only their displayed labels. Existing
+cart quantities and prices are preserved while checkout refreshes product
+names for the selected language.
+
+## Populate catalog translations
+
+Apply both the `AddArabicCatalogFields` and `AddProductAutoTranslation` EF
+migrations before running the updated API. Existing rows display English until
+Arabic copy is supplied or generated. An Admin token may update translations
+with these endpoints:
+
+| Endpoint | JSON body |
+| --- | --- |
+| `PUT /api/catalog-translations/products/{id}` | `{"nameAr":"...","descriptionAr":"..."}` |
+| `PUT /api/catalog-translations/businesses/{id}` | `{"nameAr":"...","descriptionAr":"..."}` |
+| `PUT /api/catalog-translations/categories/{id}` | `{"nameAr":"...","descriptionAr":"..."}` |
+| `PUT /api/catalog-translations/business-categories/{id}` | `{"nameAr":"..."}` |
+
+## Automatic catalog translation
+
+The backend uses [Azure AI Translator's text API](https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/how-to/use-rest-api)
+to generate Arabic product names and descriptions, category names and descriptions,
+business category names, and business names and descriptions. Set these backend
+configuration values through environment variables or a secret manager:
+
+| Configuration key | Environment variable | Purpose |
+| --- | --- | --- |
+| `Translation:ApiKey` | `Translation__ApiKey` | Azure Translator resource key. Required to start the worker. |
+| `Translation:Region` | `Translation__Region` | Resource region. Required for regional or multi-service resources. |
+| `Translation:Endpoint` | `Translation__Endpoint` | Optional base URL. Defaults to `https://api.cognitive.microsofttranslator.com`; use the full `/translator/text/v3.0` base path for a private/custom endpoint. |
+
+Keep the key on the backend; never add it to frontend JavaScript or committed
+configuration. For a fresh checkout, copy
+`MarketplaceDeliverySystem/MarketplaceDeliverySystem/appsettings.example.json`
+to `appsettings.json` and supply local database, JWT, and email settings. Git
+ignores `appsettings.json`; keep the Azure key in User Secrets or an environment
+variable. The product worker scans up to 20 products every 30 seconds. A separate
+catalog worker scans up to 10 rows of each other catalog type every 30 seconds.
+Both fill missing Arabic fields for new and existing rows and write the result
+to the same row. Failed catalog calls retry with an increasing delay while the
+API runs. Existing Arabic text, including manual corrections, is preserved. To
+queue a new translation after editing English text, clear the corresponding
+Arabic field with the Admin translation endpoint. Without a configured key,
+the workers do not run and English fallback remains in use.
+For local testing in Visual Studio, right-click the backend project and choose
+**Manage User Secrets**. Add `Translation:ApiKey` and `Translation:Region` there,
+using the key and region from your Azure Translator resource. Restart the API
+with the Development launch profile after saving the secrets; the workers start
+only when the API starts. Existing rows with empty Arabic fields are picked
+up automatically. The seller page reports when automatic translation is not
+configured, while still allowing manual Arabic entry.
+
+`POST /api/Product` creates a product for an authenticated BusinessOwner of
+the selected business or an Admin. It accepts `businessId`, `categoryId`,
+`productName`, optional `description`, `price`, `stockQuantity`, and optional
+`imageUrl`, `productNameAr`, and `descriptionAr`. The existing
+`PUT /api/Product/update/{id}` is also restricted to that owner or an Admin.
+An English edit clears only machine-generated Arabic for retranslation.
+Seller-provided Arabic remains intact and is flagged for review after its
+English source changes.
+
+Owners and Admins can read a product's English and Arabic copy, pending state,
+and review flags with `GET /api/catalog-translations/products/{id}`. They can
+correct or approve both Arabic fields with the product `PUT` endpoint in the
+table above. Sending a null or empty field clears it and queues that field for
+automatic translation. The other catalog translation endpoints remain Admin
+only. `Frontend_Project/html pages/AddProduct.html` now offers a simple seller
+workflow. A BusinessOwner is sent there after login. The page loads only that
+owner's businesses and the product categories, creates an English product,
+then displays the generated Arabic draft for review and correction. To test
+the complete flow, run the backend with both migrations applied, an existing
+business linked to the owner, and Azure Translator configured.
+
+Category icons continue to use the English category name returned in
+`categoryNameEn`, while the visible name uses the selected language. Product
+search checks both English and Arabic names.
+
+The legacy pages load some scripts from `Typescript/dist` and others from
+`JavaScript`. When changing a TypeScript page, rebuild `Typescript/src` into
+`Typescript/dist` with its `tsconfig.json` before shipping.

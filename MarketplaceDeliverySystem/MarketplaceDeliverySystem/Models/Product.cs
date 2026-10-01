@@ -30,10 +30,20 @@ namespace MarketplaceDeliverySystem.Models
         [Required(ErrorMessage = "Product name is required.")]
         [MaxLength(150)]
         public string ProductName { get; set; } = string.Empty;
+        [MaxLength(150)]
+        public string? ProductNameAr { get; set; }
+        public bool ProductNameArIsManual { get; set; }
+        public bool ProductNameArNeedsReview { get; set; }
         //User Input
 
         [MaxLength(1000)]
         public string? Description { get; set; }
+        [MaxLength(1000)]
+        public string? DescriptionAr { get; set; }
+        public bool DescriptionArIsManual { get; set; }
+        public bool DescriptionArNeedsReview { get; set; }
+        public int TranslationAttempts { get; set; }
+        public DateTime? NextTranslationAttemptAtUtc { get; set; }
         //User Input (Optional)
 
         [Required]

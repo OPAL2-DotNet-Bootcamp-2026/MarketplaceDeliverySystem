@@ -10,6 +10,7 @@ interface Business {
 interface BusinessCategory {
   categoryId: number;
   categoryName: string;
+  categoryNameEn?: string;
 }
 
 (() => {
@@ -181,7 +182,7 @@ interface BusinessCategory {
         (cat: BusinessCategory): void => {
 
           const emoji: string =
-            getCategoryEmoji(cat.categoryName);
+            getCategoryEmoji(cat.categoryNameEn || cat.categoryName);
 
           html += `
                         <a href="#"
@@ -390,7 +391,7 @@ interface BusinessCategory {
 
         const logo: string =
           business.logoUrl ||
-          "../assets/img/ProductPlaceholder.PNG";
+          "../assets/img/LogoPlaceHolder.png";
 
         const cardHtml: string = `
                     <div class="card business-horizontal-card shadow-sm">

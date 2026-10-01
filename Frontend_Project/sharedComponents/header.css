@@ -67,6 +67,8 @@
     /*  Without display: flex, the elements might appear one above another.*/
     display: flex;
     align-items: center;
+    direction: ltr;
+    text-align: left;
 }
 
 /* Logo image */

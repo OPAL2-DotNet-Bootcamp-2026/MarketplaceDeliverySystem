@@ -12,9 +12,13 @@ namespace MarketplaceDeliverySystem.Models
         [Required]
         [MaxLength(100)]
         public string CategoryName { get; set; } = string.Empty;//user input
+        [MaxLength(100)]
+        public string? CategoryNameAr { get; set; }
 
         [MaxLength(500)]
         public string? Description { get; set; }//user input
+        [MaxLength(500)]
+        public string? DescriptionAr { get; set; }
 
         [MaxLength(300)]
         public string? ImageUrl { get; set; }//user input

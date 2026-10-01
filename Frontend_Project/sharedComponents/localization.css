@@ -1,0 +1,76 @@
+.marketplace-language-switcher {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 2px;
+  direction: ltr;
+  padding: 4px;
+  color: #0a1f44;
+  background: #fff;
+  border: 1px solid rgba(10, 31, 68, .2);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(10, 31, 68, .08);
+  white-space: nowrap;
+}
+
+.marketplace-language-switcher .language-icon {
+  width: 17px;
+  height: 17px;
+  margin: 0 5px 0 6px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.marketplace-language-switcher button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #0a1f44;
+  padding: 6px 9px;
+  font: 700 .78rem Arial, sans-serif;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.marketplace-language-switcher button:hover:not([aria-pressed="true"]) {
+  background: #fff0e6;
+}
+
+.marketplace-language-switcher button[aria-pressed="true"] {
+  color: #fff;
+  background: #fd751f;
+}
+
+.marketplace-language-switcher button:focus-visible {
+  outline: 2px solid #0a1f44;
+  outline-offset: 2px;
+}
+
+.marketplace-language-switcher.language-floating {
+  position: fixed;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 1100;
+}
+
+html[dir="rtl"] body { text-align: start; }
+html[dir="rtl"] .header-top { direction: ltr; flex-direction: row-reverse; }
+html[dir="rtl"] .header-top .tagline-container { direction: rtl; }
+html[dir="rtl"] .sidebar { left: auto; right: 0; transform: translateX(100%); }
+html[dir="rtl"] .sidebar.open { transform: translateX(0); }
+html[dir="rtl"] .sidebar .live-badge { margin-left: 0; margin-right: auto; }
+html[dir="rtl"] .header .navigation,
+html[dir="rtl"] .floating-navigation,
+html[dir="rtl"] .sidebar-menu { direction: rtl; }
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="password"] { direction: ltr; text-align: left; }
+html[dir="rtl"] .order-number,
+html[dir="rtl"] .order-total,
+html[dir="rtl"] .price,
+html[dir="rtl"] .value { unicode-bidi: isolate; }
+html[dir="rtl"] .back-link .bi-arrow-left,
+html[dir="rtl"] .learn-btn .bi-arrow-right { transform: scaleX(-1); }

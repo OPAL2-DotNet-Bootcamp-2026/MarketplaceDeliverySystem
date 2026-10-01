@@ -221,7 +221,7 @@ namespace MarketplaceDeliverySystem.Services
                 return new MessageOutputDTO
                 {
                     Success = false,
-                    Message = "Order not found."
+                    Message = LocalizedText.Choose("Order not found.", "لم يتم العثور على الطلب.")
                 };
             }
 
@@ -230,7 +230,7 @@ namespace MarketplaceDeliverySystem.Services
                 return new MessageOutputDTO
                 {
                     Success = false,
-                    Message = "Order is already cancelled."
+                    Message = LocalizedText.Choose("Order is already cancelled.", "الطلب ملغى بالفعل.")
                 };
             }
 
@@ -239,7 +239,7 @@ namespace MarketplaceDeliverySystem.Services
                 return new MessageOutputDTO
                 {
                     Success = false,
-                    Message = "Delivered order cannot be cancelled."
+                    Message = LocalizedText.Choose("Delivered order cannot be cancelled.", "لا يمكن إلغاء طلب تم توصيله.")
                 };
             }
 
@@ -291,7 +291,7 @@ namespace MarketplaceDeliverySystem.Services
             return new MessageOutputDTO
             {
                 Success = true,
-                Message = "Order cancelled successfully."
+                Message = LocalizedText.Choose("Order cancelled successfully.", "تم إلغاء الطلب بنجاح.")
             };
         }
 
@@ -308,7 +308,7 @@ namespace MarketplaceDeliverySystem.Services
 
                 CustomerName = order.Customer.User.FullName,
 
-                BusinessName = order.Business.BusinessName,
+                BusinessName = LocalizedText.Choose(order.Business.BusinessName, order.Business.BusinessNameAr),
 
                 OrderDate = order.OrderDate,
 
@@ -328,7 +328,7 @@ namespace MarketplaceDeliverySystem.Services
 
                 Products = order.OrderItems.Select(item => new OrderItemDTO
                 {
-                    ProductName = item.Product.ProductName,
+                    ProductName = LocalizedText.Choose(item.Product.ProductName, item.Product.ProductNameAr),
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice,
                     SubTotal = item.Quantity * item.UnitPrice
@@ -348,7 +348,7 @@ namespace MarketplaceDeliverySystem.Services
 
                 CustomerName = order.Customer.User.FullName,
 
-                BusinessName = order.Business.BusinessName,
+                BusinessName = LocalizedText.Choose(order.Business.BusinessName, order.Business.BusinessNameAr),
 
                 OrderDate = order.OrderDate,
 
@@ -364,7 +364,7 @@ namespace MarketplaceDeliverySystem.Services
 
                 Products = order.OrderItems.Select(item => new OrderItemDTO
                 {
-                    ProductName = item.Product.ProductName,
+                    ProductName = LocalizedText.Choose(item.Product.ProductName, item.Product.ProductNameAr),
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice,
                     SubTotal = item.Quantity * item.UnitPrice
@@ -386,7 +386,7 @@ namespace MarketplaceDeliverySystem.Services
                     order.Customer.User.FullName,
 
                 BusinessName =
-                    order.Business.BusinessName,
+                    LocalizedText.Choose(order.Business.BusinessName, order.Business.BusinessNameAr),
 
                 OrderDate =
                     order.OrderDate,
@@ -413,7 +413,7 @@ namespace MarketplaceDeliverySystem.Services
                     order.OrderItems.Select(item => new OrderItemDTO
                     {
                         ProductName =
-                            item.Product.ProductName,
+                            LocalizedText.Choose(item.Product.ProductName, item.Product.ProductNameAr),
 
                         Quantity =
                             item.Quantity,

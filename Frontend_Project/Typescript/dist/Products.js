@@ -105,8 +105,11 @@ async function loadBusinessHeader(businessId) {
         // BUSINESS INFORMATION
         // ====================================================
         const logo = business.logoUrl ||
-            "../assets/img/ProductPlaceholder.PNG";
+            "../assets/img/LogoPlaceHolder.png";
         const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
+        const statusKey = business.isOpen ? "Open" : "Closed";
+        const statusLabel = window.MarketplaceI18n?.t(statusKey) || statusKey;
+        const hoursLabel = formattedHours ? `${statusLabel}: ${formattedHours}` : statusLabel;
         const phone = business.phoneNumber ||
             "+968 9000 0000";
         // ====================================================
@@ -146,7 +149,7 @@ async function loadBusinessHeader(businessId) {
             ? "badge-status-open"
             : "badge-status-closed"} small">
 
-                            🕒 Open: ${formattedHours}
+                            🕒 ${hoursLabel}
 
                         </span>
 
@@ -173,7 +176,7 @@ async function loadBusinessHeader(businessId) {
                             type="button"
                             class="btn btn-outline-favorite d-inline-flex align-items-center justify-content-center gap-2">
 
-                            ❤️ Add to Favorite
+                            <span aria-hidden="true">❤️</span><span>Add to Favorite</span>
 
                         </button>
 
@@ -413,25 +416,11 @@ function renderFilteredProducts() {
         // ==================================================
         // STOCK BADGE
         // ==================================================
-        const stockBadge = product.stockQuantity <= 8
-            ? `
-                        <span class="stock-tag-low">
-
-                            ⚠️ Only
-                            ${product.stockQuantity}
-                            remaining
-
-                        </span>
-                    `
-            : `
-                        <span class="stock-tag-good">
-
-                            ✓
-                            ${product.stockQuantity}
-                            remaining
-
-                        </span>
-                    `;
+        const lowStock = product.stockQuantity <= 8;
+        const stockText = formatStockText(product.stockQuantity, lowStock);
+        const stockBadge = lowStock
+            ? `<span class="stock-tag-low"><span aria-hidden="true">⚠️</span> ${stockText}</span>`
+            : `<span class="stock-tag-good"><span aria-hidden="true">✓</span> ${stockText}</span>`;
         // ==================================================
         // PRODUCT CARD
         // ==================================================
@@ -721,14 +710,9 @@ function renderFilteredProducts() {
 
 
                                                 <span
-                                                    class="${product.stockQuantity <= 8
-                ? "stock-tag-low"
-                : "stock-tag-good"}">
+                                                    class="${lowStock ? "stock-tag-low" : "stock-tag-good"}">
 
-                                                    [
-                                                    ${product.stockQuantity}
-                                                    remaining
-                                                    ]
+                                                    ${stockText}
 
                                                 </span>
 
@@ -1031,31 +1015,33 @@ function addProductToOrder(productId, productName) {
 // ============================================================
 function formatTimeOnlyRange(openingStr, closingStr) {
     if (!openingStr || !closingStr) {
-        return "Closed";
+        return "";
     }
+    const locale = document.documentElement.lang === "ar" ? "ar-OM" : "en-OM";
+    const formatter = new Intl.DateTimeFormat(locale, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
     // ========================================================
     // FORMAT ONE TIME
     // ========================================================
     const formatSingleTime = (timeStr) => {
-        const parts = timeStr.split(":");
-        let hours = parseInt(parts[0], 10);
-        const minutes = parts[1] || "00";
-        const ampm = hours >= 12
-            ? "PM"
-            : "AM";
-        hours =
-            hours % 12;
-        hours =
-            hours
-                ? hours
-                : 12;
-        return `${hours}:${minutes} ${ampm}`;
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        if (!Number.isInteger(hours) || !Number.isInteger(minutes) ||
+            hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+            return timeStr;
+        }
+        return formatter.format(new Date(2000, 0, 1, hours, minutes));
     };
-    return `
-        ${formatSingleTime(openingStr)}
-        -
-        ${formatSingleTime(closingStr)}
-    `.trim();
+    return formatSingleTime(openingStr) + " - " + formatSingleTime(closingStr);
+}
+function formatStockText(count, lowStock) {
+    const i18n = window.MarketplaceI18n;
+    const quantity = i18n?.formatNumber(count) ?? String(count);
+    const key = lowStock ? "stockLow" : "stockRemaining";
+    return i18n?.t(key, { quantity }) ??
+        (lowStock ? `Only ${quantity} remaining` : `${quantity} remaining`);
 }
 // ============================================================
 // WINDOW DECLARATIONS

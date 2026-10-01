@@ -62,7 +62,8 @@ namespace MarketplaceDeliverySystem.Repos
 
             // Search by name
             if (!string.IsNullOrWhiteSpace(dto.ProductName))
-                products = products.Where(p => p.ProductName.Contains(dto.ProductName));
+                products = products.Where(p => p.ProductName.Contains(dto.ProductName)
+                    || (p.ProductNameAr != null && p.ProductNameAr.Contains(dto.ProductName)));
 
             //
             if (dto.SortByPrice == "asc")

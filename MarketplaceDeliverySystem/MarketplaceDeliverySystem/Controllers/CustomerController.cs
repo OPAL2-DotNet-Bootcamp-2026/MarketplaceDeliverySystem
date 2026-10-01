@@ -50,7 +50,7 @@ namespace MarketplaceDeliverySystem.Controllers
                 _customerService.ViewOrderHistory(userId);
 
             if (history == null)
-                return NotFound("Customer not found.");
+                return NotFound(LocalizedText.Choose("Customer not found.", "لم يتم العثور على العميل."));
 
             return Ok(history);
         }
@@ -76,7 +76,7 @@ namespace MarketplaceDeliverySystem.Controllers
                 _customerService.Register(dto);
 
             if (customer == null)
-                return BadRequest("Email already exists.");
+                return BadRequest(LocalizedText.Choose("Email already exists.", "البريد الإلكتروني مستخدم بالفعل."));
 
             return Ok(customer);
         }
