@@ -26,8 +26,7 @@ namespace MarketplaceDeliverySystem.Services
                 return null;
 
             // Update product: It replaces the old values with the new values received from the user
-            product.ProductName = dto.ProductName;
-            product.Description = dto.Description;
+            ProductTranslationPolicy.ApplyUpdate(product, dto);
             product.Price = dto.Price;
             product.StockQuantity = dto.StockQuantity;
 
@@ -38,8 +37,8 @@ namespace MarketplaceDeliverySystem.Services
             ProductUpdatedRespDTO response = new ProductUpdatedRespDTO
             {
                 ProductId = product.ProductId,
-                ProductName = product.ProductName,
-                Description = product.Description,
+                ProductName = LocalizedText.Choose(product.ProductName, product.ProductNameAr),
+                Description = LocalizedText.ChooseOptional(product.Description, product.DescriptionAr),
                 Price = product.Price,
                 StockQuantity = product.StockQuantity,
             };
@@ -52,11 +51,11 @@ namespace MarketplaceDeliverySystem.Services
             return products.Select(p => new FilterProductsOutputDto
             {
                 ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                Description =p.Description,
+                ProductName = LocalizedText.Choose(p.ProductName, p.ProductNameAr),
+                Description = LocalizedText.ChooseOptional(p.Description, p.DescriptionAr),
                 Price = p.Price,
-                BusinessName = p.Business.BusinessName,
-                CategoryName = p.Category.CategoryName,
+                BusinessName = LocalizedText.Choose(p.Business.BusinessName, p.Business.BusinessNameAr),
+                CategoryName = LocalizedText.Choose(p.Category.CategoryName, p.Category.CategoryNameAr),
                 StockQuantity = p.StockQuantity,
                 ImageUrl = p.ImageUrl,
                 IsAvailable = p.IsAvailable,
@@ -81,14 +80,14 @@ namespace MarketplaceDeliverySystem.Services
             return products.Select(p => new FilterProductsOutputDto
             {
                 ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                Description = p.Description,
+                ProductName = LocalizedText.Choose(p.ProductName, p.ProductNameAr),
+                Description = LocalizedText.ChooseOptional(p.Description, p.DescriptionAr),
                 Price = p.Price,
                 StockQuantity = p.StockQuantity,
                 ImageUrl = p.ImageUrl,
                 IsAvailable = p.IsAvailable,
-                BusinessName = p.Business?.BusinessName ?? string.Empty,
-                CategoryName = p.Category?.CategoryName ?? string.Empty,
+                BusinessName = p.Business == null ? string.Empty : LocalizedText.Choose(p.Business.BusinessName, p.Business.BusinessNameAr),
+                CategoryName = p.Category == null ? string.Empty : LocalizedText.Choose(p.Category.CategoryName, p.Category.CategoryNameAr),
                 AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0.0
             }).ToList();
         }
@@ -101,13 +100,13 @@ namespace MarketplaceDeliverySystem.Services
             return new BusinessHeaderDto
             {
                 BusinessId = business.BusinessId,
-                BusinessName = business.BusinessName,
+                BusinessName = LocalizedText.Choose(business.BusinessName, business.BusinessNameAr),
                 LogoUrl = business.LogoUrl,
                 PhoneNumber = business.BusinessOwner?.User?.PhoneNumber ?? "+968 9000 0000",
                 OpeningTime = business.OpeningTime,
                 ClosingTime = business.ClosingTime,
                 IsOpen = business.IsOpen,
-                BusinessCategoryName = business.businessCategory?.BusinessCategoryName ?? "General"
+                BusinessCategoryName = business.businessCategory == null ? "General" : LocalizedText.Choose(business.businessCategory.BusinessCategoryName, business.businessCategory.BusinessCategoryNameAr)
             };
         }
         public string DeleteProduct(int productId)

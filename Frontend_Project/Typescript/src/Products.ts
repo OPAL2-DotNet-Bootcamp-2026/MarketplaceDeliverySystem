@@ -210,7 +210,7 @@ async function loadBusinessHeader(
 
         const logo: string =
             business.logoUrl ||
-            "../assets/img/ProductPlaceholder.PNG";
+            "../assets/img/LogoPlaceHolder.png";
 
 
         const formattedHours: string =
@@ -218,6 +218,12 @@ async function loadBusinessHeader(
                 business.openingTime,
                 business.closingTime
             );
+        const statusKey: string = business.isOpen ? "Open" : "Closed";
+        const statusLabel: string =
+            (window as any).MarketplaceI18n?.t(statusKey) || statusKey;
+        const hoursLabel: string = formattedHours
+            ? `${statusLabel}: ${formattedHours}`
+            : statusLabel;
 
 
         const phone: string =
@@ -265,7 +271,7 @@ async function loadBusinessHeader(
                                     : "badge-status-closed"
                             } small">
 
-                            🕒 Open: ${formattedHours}
+                            🕒 ${hoursLabel}
 
                         </span>
 
@@ -292,7 +298,7 @@ async function loadBusinessHeader(
                             type="button"
                             class="btn btn-outline-favorite d-inline-flex align-items-center justify-content-center gap-2">
 
-                            ❤️ Add to Favorite
+                            <span aria-hidden="true">❤️</span><span>Add to Favorite</span>
 
                         </button>
 
@@ -739,28 +745,11 @@ function renderFilteredProducts(): void {
             // STOCK BADGE
             // ==================================================
 
-            const stockBadge: string =
-                product.stockQuantity <= 8
-
-                    ? `
-                        <span class="stock-tag-low">
-
-                            ⚠️ Only
-                            ${product.stockQuantity}
-                            remaining
-
-                        </span>
-                    `
-
-                    : `
-                        <span class="stock-tag-good">
-
-                            ✓
-                            ${product.stockQuantity}
-                            remaining
-
-                        </span>
-                    `;
+            const lowStock: boolean = product.stockQuantity <= 8;
+            const stockText: string = formatStockText(product.stockQuantity, lowStock);
+            const stockBadge: string = lowStock
+                ? `<span class="stock-tag-low"><span aria-hidden="true">⚠️</span> ${stockText}</span>`
+                : `<span class="stock-tag-good"><span aria-hidden="true">✓</span> ${stockText}</span>`;
 
 
             // ==================================================
@@ -1066,16 +1055,9 @@ function renderFilteredProducts(): void {
 
 
                                                 <span
-                                                    class="${
-                                                        product.stockQuantity <= 8
-                                                            ? "stock-tag-low"
-                                                            : "stock-tag-good"
-                                                    }">
+                                                    class="${lowStock ? "stock-tag-low" : "stock-tag-good"}">
 
-                                                    [
-                                                    ${product.stockQuantity}
-                                                    remaining
-                                                    ]
+                                                    ${stockText}
 
                                                 </span>
 
@@ -1525,7 +1507,7 @@ function formatTimeOnlyRange(
 
     if (!openingStr || !closingStr) {
 
-        return "Closed";
+        return "";
     }
 
 
@@ -1533,50 +1515,31 @@ function formatTimeOnlyRange(
     // FORMAT ONE TIME
     // ========================================================
 
-    const formatSingleTime = (
-        timeStr: string
-    ): string => {
+    const locale = document.documentElement.lang === "ar" ? "ar-OM" : "en-OM";
+    const formatter = new Intl.DateTimeFormat(locale, {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
 
-        const parts: string[] =
-            timeStr.split(":");
-
-
-        let hours: number =
-            parseInt(
-                parts[0],
-                10
-            );
-
-
-        const minutes: string =
-            parts[1] || "00";
-
-
-        const ampm: string =
-            hours >= 12
-                ? "PM"
-                : "AM";
-
-
-        hours =
-            hours % 12;
-
-
-        hours =
-            hours
-                ? hours
-                : 12;
-
-
-        return `${hours}:${minutes} ${ampm}`;
+    const formatSingleTime = (timeStr: string): string => {
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        if (!Number.isInteger(hours) || !Number.isInteger(minutes) ||
+            hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+            return timeStr;
+        }
+        return formatter.format(new Date(2000, 0, 1, hours, minutes));
     };
 
+    return formatSingleTime(openingStr) + " - " + formatSingleTime(closingStr);
+}
 
-    return `
-        ${formatSingleTime(openingStr)}
-        -
-        ${formatSingleTime(closingStr)}
-    `.trim();
+function formatStockText(count: number, lowStock: boolean): string {
+    const i18n = (window as any).MarketplaceI18n;
+    const quantity = i18n?.formatNumber(count) ?? String(count);
+    const key = lowStock ? "stockLow" : "stockRemaining";
+    return i18n?.t(key, { quantity }) ??
+        (lowStock ? `Only ${quantity} remaining` : `${quantity} remaining`);
 }
 
 

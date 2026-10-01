@@ -8,9 +8,13 @@ namespace MarketplaceDeliverySystem.DTOs
         [Required(ErrorMessage = "Product name is required.")]
         [MaxLength(150)]
         public string ProductName { get; set; }
+        [MaxLength(150)]
+        public string? ProductNameAr { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(1000)]
         public string? Description { get; set; }
+        [MaxLength(1000)]
+        public string? DescriptionAr { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue)]

@@ -2,11 +2,13 @@ using MarketplaceDeliverySystem.Models;
 using MarketplaceDeliverySystem.Repos;
 using MarketplaceDeliverySystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Globalization;
 using System.Threading.RateLimiting;
 
 namespace MarketplaceDeliverySystem
@@ -48,6 +50,14 @@ namespace MarketplaceDeliverySystem
             // =====================================================
 
             builder.Services.AddScoped<ProductService>();
+            builder.Services.Configure<AzureTranslatorOptions>(builder.Configuration.GetSection("Translation"));
+            builder.Services.AddHttpClient<ITextTranslator, AzureTextTranslator>(client =>
+                client.Timeout = TimeSpan.FromSeconds(20));
+            if (!string.IsNullOrWhiteSpace(builder.Configuration["Translation:ApiKey"]))
+            {
+                builder.Services.AddHostedService<ProductTranslationWorker>();
+                builder.Services.AddHostedService<CatalogTranslationWorker>();
+            }
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<BusinessOwnerService>();
             builder.Services.AddScoped<BusinessService>();
@@ -215,6 +225,12 @@ namespace MarketplaceDeliverySystem
             }
 
             app.UseHttpsRedirection();
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = new[] { new CultureInfo("en"), new CultureInfo("ar") },
+                SupportedUICultures = new[] { new CultureInfo("en"), new CultureInfo("ar") }
+            });
             app.UseCors("Frontend");
             // First, read and validate the JWT token.
             app.UseAuthentication();

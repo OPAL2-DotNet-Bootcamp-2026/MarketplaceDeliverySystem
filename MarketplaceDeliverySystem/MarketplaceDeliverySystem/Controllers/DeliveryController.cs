@@ -34,8 +34,9 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 return BadRequest(new
                 {
-                    Message =
-                        "Driver could not be assigned. Check the delivery, order status, and driver availability."
+                    Message = LocalizedText.Choose(
+                        "Driver could not be assigned. Check the delivery, order status, and driver availability.",
+                        "تعذر تعيين السائق. تحقق من التوصيل وحالة الطلب وتوفر السائق.")
                 });
             }
 
@@ -82,7 +83,7 @@ namespace MarketplaceDeliverySystem.Controllers
             {
                 return NotFound(new
                 {
-                    Message = "No active delivery was found."
+                    Message = LocalizedText.Choose("No active delivery was found.", "لم يتم العثور على توصيل نشط.")
                 });
             }
 

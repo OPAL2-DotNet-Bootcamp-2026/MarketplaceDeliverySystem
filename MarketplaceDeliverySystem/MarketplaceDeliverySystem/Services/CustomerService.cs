@@ -233,7 +233,7 @@ namespace MarketplaceDeliverySystem.Services
                         {
                             ProductName =
                                 item.Product != null
-                                    ? item.Product.ProductName
+                                    ? LocalizedText.Choose(item.Product.ProductName, item.Product.ProductNameAr)
                                     : "Unknown Product",
 
                             Quantity =

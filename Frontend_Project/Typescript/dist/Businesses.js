@@ -121,7 +121,7 @@
             `;
             // Dynamic Categories
             categories.forEach((cat) => {
-                const emoji = getCategoryEmoji(cat.categoryName);
+                const emoji = getCategoryEmoji(cat.categoryNameEn || cat.categoryName);
                 html += `
                         <a href="#"
                             data-category-id="${cat.categoryId}"
@@ -244,7 +244,7 @@
         pageItems.forEach((business) => {
             const formattedHours = formatTimeOnlyRange(business.openingTime, business.closingTime);
             const logo = business.logoUrl ||
-                "../assets/img/ProductPlaceholder.PNG";
+                "../assets/img/LogoPlaceHolder.png";
             const cardHtml = `
                     <div class="card business-horizontal-card shadow-sm">
 

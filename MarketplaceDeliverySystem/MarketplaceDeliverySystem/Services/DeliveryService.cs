@@ -134,7 +134,7 @@ namespace MarketplaceDeliverySystem.Services
                 return new MessageOutputDTO
                 {
                     Success = false,
-                    Message = "Delivery was not found."
+                    Message = LocalizedText.Choose("Delivery was not found.", "لم يتم العثور على التوصيل.")
                 };
             }
 
@@ -147,8 +147,9 @@ namespace MarketplaceDeliverySystem.Services
                     return new MessageOutputDTO
                     {
                         Success = false,
-                        Message =
-                            "The delivery must be Assigned before it can be Delivered."
+                        Message = LocalizedText.Choose(
+                            "The delivery must be Assigned before it can be Delivered.",
+                            "يجب تعيين سائق قبل تأكيد التوصيل.")
                     };
                 }
 
@@ -157,8 +158,9 @@ namespace MarketplaceDeliverySystem.Services
                     return new MessageOutputDTO
                     {
                         Success = false,
-                        Message =
-                            "Pickup time was not recorded for this delivery."
+                        Message = LocalizedText.Choose(
+                            "Pickup time was not recorded for this delivery.",
+                            "لم يتم تسجيل وقت استلام هذا التوصيل.")
                     };
                 }
 
@@ -201,24 +203,25 @@ namespace MarketplaceDeliverySystem.Services
                     return new MessageOutputDTO
                     {
                         Success = true,
-                        Message =
-                            $"Order delivered successfully. " +
-                            $"Driver has been automatically assigned to Order {nextDelivery.OrderId}."
+                        Message = LocalizedText.Choose(
+                            $"Order delivered successfully. Driver has been automatically assigned to Order {nextDelivery.OrderId}.",
+                            $"تم توصيل الطلب بنجاح. تم تعيين السائق تلقائيًا للطلب رقم {nextDelivery.OrderId}.")
                     };
                 }
 
                 return new MessageOutputDTO
                 {
                     Success = true,
-                    Message =
-                        "Order delivered successfully. Driver is available again."
+                    Message = LocalizedText.Choose(
+                        "Order delivered successfully. Driver is available again.",
+                        "تم توصيل الطلب بنجاح. السائق متاح مرة أخرى.")
                 };
             }
 
             return new MessageOutputDTO
             {
                 Success = false,
-                Message = "Status must be 'Delivered'."
+                Message = LocalizedText.Choose("Status must be 'Delivered'.", "يجب أن تكون الحالة 'تم التوصيل'.")
             };
         }
         public DriverAssignToDeliveryOutputDTO?

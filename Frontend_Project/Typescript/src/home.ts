@@ -1,6 +1,7 @@
 interface HomeCategory {
     categoryId: number;
     categoryName: string;
+    categoryNameEn?: string;
 }
 
 interface PopularBusiness {
@@ -55,7 +56,7 @@ async function loadCategories(): Promise<void> {
         const categories = await getItems(HOME_CATEGORIES_API, isHomeCategory);
         const seen = new Set<string>();
         const uniqueCategories = categories.filter(category => {
-            const key = category.categoryName.trim().toLowerCase();
+            const key = String(category.categoryId);
             if (!key || seen.has(key)) return false;
             seen.add(key);
             return true;
@@ -73,7 +74,7 @@ async function loadCategories(): Promise<void> {
             card.href = `Businesses.html?categoryId=${encodeURIComponent(category.categoryId)}`;
 
             const icon = document.createElement("i");
-            icon.className = categoryIcon(category.categoryName);
+            icon.className = categoryIcon(category.categoryNameEn || category.categoryName);
             icon.setAttribute("aria-hidden", "true");
 
             const name = document.createElement("p");

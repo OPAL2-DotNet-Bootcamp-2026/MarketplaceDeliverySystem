@@ -13,6 +13,8 @@ namespace MarketplaceDeliverySystem.Models
 
         [Required]
         public string BusinessCategoryName { get; set; } //User Input
+        [MaxLength(100)]
+        public string? BusinessCategoryNameAr { get; set; }
 
         [Url]
         public string? BusinessCategoryImageURL { get; set; } //User Input
