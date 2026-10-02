@@ -428,6 +428,3 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-
-# Local backend configuration can contain connection strings and API keys.
-/MarketplaceDeliverySystem/MarketplaceDeliverySystem/appsettings.json
