@@ -1,61 +1,73 @@
-// =====================================================
-// ORDER HISTORY - TypeScript
-// =====================================================
-
-// =====================================================
-// INTERFACES
+/// =====================================================
+// 1. INTERFACES
 // =====================================================
 
 interface OrderProduct {
+
     productName: string;
+
     quantity: number;
+
     unitPrice: number;
 }
 
+
 interface Order {
+
     orderId: number;
+
     orderDate: string;
+
     orderStatus: string;
+
     paymentStatus: string;
+
     deliveryStatus: string;
+
     totalAmount: number;
+
     products: OrderProduct[];
 }
 
 
 // =====================================================
-// VARIABLES
+// 2. VARIABLES
 // =====================================================
+
 
 let allOrders: Order[] = [];
 
+
 let filteredOrders: Order[] = [];
 
+
+
 let currentPage: number = 1;
+
+
 
 const ordersPerPage: number = 5;
 
 
 // =====================================================
-// LOAD ORDERS
+// 3. LOAD ORDER HISTORY
 // =====================================================
 
 async function loadOrderHistory(): Promise<void> {
 
-    // =========================================
+    // -------------------------------------------------
     // Get JWT Token
-    // =========================================
+    // -------------------------------------------------
 
     const token: string | null =
         localStorage.getItem("authToken");
 
-    console.log("Token:", token);
+
+    // -------------------------------------------------
+    // Check Token
+    // -------------------------------------------------
 
     if (!token) {
-
-        console.error(
-            "JWT token was not found in localStorage."
-        );
 
         showError(
             "Please login first to view your orders."
@@ -65,20 +77,24 @@ async function loadOrderHistory(): Promise<void> {
     }
 
 
-    // =========================================
+    // -------------------------------------------------
     // API URL
-    // =========================================
+    // -------------------------------------------------
 
     const url: string =
         "https://localhost:7299/api/Order/GetMyOrderHistory";
 
 
-    // =========================================
-    // Container
-    // =========================================
+    // -------------------------------------------------
+    // Get HTML Container
+    // -------------------------------------------------
 
-    const ordersContainer: HTMLElement | null =
-        document.getElementById("orders-container");
+    const ordersContainer:
+        HTMLElement | null =
+        document.getElementById(
+            "orders-container"
+        );
+
 
     if (!ordersContainer) {
 
@@ -90,9 +106,9 @@ async function loadOrderHistory(): Promise<void> {
     }
 
 
-    // =========================================
-    // Loading
-    // =========================================
+    // -------------------------------------------------
+    // Loading Message
+    // -------------------------------------------------
 
     ordersContainer.innerHTML = `
         <div class="loading-orders">
@@ -101,9 +117,9 @@ async function loadOrderHistory(): Promise<void> {
     `;
 
 
-    // =========================================
-    // Fetch API
-    // =========================================
+    // -------------------------------------------------
+    // Send Request
+    // -------------------------------------------------
 
     try {
 
@@ -114,16 +130,20 @@ async function loadOrderHistory(): Promise<void> {
                     method: "GET",
 
                     headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
+
+                        "Authorization":
+                            `Bearer ${token}`,
+
+                        "Content-Type":
+                            "application/json"
                     }
                 }
             );
 
 
-        // =========================================
-        // Error
-        // =========================================
+        // -------------------------------------------------
+        // Check Response
+        // -------------------------------------------------
 
         if (!response.ok) {
 
@@ -149,12 +169,13 @@ async function loadOrderHistory(): Promise<void> {
         }
 
 
-        // =========================================
-        // JSON
-        // =========================================
+        // -------------------------------------------------
+        // Convert Response to JSON
+        // -------------------------------------------------
 
         const orders: unknown =
             await response.json();
+
 
         console.log(
             "Orders received:",
@@ -162,15 +183,16 @@ async function loadOrderHistory(): Promise<void> {
         );
 
 
-        // =========================================
+        // -------------------------------------------------
         // Save Orders
-        // =========================================
+        // -------------------------------------------------
 
         if (Array.isArray(orders)) {
 
-            allOrders = orders.filter(
-                isOrder
-            );
+            allOrders =
+                orders.filter(
+                    isOrder
+                );
 
         } else {
 
@@ -178,23 +200,24 @@ async function loadOrderHistory(): Promise<void> {
         }
 
 
-        // =========================================
-        // Statistics
-        // =========================================
-
-        updateStatistics(
-            allOrders
-        );
-
-
-        // =========================================
-        // Initial Display
-        // =========================================
+        // -------------------------------------------------
+        // Initial Filter
+        // -------------------------------------------------
 
         filteredOrders =
             [...allOrders];
 
+
+        // -------------------------------------------------
+        // Start From Page 1
+        // -------------------------------------------------
+
         currentPage = 1;
+
+
+        // -------------------------------------------------
+        // Display Orders
+        // -------------------------------------------------
 
         renderOrders();
 
@@ -215,7 +238,7 @@ async function loadOrderHistory(): Promise<void> {
 
 
 // =====================================================
-// CHECK ORDER TYPE
+// 4. CHECK ORDER DATA
 // =====================================================
 
 function isOrder(
@@ -226,161 +249,47 @@ function isOrder(
         typeof value !== "object" ||
         value === null
     ) {
+
         return false;
     }
+
 
     const order =
         value as Record<string, unknown>;
 
+
     return (
+
         typeof order.orderId === "number" &&
+
         typeof order.orderDate === "string" &&
+
         typeof order.orderStatus === "string" &&
+
         typeof order.paymentStatus === "string" &&
+
         typeof order.deliveryStatus === "string" &&
+
         typeof order.totalAmount === "number" &&
+
         Array.isArray(order.products)
+
     );
 }
 
 
 // =====================================================
-// UPDATE STATISTICS
-// =====================================================
-
-function updateStatistics(
-    orders: Order[]
-): void {
-
-    const total: number =
-        orders.length;
-
-
-    // =========================================
-    // Pending
-    // =========================================
-
-    const pending: number =
-        orders.filter(
-            (order: Order): boolean =>
-                getStatus(
-                    order.orderStatus
-                ) === "pending"
-        ).length;
-
-
-    // =========================================
-    // Completed / Delivered
-    // =========================================
-
-    const completed: number =
-        orders.filter(
-            (order: Order): boolean => {
-
-                const status: string =
-                    getStatus(
-                        order.orderStatus
-                    );
-
-                return (
-                    status === "delivered" ||
-                    status === "completed"
-                );
-            }
-        ).length;
-
-
-    // =========================================
-    // Cancelled
-    // =========================================
-
-    const cancelled: number =
-        orders.filter(
-            (order: Order): boolean =>
-                getStatus(
-                    order.orderStatus
-                ) === "cancelled"
-        ).length;
-
-
-    // =========================================
-    // Hero Total
-    // =========================================
-
-    const totalElement: HTMLElement | null =
-        document.getElementById(
-            "total-orders"
-        );
-
-    if (totalElement) {
-
-        totalElement.textContent =
-            String(total);
-    }
-
-
-    // =========================================
-    // Statistics Elements
-    // =========================================
-
-    const statTotal: HTMLElement | null =
-        document.getElementById(
-            "stat-total"
-        );
-
-    const statPending: HTMLElement | null =
-        document.getElementById(
-            "stat-pending"
-        );
-
-    const statCompleted: HTMLElement | null =
-        document.getElementById(
-            "stat-completed"
-        );
-
-    const statCancelled: HTMLElement | null =
-        document.getElementById(
-            "stat-cancelled"
-        );
-
-
-    // =========================================
-    // Update Statistics
-    // =========================================
-
-    if (statTotal) {
-
-        statTotal.textContent =
-            String(total);
-    }
-
-    if (statPending) {
-
-        statPending.textContent =
-            String(pending);
-    }
-
-    if (statCompleted) {
-
-        statCompleted.textContent =
-            String(completed);
-    }
-
-    if (statCancelled) {
-
-        statCancelled.textContent =
-            String(cancelled);
-    }
-}
-
-
-// =====================================================
-// RENDER ORDERS
+// 5. RENDER ORDERS
 // =====================================================
 
 function renderOrders(): void {
 
-    const container: HTMLElement | null =
+    // -------------------------------------------------
+    // Get Container
+    // -------------------------------------------------
+
+    const container:
+        HTMLElement | null =
         document.getElementById(
             "orders-container"
         );
@@ -396,14 +305,16 @@ function renderOrders(): void {
     }
 
 
-    // Clear old orders
+    // -------------------------------------------------
+    // Clear Old Orders
+    // -------------------------------------------------
 
     container.innerHTML = "";
 
 
-    // =========================================
-    // No Results
-    // =========================================
+    // -------------------------------------------------
+    // No Orders
+    // -------------------------------------------------
 
     if (
         filteredOrders.length === 0
@@ -417,25 +328,31 @@ function renderOrders(): void {
 
         updateResultsText();
 
-        renderPagination();
-
         return;
     }
 
 
-    // =========================================
-    // Pagination
-    // =========================================
+    // -------------------------------------------------
+    // Calculate Start
+    // -------------------------------------------------
 
     const startIndex: number =
         (currentPage - 1) *
         ordersPerPage;
 
 
+    // -------------------------------------------------
+    // Calculate End
+    // -------------------------------------------------
+
     const endIndex: number =
         startIndex +
         ordersPerPage;
 
+
+    // -------------------------------------------------
+    // Get Orders For Current Page
+    // -------------------------------------------------
 
     const pageOrders: Order[] =
         filteredOrders.slice(
@@ -444,9 +361,9 @@ function renderOrders(): void {
         );
 
 
-    // =========================================
-    // Create Orders
-    // =========================================
+    // -------------------------------------------------
+    // Create Each Order
+    // -------------------------------------------------
 
     pageOrders.forEach(
         (order: Order): void => {
@@ -457,6 +374,7 @@ function renderOrders(): void {
                     order
                 );
 
+
             container.appendChild(
                 orderElement
             );
@@ -464,18 +382,16 @@ function renderOrders(): void {
     );
 
 
-    // =========================================
-    // Update Information
-    // =========================================
+    // -------------------------------------------------
+    // Update Results Text
+    // -------------------------------------------------
 
     updateResultsText();
-
-    renderPagination();
 }
 
 
 // =====================================================
-// CREATE ORDER ELEMENT
+// 6. CREATE ORDER HTML
 // =====================================================
 
 function createOrderElement(
@@ -493,9 +409,9 @@ function createOrderElement(
         "order";
 
 
-    // =========================================
-    // Products Count
-    // =========================================
+    // -------------------------------------------------
+    // Number Of Products
+    // -------------------------------------------------
 
     const productCount: number =
         order.products
@@ -509,9 +425,9 @@ function createOrderElement(
             : `${productCount} Products`;
 
 
-    // =========================================
-    // Order HTML
-    // =========================================
+    // -------------------------------------------------
+    // Create HTML
+    // -------------------------------------------------
 
     details.innerHTML = `
 
@@ -521,11 +437,13 @@ function createOrderElement(
                 ▶
             </span>
 
+
             <span class="order-main-info">
 
                 <span class="order-number">
                     Order #${order.orderId}
                 </span>
+
 
                 <span class="order-date">
                     ${formatDate(order.orderDate)}
@@ -533,18 +451,27 @@ function createOrderElement(
 
             </span>
 
+
             <span class="items-count">
                 ${productText}
             </span>
+
 
             <span class="status-badge">
                 ${safeValue(order.orderStatus)}
             </span>
 
+
             <span class="order-total">
-                ${formatAmount(order.totalAmount)}
+
+                ${formatAmount(
+                    order.totalAmount
+                )}
+
                 OMR
+
             </span>
+
 
             <span class="view-details">
                 View Details
@@ -555,12 +482,14 @@ function createOrderElement(
 
         <div class="order-details">
 
+
             <h2 class="details-title">
                 Order Information
             </h2>
 
 
             <div class="status-container">
+
 
                 <!-- Order Status -->
 
@@ -575,7 +504,9 @@ function createOrderElement(
                     </h4>
 
                     <p>
-                        ${safeValue(order.orderStatus)}
+                        ${safeValue(
+                            order.orderStatus
+                        )}
                     </p>
 
                 </article>
@@ -594,7 +525,9 @@ function createOrderElement(
                     </h4>
 
                     <p>
-                        ${safeValue(order.paymentStatus)}
+                        ${safeValue(
+                            order.paymentStatus
+                        )}
                     </p>
 
                 </article>
@@ -613,7 +546,9 @@ function createOrderElement(
                     </h4>
 
                     <p>
-                        ${safeValue(order.deliveryStatus)}
+                        ${safeValue(
+                            order.deliveryStatus
+                        )}
                     </p>
 
                 </article>
@@ -632,11 +567,17 @@ function createOrderElement(
                     </h4>
 
                     <p>
-                        ${formatAmount(order.totalAmount)}
+
+                        ${formatAmount(
+                            order.totalAmount
+                        )}
+
                         OMR
+
                     </p>
 
                 </article>
+
 
             </div>
 
@@ -692,16 +633,16 @@ function createOrderElement(
 
 
 // =====================================================
-// PRODUCTS
+// 7. CREATE PRODUCTS HTML
 // =====================================================
 
 function createProductsHTML(
     products: OrderProduct[] | undefined
 ): string {
 
-    // =========================================
+    // -------------------------------------------------
     // No Products
-    // =========================================
+    // -------------------------------------------------
 
     if (
         !products ||
@@ -710,17 +651,19 @@ function createProductsHTML(
 
         return `
             <tr>
+
                 <td colspan="3">
                     No products found.
                 </td>
+
             </tr>
         `;
     }
 
 
-    // =========================================
+    // -------------------------------------------------
     // Products
-    // =========================================
+    // -------------------------------------------------
 
     return products
         .map(
@@ -761,6 +704,7 @@ function createProductsHTML(
                     </td>
 
                 </tr>
+
             `
         )
         .join("");
@@ -768,590 +712,7 @@ function createProductsHTML(
 
 
 // =====================================================
-// SEARCH
-// =====================================================
-
-const searchOrders:
-    HTMLInputElement | null =
-    document.getElementById(
-        "search-orders"
-    ) as HTMLInputElement | null;
-
-
-if (searchOrders) {
-
-    searchOrders.addEventListener(
-        "input",
-        (event: Event): void => {
-
-            // Get target
-
-            const input =
-                event.target;
-
-
-            // Check target type
-
-            if (
-                !(input instanceof HTMLInputElement)
-            ) {
-                return;
-            }
-
-
-            // Get search text
-
-            const search: string =
-                input.value
-                    .toLowerCase()
-                    .trim();
-
-
-            // Filter orders
-
-            filteredOrders =
-                allOrders.filter(
-                    (
-                        order: Order
-                    ): boolean => {
-
-                        const orderId: string =
-                            String(
-                                order.orderId
-                            ).toLowerCase();
-
-
-                        const products:
-                            OrderProduct[] =
-                            order.products || [];
-
-
-                        const productMatch:
-                            boolean =
-                            products.some(
-                                (
-                                    product: OrderProduct
-                                ): boolean =>
-                                    String(
-                                        product.productName
-                                    )
-                                        .toLowerCase()
-                                        .includes(search)
-                            );
-
-
-                        return (
-                            orderId.includes(search) ||
-                            productMatch
-                        );
-                    }
-                );
-
-
-            // Reset page
-
-            currentPage = 1;
-
-
-            // Render
-
-            renderOrders();
-        }
-    );
-}
-
-
-// =====================================================
-// STATUS FILTER
-// =====================================================
-
-const statusFilter:
-    HTMLSelectElement | null =
-    document.getElementById(
-        "status-filter"
-    ) as HTMLSelectElement | null;
-
-
-if (statusFilter) {
-
-    statusFilter.addEventListener(
-        "change",
-        (event: Event): void => {
-
-            // Get target
-
-            const select =
-                event.target;
-
-
-            // Check target type
-
-            if (
-                !(select instanceof HTMLSelectElement)
-            ) {
-                return;
-            }
-
-
-            // Selected value
-
-            const selected: string =
-                select.value.toLowerCase();
-
-
-            // =========================================
-            // All
-            // =========================================
-
-            if (
-                selected === "all"
-            ) {
-
-                filteredOrders =
-                    [...allOrders];
-            }
-
-
-            // =========================================
-            // Specific Status
-            // =========================================
-
-            else {
-
-                filteredOrders =
-                    allOrders.filter(
-                        (
-                            order: Order
-                        ): boolean =>
-                            getStatus(
-                                order.orderStatus
-                            ) === selected
-                    );
-            }
-
-
-            // Reset page
-
-            currentPage = 1;
-
-
-            // Render
-
-            renderOrders();
-        }
-    );
-}
-
-
-// =====================================================
-// SORT
-// =====================================================
-
-const sortOrders:
-    HTMLSelectElement | null =
-    document.getElementById(
-        "sort-orders"
-    ) as HTMLSelectElement | null;
-
-
-if (sortOrders) {
-
-    sortOrders.addEventListener(
-        "change",
-        (event: Event): void => {
-
-            // Get target
-
-            const select =
-                event.target;
-
-
-            // Check target type
-
-            if (
-                !(select instanceof HTMLSelectElement)
-            ) {
-                return;
-            }
-
-
-            // Selected sort
-
-            const value: string =
-                select.value;
-
-
-            // =========================================
-            // Sort
-            // =========================================
-
-            filteredOrders.sort(
-                (
-                    a: Order,
-                    b: Order
-                ): number => {
-
-                    // Newest
-
-                    if (
-                        value === "newest"
-                    ) {
-
-                        return (
-                            new Date(
-                                b.orderDate
-                            ).getTime()
-                            -
-                            new Date(
-                                a.orderDate
-                            ).getTime()
-                        );
-                    }
-
-
-                    // Oldest
-
-                    if (
-                        value === "oldest"
-                    ) {
-
-                        return (
-                            new Date(
-                                a.orderDate
-                            ).getTime()
-                            -
-                            new Date(
-                                b.orderDate
-                            ).getTime()
-                        );
-                    }
-
-
-                    // Highest Price
-
-                    if (
-                        value === "highest"
-                    ) {
-
-                        return (
-                            Number(
-                                b.totalAmount
-                            )
-                            -
-                            Number(
-                                a.totalAmount
-                            )
-                        );
-                    }
-
-
-                    // Lowest Price
-
-                    if (
-                        value === "lowest"
-                    ) {
-
-                        return (
-                            Number(
-                                a.totalAmount
-                            )
-                            -
-                            Number(
-                                b.totalAmount
-                            )
-                        );
-                    }
-
-
-                    return 0;
-                }
-            );
-
-
-            // Reset page
-
-            currentPage = 1;
-
-
-            // Render
-
-            renderOrders();
-        }
-    );
-}
-
-
-// =====================================================
-// PAGINATION
-// =====================================================
-
-function renderPagination(): void {
-
-    const pagination:
-        HTMLElement | null =
-        document.getElementById(
-            "pagination"
-        );
-
-
-    if (!pagination) {
-
-        console.error(
-            "pagination was not found."
-        );
-
-        return;
-    }
-
-
-    // Clear pagination
-
-    pagination.innerHTML = "";
-
-
-    // Calculate pages
-
-    const totalPages: number =
-        Math.ceil(
-            filteredOrders.length /
-            ordersPerPage
-        );
-
-
-    // No pagination needed
-
-    if (
-        totalPages <= 1
-    ) {
-
-        return;
-    }
-
-
-    // =========================================
-    // Previous
-    // =========================================
-
-    if (
-        currentPage > 1
-    ) {
-
-        const previous:
-            HTMLButtonElement =
-            createPageButton(
-                "‹",
-                currentPage - 1,
-                true
-            );
-
-
-        pagination.appendChild(
-            previous
-        );
-    }
-
-
-    // =========================================
-    // Pages
-    // =========================================
-
-    for (
-        let i: number = 1;
-        i <= totalPages;
-        i++
-    ) {
-
-        const button:
-            HTMLButtonElement =
-            createPageButton(
-                String(i),
-                i,
-                false
-            );
-
-
-        pagination.appendChild(
-            button
-        );
-    }
-
-
-    // =========================================
-    // Next
-    // =========================================
-
-    if (
-        currentPage < totalPages
-    ) {
-
-        const next:
-            HTMLButtonElement =
-            createPageButton(
-                "›",
-                currentPage + 1,
-                true
-            );
-
-
-        pagination.appendChild(
-            next
-        );
-    }
-}
-
-
-// =====================================================
-// CREATE PAGE BUTTON
-// =====================================================
-
-function createPageButton(
-    text: string,
-    page: number,
-    arrow: boolean
-): HTMLButtonElement {
-
-    const button:
-        HTMLButtonElement =
-        document.createElement(
-            "button"
-        );
-
-
-    button.className =
-        "page-button";
-
-
-    // Arrow
-
-    if (arrow) {
-
-        button.classList.add(
-            "arrow"
-        );
-    }
-
-
-    // Active page
-
-    if (
-        page === currentPage
-    ) {
-
-        button.classList.add(
-            "active"
-        );
-    }
-
-
-    // Text
-
-    button.textContent =
-        text;
-
-
-    // Click
-
-    button.addEventListener(
-        "click",
-        (): void => {
-
-            currentPage =
-                page;
-
-            renderOrders();
-
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    );
-
-
-    return button;
-}
-
-
-// =====================================================
-// RESULTS TEXT
-// =====================================================
-
-function updateResultsText(): void {
-
-    const text:
-        HTMLElement | null =
-        document.getElementById(
-            "results-text"
-        );
-
-
-    if (!text) {
-
-        return;
-    }
-
-
-    // No results
-
-    if (
-        filteredOrders.length === 0
-    ) {
-
-        text.textContent =
-            "No orders found";
-
-        return;
-    }
-
-
-    // Start
-
-    const start: number =
-        (currentPage - 1) *
-        ordersPerPage +
-        1;
-
-
-    // End
-
-    const end: number =
-        Math.min(
-            currentPage *
-            ordersPerPage,
-            filteredOrders.length
-        );
-
-
-    text.textContent =
-        `Showing ${start}-${end} of ${filteredOrders.length} orders`;
-}
-
-
-// =====================================================
-// STATUS NORMALIZATION
-// =====================================================
-
-function getStatus(
-    status: string | null | undefined
-): string {
-
-    if (
-        !status
-    ) {
-
-        return "";
-    }
-
-
-    return String(status)
-        .toLowerCase()
-        .trim();
-}
-
-
-// =====================================================
-// FORMAT AMOUNT
+// 8. FORMAT AMOUNT
 // =====================================================
 
 function formatAmount(
@@ -1375,7 +736,7 @@ function formatAmount(
 
 
 // =====================================================
-// FORMAT DATE
+// 9. FORMAT DATE
 // =====================================================
 
 function formatDate(
@@ -1408,7 +769,7 @@ function formatDate(
 
 
 // =====================================================
-// SAFE VALUE
+// 10. SAFE VALUE
 // =====================================================
 
 function safeValue(
@@ -1430,7 +791,56 @@ function safeValue(
 
 
 // =====================================================
-// ERROR
+// 11. RESULTS TEXT
+// =====================================================
+
+function updateResultsText(): void {
+
+    const text:
+        HTMLElement | null =
+        document.getElementById(
+            "results-text"
+        );
+
+
+    if (!text) {
+
+        return;
+    }
+
+
+    if (
+        filteredOrders.length === 0
+    ) {
+
+        text.textContent =
+            "No orders found";
+
+        return;
+    }
+
+
+    const start: number =
+        (currentPage - 1) *
+        ordersPerPage +
+        1;
+
+
+    const end: number =
+        Math.min(
+            currentPage *
+            ordersPerPage,
+            filteredOrders.length
+        );
+
+
+    text.textContent =
+        `Showing ${start}-${end} of ${filteredOrders.length} orders`;
+}
+
+
+// =====================================================
+// 12. ERROR
 // =====================================================
 
 function showError(
@@ -1452,78 +862,261 @@ function showError(
             </div>
         `;
     }
+}
 
 
-    // =========================================
-    // Reset Statistics
-    // =========================================
+// =====================================================
+// 13. START
+// =====================================================
 
-    const totalOrders:
+loadOrderHistory();
+
+
+
+
+
+// PAGINATION 
+
+
+
+
+// =====================================================
+// RENDER PAGINATION
+// =====================================================
+
+function renderPagination(): void {
+
+    // -------------------------------------------------
+    // Get Pagination Container
+    // -------------------------------------------------
+
+    const pagination:
         HTMLElement | null =
         document.getElementById(
-            "total-orders"
-        );
-
-    const statTotal:
-        HTMLElement | null =
-        document.getElementById(
-            "stat-total"
-        );
-
-    const statPending:
-        HTMLElement | null =
-        document.getElementById(
-            "stat-pending"
-        );
-
-    const statCompleted:
-        HTMLElement | null =
-        document.getElementById(
-            "stat-completed"
-        );
-
-    const statCancelled:
-        HTMLElement | null =
-        document.getElementById(
-            "stat-cancelled"
+            "pagination"
         );
 
 
-    if (totalOrders) {
+    if (!pagination) {
 
-        totalOrders.textContent =
-            "0";
+        console.error(
+            "pagination was not found."
+        );
+
+        return;
     }
 
-    if (statTotal) {
 
-        statTotal.textContent =
-            "0";
+    // -------------------------------------------------
+    // Clear Old Buttons
+    // -------------------------------------------------
+
+    pagination.innerHTML = "";
+
+
+    // -------------------------------------------------
+    // Calculate Number Of Pages
+    // -------------------------------------------------
+
+    const totalPages: number =
+        Math.ceil(
+            filteredOrders.length /
+            ordersPerPage
+        );
+
+
+    // -------------------------------------------------
+    // No Need For Pagination
+    // -------------------------------------------------
+
+    if (
+        totalPages <= 1
+    ) {
+
+        return;
     }
 
-    if (statPending) {
 
-        statPending.textContent =
-            "0";
+    // =================================================
+    // PREVIOUS BUTTON
+    // =================================================
+
+    if (
+        currentPage > 1
+    ) {
+
+        const previous:
+            HTMLButtonElement =
+            createPageButton(
+                "‹",
+                currentPage - 1,
+                true
+            );
+
+
+        pagination.appendChild(
+            previous
+        );
     }
 
-    if (statCompleted) {
 
-        statCompleted.textContent =
-            "0";
+    // =================================================
+    // PAGE NUMBERS
+    // =================================================
+
+    for (
+        let i: number = 1;
+        i <= totalPages;
+        i++
+    ) {
+
+        const button:
+            HTMLButtonElement =
+            createPageButton(
+                String(i),
+                i,
+                false
+            );
+
+
+        pagination.appendChild(
+            button
+        );
     }
 
-    if (statCancelled) {
 
-        statCancelled.textContent =
-            "0";
+    // =================================================
+    // NEXT BUTTON
+    // =================================================
+
+    if (
+        currentPage < totalPages
+    ) {
+
+        const next:
+            HTMLButtonElement =
+            createPageButton(
+                "›",
+                currentPage + 1,
+                true
+            );
+
+
+        pagination.appendChild(
+            next
+        );
     }
 }
 
 
 // =====================================================
-// START
+// CREATE PAGE BUTTON
 // =====================================================
 
-loadOrderHistory();
-export {};
+function createPageButton(
+    text: string,
+    page: number,
+    arrow: boolean
+): HTMLButtonElement {
+
+    // -------------------------------------------------
+    // Create Button
+    // -------------------------------------------------
+
+    const button:
+        HTMLButtonElement =
+        document.createElement(
+            "button"
+        );
+
+
+    // -------------------------------------------------
+    // CSS Class
+    // -------------------------------------------------
+
+    button.className =
+        "page-button";
+
+
+    // -------------------------------------------------
+    // Arrow Class
+    // -------------------------------------------------
+
+    if (arrow) {
+
+        button.classList.add(
+            "arrow"
+        );
+    }
+
+
+    // -------------------------------------------------
+    // Active Page
+    // -------------------------------------------------
+
+    if (
+        page === currentPage
+    ) {
+
+        button.classList.add(
+            "active"
+        );
+    }
+
+
+    // -------------------------------------------------
+    // Button Text
+    // -------------------------------------------------
+
+    button.textContent =
+        text;
+
+
+    // -------------------------------------------------
+    // Click Event
+    // -------------------------------------------------
+
+    button.addEventListener(
+        "click",
+        (): void => {
+
+            // Change current page
+
+            currentPage =
+                page;
+
+
+            // Display orders for new page
+
+            renderOrders();
+
+
+            // Scroll to top
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+    );
+
+
+    return button;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
